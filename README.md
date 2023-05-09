@@ -7,8 +7,9 @@ This repository contains the code and resources for the development of a mammogr
 
 ## Timeline and Work Distribution
 
-- [Week 1: Client consultation and project planning](docs/week1.md)
-- [Week 2: Data collection and exploration](docs/week2.md)
+- [Week 1: Team Onboarding](docs/week1.md)
+- [Week 2: Client consultation and project planning](docs/week2.md)
+- [Week 3: Data collection and exploration](docs/week3.md)
 
 ## Model Building Pipeline
 
