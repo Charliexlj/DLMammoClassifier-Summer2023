@@ -19,7 +19,7 @@ During the second week of the project, our main focus is to understand the clien
 2. Is there a budget allocated for additional resources (e.g., cloud computing services, data storage)?
 - Refer to the college for budget allocation and support.
 3. What are the expected deliverables and performance metrics for the final model? What should the finished product look like? UI, command line interaction, API?
-- No specific requirement
+- No specific requirement.
 4. How would you like us to prioritize the different aspects of the project, such as accuracy, speed, interpretability, or ease of integration? Are there any thresholds the project needs to meet?
 - Focus on enriching the dataset using various methods and designing algorithms that work best with limited datasets.
 5. Are there any specific data formats, platforms, or tools that the clients prefer to work with?
@@ -40,7 +40,7 @@ The main challenge is the dataset size. With many existing algorithms available 
 
 #### 2. Algorithms
 Suitable algorithms can make the most out of a limited dataset, generalizing well across different data qualities. The client suggested some techniques:
-Vision Transformers - Attention is all you need
+- Vision Transformers - Attention is all you need
 - ROI(Region of interest) - Focus on suspicious regions
 - Segmentation - Similar to ROI but more challenging and effective
 - Combination of two or more techniques
