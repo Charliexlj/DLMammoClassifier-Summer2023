@@ -15,30 +15,30 @@ During the second week of the project, our main focus is to understand the clien
 ### Questions for Clients
 
 1. What software and hardware resources are available for this project?  
-- A： Seek for college support.
+- Seek for college support.
 2. Is there a budget allocated for additional resources (e.g., cloud computing services, data storage)?  
-- A: Refer to the college for budget allocation and support.
+- Refer to the college for budget allocation and support.
 3. What are the expected deliverables and performance metrics for the final model? What should the finished product look like? UI, command line interaction, API?  
-- A: No specific requirement
+- No specific requirement
 4. How would you like us to prioritize the different aspects of the project, such as accuracy, speed, interpretability, or ease of integration? Are there any thresholds the project needs to meet?  
-- A: Focus on enriching the dataset using various methods and designing algorithms that work best with limited datasets.
+- Focus on enriching the dataset using various methods and designing algorithms that work best with limited datasets.
 5. Are there any specific data formats, platforms, or tools that the clients prefer to work with?  
-- A: No specific requirement.
+- No specific requirement.
 6. What is the desired level of interpretability for the model?  
-- A: Interpretability for professionals.
+- Interpretability for professionals.
 7. Are there any privacy or security requirements for handling the data?  
-- A: Avoid using data with attached identities, and do not share the source code with people outside the team.
+- Avoid using data with attached identities, and do not share the source code with people outside the team.
 8. What is the desired frequency of progress updates and communication throughout the project?  
-- A: Communicate as desired; clients are open to informal conversations (e.g., via WhatsApp).
+- Communicate as desired; clients are open to informal conversations (e.g., via WhatsApp).
 
 # Client Side:
-1. Dataset  
+#### 1. Dataset  
 The main challenge is the dataset size. With many existing algorithms available online, the primary focus should be on enriching the dataset in terms of volume and variety. The client suggested some techniques:
 - Data Augmentation - Enlarge Sample Set
 - GAN (Generative adversarial network) - Generate Samples
 - Diffusion Models - Generate Samples
 
-2. Algorithms  
+#### 2. Algorithms  
 Suitable algorithms can make the most out of a limited dataset, generalizing well across different data qualities. The client suggested some techniques:
 Vision Transformers - Attention is all you need
 - ROI(Region of interest) - Focus on suspicious regions
