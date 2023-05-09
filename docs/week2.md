@@ -1,6 +1,6 @@
 # Week 2: Client Consultation and Project Planning
 
-During the first week of the project, our main focus is to understand the clients' requirements and set up a clear project plan. This document provides an overview of our progress and tasks for Week 1.
+During the second week of the project, our main focus is to understand the clients' requirements and set up a clear project plan. This document provides an overview of our progress and tasks for Week 2.
 
 ## Objectives
 
@@ -9,6 +9,8 @@ During the first week of the project, our main focus is to understand the client
 3. Determine the available resources and constraints.
 4. Develop a project timeline and assign tasks to team members.
 5. Set up the project repository and documentation structure.
+6. Brainstorm different approaches for the project, including pipelines, data processing, and potential solutions.
+7. Discuss the pros and cons of each approach and agree on one or a combination of the most beneficial strategies.
 
 ### Questions for Clients
 

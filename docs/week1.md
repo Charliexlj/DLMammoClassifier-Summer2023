@@ -1,5 +1,7 @@
 # Week 1: Team Onboarding, Project Orientation and Initial Research
 
+During the first week of the project, our main focus was on forming the team, understanding the scope of the project, and planning our approach. This document provides an overview of our progress and tasks for Week 1.
+
 ## Objectives
 1. Establish team roles.
 2. Discuss the project scope and objectives.
