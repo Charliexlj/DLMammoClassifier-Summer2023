@@ -37,3 +37,10 @@ During the second week of the project we have collected as much as data as we ca
 - Preliminary Implementation
     - Design the complete model architecture
     - Conduct preliminary tests on a smaller dataset with fewer parameters
+
+### Image preprocessing & Data exploration
+- Study the different datasets and analyse their main characteristics
+- Standardise the size of the images being inputted (1024x1024)
+- Normalise the pixel intensity values to being between 0 and 1
+- Find a way to merge different datasets 
+- Figure out how much of the data is viable
