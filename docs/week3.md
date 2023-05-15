@@ -8,37 +8,32 @@ During the second week of the project we have collected as much as data as we ca
 | ------------- | ------------- |
 | Cloud Operations | Andy |
 | Image Preprocessing & Data Exploration | Luca, Lun, and Henry |
-| Algorithm Research & Trial Implementation | Charlie and David |
+| Algorithm Research & Preliminary Implementation | Charlie and David |
 
 ### Cloud Operation
 
-- Set up, manage, and maintain the cloud infrastructure
-    - Choose a cloud platform and create a project
-    - Enable necessary APIs, set up the relevant cloud services
-    - Manage computational resources
-- Set up appropriate access controls, monitor usage and cost
-- Provide guidlines for other group members on how to use the cloud services
-    - File structures
-    - Expected procedure to use the virtual machine
-    - Data and model access
+- Establish, administer, and sustain the cloud infrastructure:
+    - Select a suitable cloud platform and initiate a project.
+    - Activate the necessary APIs and configure relevant cloud services.
+    - Manage computational resources.
+- Set up appropriate access controls, monitor usage and costs.
+- Provide guidlines for team members about utilizing the cloud services:
+    - Establish file structures.
+    - Specify the standard procedure for utilizing the virtual machine.
+    - Arrange access to data and models.
 
-### Algorithm Research & Trial Implementation
-- Research for different algorithms
+### Algorithm Research & Preliminary Implementation
+- Conduct research on various algorithms:
     - Generative algorithms for data enrichment
-        - GANs
-            - ViTGAN
+        - GANs: ViTGAN
         - Diffusion
     - Classification algorithms
         - ViT
-        - Localisation
-            - ROI
-            - Segmentation
-        - Local classification
-            - VGG16
-            - Resnet
-    - Pre-train using self-supervised learning
-        - Contrasive learning
-        - Generation with masked data
-- Trial Implementation
-    - Complete model architectural design
-    - Trial on small dataset with fewer parameters
+        - Localisation: ROI, Segmentation(U-Net)
+        - Local classification: VGG19, Resnet
+    - Pre-train models using self-supervised learning approaches
+        - Contrastive learning
+        - Generation using masked data
+- Preliminary Implementation
+    - Design the complete model architecture
+    - Conduct preliminary tests on a smaller dataset with fewer parameters
