@@ -11,6 +11,12 @@ This repository contains the code and resources for the development of a mammogr
 - [Week 2: Client consultation and project planning](docs/week2.md)
 - [Week 3: Data collection and exploration](docs/week3.md)
 
-## Model Building Pipeline
+## Dataset
+
+| Name | Size | Label | Localisation |
+| --- | --- | --- | --- |
+| [CBIS-DDSM](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=22516629#2251662935562334b1e043a3a0512554ef512cad) | 2620 | :heavy_check_mark: | :heavy_check_mark: |
+
+## Model Architechure
 
 ...
