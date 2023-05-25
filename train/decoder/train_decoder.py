@@ -13,9 +13,6 @@ from Mammolibs import dataset as MMdataset
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--ori', type=str, required=True)
-parser.add_argument('--dest', type=str, required=True)
-parser.add_argument('--benign', type=str, required=True)
-parser.add_argument('--malignant', type=str, required=True)
 args = parser.parse_args()
 
 # Specify the path to the RAR file and the destination directory
@@ -120,7 +117,10 @@ if __name__ == '__main__':
     print(model)
     print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters())}')
 
-    image_paths = [args.benign, args.malignant]
+    benign_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Benign Masses/'
+    malignant_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Malignant Masses/'
+
+    image_paths = [benign_path, malignant_path]
     dataset = MMdataset.BreastImageSet(image_paths)
 
     # num_epochs = 1000
