@@ -83,7 +83,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
         neglog_num_by_den = -torch.log(num_by_den)
         return torch.mean(neglog_num_by_den)
 
-    optimizer = optim.Adam(model.parameters(), lr=1e-3)
+    optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(1, num_epochs+1):
         model.train()
@@ -98,7 +98,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
         train_loss.backward()
         optimizer.step()
 
-        if epoch % 100 == 0:
+        if epoch % 10 == 0:
             model.eval()
             # Disabling gradient calculation during reference to reduce memory consumption
             with torch.no_grad():
@@ -124,7 +124,7 @@ if __name__ == '__main__':
     image_paths = [benign_path, malignant_path]
     dataset = MMdataset.BreastImageSet(image_paths)
 
-    # num_epochs = 1000
-    # batch_size = 16
+    num_epochs = 1000
+    batch_size = 16
 
-    # trained_model = train_encoder(model, dataset, lr=1e-3, num_epochs=num_epochs, batch_size=batch_size)
+    trained_model = train_encoder(model, dataset, lr=1e-3, num_epochs=num_epochs, batch_size=batch_size)
