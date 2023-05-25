@@ -116,6 +116,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
 
 
 if __name__ == '__main__':
+    print('Enter script main function')
     model = Pretrain_Encoder()
     print(model)
     print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters())}')
