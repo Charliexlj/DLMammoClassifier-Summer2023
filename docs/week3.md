@@ -7,7 +7,7 @@ During the second week of the project we have collected as much as data as we ca
 | Task | Group Member |
 | ------------- | ------------- |
 | Cloud Operations | Andy |
-| Image Preprocessing & Data Exploration | Luca, Lun, and Henry |
+| Image Preprocessing & Data Exploration | Luca, Lun and Henry |
 | Algorithm Research & Preliminary Implementation | Charlie and David |
 
 ### Cloud Operation
