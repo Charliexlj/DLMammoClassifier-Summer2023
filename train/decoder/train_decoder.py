@@ -13,6 +13,7 @@ from Mammolibs import dataset as MMdataset
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--ori', type=str, required=True)
+parser.add_argument('--dest', type=str, required=True)
 args = parser.parse_args()
 
 # Specify the path to the RAR file and the destination directory
