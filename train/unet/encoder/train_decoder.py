@@ -110,7 +110,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
         optimizer.step()
         end = time.time()
 
-        if epoch % 500 == 0:
+        if epoch % 10 == 0:
             torch.save(model.state_dict(),
                        os.path.join(file_path, '/model_epoch_{}.pth'.format(epoch))) # noqa
 
