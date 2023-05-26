@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -31,7 +30,8 @@ with rarfile.RarFile(rar_path) as rf:
 class Pretrain_Encoder(nn.Module):
     def __init__(self, in_channel=1, out_vector=1024, num_filter=32):
         super(Pretrain_Encoder, self).__init__()
-        self.encoder = MMmodels.Mammo_Encoder(in_channel=in_channel, base_channel=num_filter)
+        self.encoder = MMmodels.Mammo_Encoder(
+            in_channel=in_channel, base_channel=num_filter)
         self.fc1 = nn.Sequential(
             nn.Dropout(0.5),
             nn.Linear(32*32*512, 4096),
@@ -43,7 +43,7 @@ class Pretrain_Encoder(nn.Module):
             nn.ReLU()
             )
         self.fc3 = nn.Linear(4096, out_vector)
-        
+
     def forward(self, x):
         x = self.encoder(x)
         x = x.view(x.size(0), -1)
@@ -55,11 +55,13 @@ class Pretrain_Encoder(nn.Module):
 
 def mutations(image):
     image1, image2 = T.RandomRotation(180)(image), T.RandomRotation(180)(image)
-    image1, image2 = T.RandomAutocontrast()(image1), T.RandomAutocontrast()(image2)
+    image1 = T.RandomAutocontrast()(image1)
+    image2 = T.RandomAutocontrast()(image2)
     return image1, image2
 
 
-def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
+def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
+                  batch_size=16, save_path='/home'):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     # print('Device: {0}'.format(device))
     model.to(device)
@@ -78,7 +80,8 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
         exp_sim_by_tau = torch.exp(sim_by_tau)
         sum_of_rows = torch.sum(exp_sim_by_tau, dim=1)
         exp_sim_by_tau_diag = torch.diag(exp_sim_by_tau)
-        numerators = torch.exp(torch.div(torch.nn.CosineSimilarity()(a_cap_b_cap,b_cap_a_cap),tau))
+        numerators = torch.exp(torch.div(torch.nn.CosineSimilarity()
+                                         (a_cap_b_cap, b_cap_a_cap), tau))
         denominators = sum_of_rows - exp_sim_by_tau_diag
         num_by_den = torch.div(numerators, denominators)
         neglog_num_by_den = -torch.log(num_by_den)
@@ -93,7 +96,8 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
         images, _ = dataset.get_tr_random_batch(batch_size)
         images = torch.from_numpy(np.array(images))
         images1, images2 = mutations(images)
-        images1, images2 = images1.to(device, dtype=torch.float32), images2.to(device, dtype=torch.float32)
+        images1 = images1.to(device, dtype=torch.float32)
+        images2 = images2.to(device, dtype=torch.float32)
         logits1, logits2 = model(images1), model(images2)
 
         optimizer.zero_grad()
@@ -102,37 +106,48 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
         optimizer.step()
         end = time.time()
 
-        if epoch % 100 == 0:
-            torch.save(model.state_dict(), '/home/DLMammoClassifier-Summer2023/encoder/model_epoch_{}.pth'.format(epoch))
+        if epoch % 500 == 0:
+            torch.save(model.state_dict(),
+                       os.path.join(file_path, '/model_epoch_{}.pth'.format(epoch))) # noqa
 
         if epoch % 10 == 0:
             model.eval()
-            # Disabling gradient calculation during reference to reduce memory consumption
             with torch.no_grad():
-                # Evaluate on a batch of test images and print out the test loss
                 test_images, _ = dataset.get_tr_random_batch(32)
                 test_images = torch.from_numpy(np.array(test_images))
                 test_images1, test_images2 = mutations(test_images)
-                test_images1, test_images2 = test_images1.to(device, dtype=torch.float32), test_images2.to(device, dtype=torch.float32)
-                test_logits1, test_logits2 = model(test_images1), model(test_images2)
+                test_images1 = test_images1.to(device, dtype=torch.float32)
+                test_images2 = test_images2.to(device, dtype=torch.float32)
+                test_logits1 = model(test_images1)
+                test_logits2 = model(test_images2)
                 test_loss = NT_Xent_loss(test_logits1, test_logits2)
-                print("Iter:{:5d}  |  Tr_loss: {:.4f}  |  Val_loss: {:.4f}  |  Time per 10 iter: {:.4f}s".format(epoch, train_loss, test_loss, end-start))
+                print("Iter:{:5d}  |  Tr_loss: {:.4f}  |  Val_loss: {:.4f}  |  Time per 10 iter: {:.4f}s".format(epoch, train_loss, test_loss, end-start)) # noqa
     return model
 
 
 if __name__ == '__main__':
-    print('Enter script main function')
+    print('Training Encoder...')
     model = Pretrain_Encoder()
-    print(model)
-    print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters())}')
+    # print(model)
+    print('Total trainable parameters = '
+          f'{sum(p.numel() for p in model.parameters())}')
 
-    benign_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Benign Masses/'
-    malignant_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Malignant Masses/'
+    benign_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Benign Masses/' # noqa
+    malignant_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Malignant Masses/' # noqa
 
     image_paths = [benign_path, malignant_path]
     dataset = MMdataset.BreastImageSet(image_paths)
 
+    file_path = os.path.dirname(os.path.realpath(__file__))
+
     num_epochs = 10000
     batch_size = 32
 
-    trained_model = train_encoder(model, dataset, lr=1e-3, num_epochs=num_epochs, batch_size=batch_size)
+    trained_model = train_encoder(
+        model,
+        dataset,
+        lr=1e-3,
+        num_epochs=num_epochs,
+        batch_size=batch_size,
+        save_path=file_path
+        )

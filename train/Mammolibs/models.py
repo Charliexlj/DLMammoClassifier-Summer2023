@@ -1,9 +1,5 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
-import torchvision.transforms as T
-import numpy as np
 
 
 def conv_block(in_channels, out_channels):
@@ -15,6 +11,7 @@ def conv_block(in_channels, out_channels):
         nn.BatchNorm2d(out_channels),
         nn.ReLU(inplace=True)
     )
+
 
 class Mammo_Encoder(nn.Module):
     def __init__(self, in_channel=1, base_channel=32):
@@ -47,7 +44,7 @@ class Mammo_Encoder(nn.Module):
         x = self.conv4(self.pool3(x))
         x = self.conv5(self.pool4(x))
         return x
-        
+
 
 class Mammo_Decoder(nn.Module):
     def __init__(self, in_channel=512, out_channel=2, mode="Autoencoder"):
@@ -56,25 +53,26 @@ class Mammo_Decoder(nn.Module):
         n = in_channel//2
         self.upconv4 = nn.ConvTranspose2d(n*2, n, kernel_size=2, stride=2)
         # 32*32*256
-        if mode == "Autoencoder": self.conv4 = conv_block(n, n)
-        else: self.conv4 = conv_block(n*2, n)
+        if mode == "Autoencoder": self.conv4 = conv_block(n, n) # noqa
+        else: self.conv4 = conv_block(n*2, n) # noqa
         # 64*64*128
         n = n//2
         self.upconv3 = nn.ConvTranspose2d(n*2, n, kernel_size=2, stride=2)
-        if mode == "Autoencoder": self.conv3 = conv_block(n, n)
-        else: self.conv3 = conv_block(n*2, n)
+        if mode == "Autoencoder": self.conv3 = conv_block(n, n) # noqa
+        else: self.conv3 = conv_block(n*2, n) # noqa
         # 128*128*64
         n = n//2
         self.upconv2 = nn.ConvTranspose2d(n*2, n, kernel_size=2, stride=2)
-        if mode == "Autoencoder": self.conv2 = conv_block(n, n)
-        else: self.conv2 = conv_block(n*2, n)
+        if mode == "Autoencoder": self.conv2 = conv_block(n, n) # noqa
+        else: self.conv2 = conv_block(n*2, n) # noqa
         # 256*256*32
         n = n//2
         self.upconv1 = nn.ConvTranspose2d(n*2, n, kernel_size=2, stride=2)
-        if mode == "Autoencoder": self.conv1 = conv_block(n, out_channel)
-        else: self.conv1 = conv_block(n*2, out_channel)
+        if mode == "Autoencoder": self.conv1 = conv_block(n, out_channel) # noqa
+        else: self.conv1 = conv_block(n*2, out_channel) # noqa
         # 512*512*2
-        self.conv = nn.Conv2d(in_channels=out_channel, out_channels=out_channel, kernel_size=1)
+        self.conv = nn.Conv2d(in_channels=out_channel, out_channels=out_channel, kernel_size=1) # noqa
+
     def forward(self, x):
         x = self.conv4(self.upconv4(x))
         x = self.conv3(self.upconv3(x))
@@ -82,6 +80,7 @@ class Mammo_Decoder(nn.Module):
         x = self.conv1(self.upconv1(x))
         x = self.conv(x)
         return x
+
 
 class Mammo_Autoencoder(nn.Module):
     def __init__(self, in_channel=1, out_channel=2, num_filter=32):
@@ -99,7 +98,8 @@ class Mammo_UNet(nn.Module):
     def __init__(self, in_channel=1, out_channel=2, num_filter=32):
         super(Mammo_UNet, self).__init__()
         self.encoder = Mammo_Encoder(in_channel=in_channel, n=32)
-        self.decoder = Mammo_Decoder(in_channel=512, out_channel=out_channel, mode="UNet")
+        self.decoder = Mammo_Decoder(in_channel=512, out_channel=out_channel, mode="UNet") # noqa
+
     def forward(self, x):
         enc1 = self.encoder.conv1(x)
         enc2 = self.encoder.conv2(self.encoder.pool1(enc1))
@@ -121,3 +121,4 @@ class Mammo_UNet(nn.Module):
         dec1 = torch.cat((dec1, enc1), dim=1)
         dec1 = self.decoder.conv1(dec1)
         return torch.sigmoid(self.decoder.conv(dec1))
+    

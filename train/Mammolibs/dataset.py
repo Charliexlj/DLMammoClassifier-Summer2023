@@ -1,19 +1,10 @@
 import imageio
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.optim as optim
 from torch.utils.data import Dataset
-import torchvision.transforms as T
 import numpy as np
-import time
 import os
-import random
-import matplotlib.pyplot as plt
-from matplotlib import colors
 import cv2
-
 from sklearn.utils import shuffle
+
 
 def normalise_intensity(image, thres_roi=1.0):
     """ Normalise the image intensity by the mean and standard deviation """
@@ -26,9 +17,10 @@ def normalise_intensity(image, thres_roi=1.0):
     image2 = (image - mu) / (sigma + eps)
     return image2
 
+
 class BreastImageSet(Dataset):
     """ Brain image set """
-    def __init__(self, image_paths, labels=[0,1]):
+    def __init__(self, image_paths, labels=[0, 1]):
         self.image_paths = image_paths
         self.images = []
         self.labels = []
@@ -40,11 +32,13 @@ class BreastImageSet(Dataset):
         for i, image_names in enumerate(image_names_):
             for image_name in image_names:
                 if image_name.endswith('.png'):
-                # Read the image
-                    image = imageio.imread(os.path.join(image_paths[i], image_name))
+                    # Read the image
+                    image = imageio.imread(
+                        os.path.join(image_paths[i], image_name))
                     self.images += [image]
                     self.labels.append(labels[i])
-        self.images, self.labels = shuffle(self.images, self.labels, random_state=101)
+        self.images, self.labels = shuffle(
+            self.images, self.labels, random_state=101)
         self.labels = np.eye(len(labels))[self.labels]
 
     def __len__(self):
