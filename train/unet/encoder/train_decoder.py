@@ -4,12 +4,16 @@ import torch.optim as optim
 import torchvision.transforms as T
 import numpy as np
 import os
+import sys
 import time
 import rarfile
 import argparse
 
-from Mammolibs import models as MMmodels
-from Mammolibs import dataset as MMdataset
+parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+sys.path.append(parent_dir)
+
+from Mammolibs import models as MMmodels # noqa
+from Mammolibs import dataset as MMdataset # noqa
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--ori', type=str, required=True)
