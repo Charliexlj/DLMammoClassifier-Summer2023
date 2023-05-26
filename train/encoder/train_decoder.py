@@ -101,6 +101,10 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
         train_loss.backward()
         optimizer.step()
         end = time.time()
+
+        if epoch % 100 == 0:
+            torch.save(model.state_dict(), '/home/DLMammoClassifier-Summer2023/encoder/model_epoch_{}.pth'.format(epoch))
+
         if epoch % 10 == 0:
             model.eval()
             # Disabling gradient calculation during reference to reduce memory consumption
