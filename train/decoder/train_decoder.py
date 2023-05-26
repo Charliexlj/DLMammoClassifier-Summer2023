@@ -87,7 +87,8 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(1, num_epochs+1):
-        start = time.time()
+        if epoch % 10 == 1:
+            start = time.time()
         model.train()
         images, _ = dataset.get_tr_random_batch(batch_size)
         images = torch.from_numpy(np.array(images))
@@ -100,7 +101,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
         train_loss.backward()
         optimizer.step()
         end = time.time()
-        if epoch % 1 == 0:
+        if epoch % 10 == 0:
             model.eval()
             # Disabling gradient calculation during reference to reduce memory consumption
             with torch.no_grad():
@@ -111,7 +112,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000, batch_size=16):
                 test_images1, test_images2 = test_images1.to(device, dtype=torch.float32), test_images2.to(device, dtype=torch.float32)
                 test_logits1, test_logits2 = model(test_images1), model(test_images2)
                 test_loss = NT_Xent_loss(test_logits1, test_logits2)
-                print("Iter:{:5d}  |  Tr_loss: {:.4f}  |  Val_loss: {:.4f}  |  Time per iter: {:.4f}s".format(epoch, train_loss, test_loss, end-start))
+                print("Iter:{:5d}  |  Tr_loss: {:.4f}  |  Val_loss: {:.4f}  |  Time per 10 iter: {:.4f}s".format(epoch, train_loss, test_loss, end-start))
     return model
 
 
@@ -127,7 +128,7 @@ if __name__ == '__main__':
     image_paths = [benign_path, malignant_path]
     dataset = MMdataset.BreastImageSet(image_paths)
 
-    num_epochs = 1000
-    batch_size = 16
+    num_epochs = 10000
+    batch_size = 32
 
     trained_model = train_encoder(model, dataset, lr=1e-3, num_epochs=num_epochs, batch_size=batch_size)
