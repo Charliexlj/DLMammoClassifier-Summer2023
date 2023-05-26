@@ -111,8 +111,12 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
         end = time.time()
 
         if epoch % 10 == 0:
-            torch.save(model.state_dict(),
-                       os.path.join(file_path, '/model_epoch_{}.pth'.format(epoch))) # noqa
+            save_path = os.path.join(file_path, 'model_epoch_{}.pth'.format(epoch)) # noqa
+            torch.save(model.state_dict(), save_path)
+            if os.path.exists(save_path):
+                print(f'model_epoch_{epoch}.pth saved successfully')
+            else:
+                print(f'Failed to save model_epoch_{epoch}.pth')
 
         if epoch % 10 == 0:
             model.eval()
