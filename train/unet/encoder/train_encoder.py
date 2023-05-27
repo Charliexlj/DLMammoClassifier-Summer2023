@@ -115,7 +115,11 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
             train_loss = NT_Xent_loss(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
-
+            
+            model.eval()
+            with torch.no_grad():
+                MMutils.print_iteration_stats(epoch, train_loss, train_loss, 1, time.time()-start) # noqa
+            '''
             if epoch % 200 == 0:
                 MMutils.save_model(model, save_path, epoch)
 
@@ -127,6 +131,7 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
                     test_logits2 = model(test_images2)
                     test_loss = NT_Xent_loss(test_logits1, test_logits2)
                     MMutils.print_iteration_stats(epoch, train_loss, test_loss, 1, time.time()-start) # noqa
+            '''
     return model
 
 
@@ -142,7 +147,7 @@ if __name__ == '__main__':
 
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
-    trained_model = xmp.spawn(train_encoder, args=(model, dataset, 1e-3, 1, 32, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa
+    trained_model = xmp.spawn(train_encoder, args=(model, dataset, 1e-3, 10, 32, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa
     '''
     trained_model = train_encoder(
         model,
