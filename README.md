@@ -30,18 +30,18 @@ This repository contains the code and resources for the development of a mammogr
 ## File Structure
 
     DLMammoClassifier-Summer2023/
-    └── data/
-    └── docs/
+    └── data/                                       # Datasets
+    └── docs/                                       # Weekly documentations
         ├── week1.md
         └── ...
-    └── scratch/
-    └── train/
-        ├── Mammolibs/
+    └── scratch/                                    # Initial trials on google colab
+    └── train/                                      # Codes to build and train the model
+        ├── Mammolibs/                                  # Custom libraries used in this project
         |   ├── __init__.py
         │   ├── MMmodels.py
         │   ├── MMdataset.py
         |   └── MMutils.py
-        ├── unet/
+        ├── unet/                                       # U-Net for segmentation
         |   ├── encoder/
         |   |   ├── train_decoder.py
         |   |   ├── model_epoch_200.pth
@@ -49,12 +49,12 @@ This repository contains the code and resources for the development of a mammogr
         |   ├── autoencoder/
         |   |   └── ...
         |   └── finetune.py
-        ├── classifier/
+        ├── classifier/                                 # Resnet for local classification
         |   ├── resnet/
-        |   |   ├──train_decoder.py
+        |   |   ├── train_decoder.py
         |   |   ├── model_epoch_200.pth
         |   |   └── ...
         |   └── finetune.py
-        └── train.sh
+        └── train.sh                                    # Script to train all models
     └── README.md
     └── requirements.txt
