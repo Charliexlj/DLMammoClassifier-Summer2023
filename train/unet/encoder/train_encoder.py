@@ -110,7 +110,6 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
         train_loss = NT_Xent_loss(logits1, logits2)
         train_loss.backward()
         xm.optimizer_step(optimizer)
-        xm.mark_step()
 
         if epoch % 200 == 0:
             MMutils.save_model(model, save_path, epoch)

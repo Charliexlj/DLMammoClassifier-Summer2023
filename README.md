@@ -58,3 +58,7 @@ This repository contains the code and resources for the development of a mammogr
         └── train.sh                                    # Script to train all models
     └── README.md
     └── requirements.txt
+
+## Algorithms and Training Pipeline
+
+![Algorithms and Training Pipeline](./res/Algorithm.svg)
