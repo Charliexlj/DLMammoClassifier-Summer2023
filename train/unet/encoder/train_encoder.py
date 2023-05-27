@@ -8,7 +8,6 @@ import sys
 import time
 import rarfile
 import argparse
-import torch_xla
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
@@ -60,13 +59,6 @@ class Pretrain_Encoder(nn.Module):
         return x
 
 
-def mutations(image):
-    image1, image2 = T.RandomRotation(180)(image), T.RandomRotation(180)(image)
-    image1 = T.RandomAutocontrast()(image1)
-    image2 = T.RandomAutocontrast()(image2)
-    return image1, image2
-
-
 def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
                   batch_size=16, save_path='/home'):
 
@@ -116,13 +108,7 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
             if epoch % 1 == 0:
                 start = time.time()
             model.train()
-            images, _ = batch
-            # print(batch.size())
-            images = torch.from_numpy(np.array(images.cpu()))
-            print(images.size())
-            images1, images2 = mutations(images)
-            images1 = images1.to(device, dtype=torch.float32)
-            images2 = images2.to(device, dtype=torch.float32)
+            images1, images2 = batch
             logits1, logits2 = model(images1), model(images2)
 
             optimizer.zero_grad()
@@ -136,11 +122,7 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
             if epoch % 1 == 0:
                 model.eval()
                 with torch.no_grad():
-                    test_images, _ = batch
-                    test_images = torch.from_numpy(np.array(test_images.cpu()))
-                    test_images1, test_images2 = mutations(test_images)
-                    test_images1 = test_images1.to(device, dtype=torch.float32)
-                    test_images2 = test_images2.to(device, dtype=torch.float32)
+                    test_images1, test_images2 = batch
                     test_logits1 = model(test_images1)
                     test_logits2 = model(test_images2)
                     test_loss = NT_Xent_loss(test_logits1, test_logits2)

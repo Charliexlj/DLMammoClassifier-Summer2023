@@ -1,9 +1,10 @@
 import imageio
 from torch.utils.data import Dataset
+from torchvision.transforms import ToTensor
+import torchvision.transforms as T
 import numpy as np
 import os
 import cv2
-from sklearn.utils import shuffle
 
 
 def normalise_intensity(image, thres_roi=1.0):
@@ -18,12 +19,18 @@ def normalise_intensity(image, thres_roi=1.0):
     return image2
 
 
+def mutations(image):
+    image1, image2 = T.RandomRotation(180)(image), T.RandomRotation(180)(image)
+    image1 = T.RandomAutocontrast()(image1)
+    image2 = T.RandomAutocontrast()(image2)
+    return image1, image2
+
+
 class BreastImageSet(Dataset):
     """ Brain image set """
-    def __init__(self, image_paths, labels=[0, 1]):
+    def __init__(self, image_paths):
         self.image_paths = image_paths
         self.images = []
-        self.labels = []
 
         image_names_ = []
         for image_path in image_paths:
@@ -36,16 +43,11 @@ class BreastImageSet(Dataset):
                     image = imageio.imread(
                         os.path.join(image_paths[i], image_name))
                     self.images += [image]
-                    self.labels.append(labels[i])
-        self.images, self.labels = shuffle(
-            self.images, self.labels, random_state=101)
-        self.labels = np.eye(len(labels))[self.labels]
 
     def __len__(self):
         return len(self.images)
 
     def __getitem__(self, idx):
         image = normalise_intensity(self.images[idx])
-        label = self.labels[idx]
-        return image, label
-    
+        image = ToTensor()(image)
+        return mutations(image)
