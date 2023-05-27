@@ -12,8 +12,7 @@ import argparse
 parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(parent_dir)
 
-from Mammolibs import models as MMmodels # noqa
-from Mammolibs import dataset as MMdataset # noqa
+from Mammolibs import MMmodels, MMdataset, MMutils # noqa
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--ori', type=str, required=True)
@@ -67,7 +66,7 @@ def mutations(image):
 def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
                   batch_size=16, save_path='/home'):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    # print('Device: {0}'.format(device))
+    print('Training with Device: {0}...'.format(device))
     model.to(device)
 
     def NT_Xent_loss(a, b):
@@ -94,7 +93,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(1, num_epochs+1):
-        if epoch % 10 == 1:
+        if epoch % 50 == 1:
             start = time.time()
         model.train()
         images, _ = dataset.get_tr_random_batch(batch_size)
@@ -108,17 +107,11 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
         train_loss = NT_Xent_loss(logits1, logits2)
         train_loss.backward()
         optimizer.step()
-        end = time.time()
 
-        if epoch % 10 == 0:
-            save_path = os.path.join(file_path, 'model_epoch_{}.pth'.format(epoch)) # noqa
-            torch.save(model.state_dict(), save_path)
-            if os.path.exists(save_path):
-                print(f'model_epoch_{epoch}.pth saved successfully')
-            else:
-                print(f'Failed to save model_epoch_{epoch}.pth')
+        if epoch % 200 == 0:
+            MMutils.save_model(model, save_path, epoch)
 
-        if epoch % 10 == 0:
+        if epoch % 50 == 0:
             model.eval()
             with torch.no_grad():
                 test_images, _ = dataset.get_tr_random_batch(32)
@@ -129,7 +122,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
                 test_logits1 = model(test_images1)
                 test_logits2 = model(test_images2)
                 test_loss = NT_Xent_loss(test_logits1, test_logits2)
-                print("Iter:{:5d}  |  Tr_loss: {:.4f}  |  Val_loss: {:.4f}  |  Time per 10 iter: {:.4f}s".format(epoch, train_loss, test_loss, end-start)) # noqa
+                MMutils.print_iteration_stats(epoch, train_loss, test_loss, 50, time.time()-start) # noqa
     return model
 
 
@@ -143,19 +136,13 @@ if __name__ == '__main__':
     benign_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Benign Masses/' # noqa
     malignant_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Malignant Masses/' # noqa
 
-    image_paths = [benign_path, malignant_path]
-    dataset = MMdataset.BreastImageSet(image_paths)
-
-    file_path = os.path.dirname(os.path.realpath(__file__))
-
-    num_epochs = 10000
-    batch_size = 32
+    dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
     trained_model = train_encoder(
         model,
         dataset,
         lr=1e-3,
-        num_epochs=num_epochs,
-        batch_size=batch_size,
-        save_path=file_path
+        num_epochs=10000,
+        batch_size=32,
+        save_path=os.path.dirname(os.path.realpath(__file__))
         )
