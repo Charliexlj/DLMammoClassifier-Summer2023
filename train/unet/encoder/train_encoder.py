@@ -96,7 +96,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(1, num_epochs+1):
-        if epoch % 1 == 1:
+        if epoch % 1 == 0:
             start = time.time()
         model.train()
         images, _ = dataset.get_tr_random_batch(batch_size)
