@@ -40,15 +40,15 @@ class Pretrain_Encoder(nn.Module):
             in_channel=in_channel, base_channel=num_filter)
         self.fc1 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(32*32*512, 4096),
+            nn.Linear(16*16*512, 2048),
             nn.ReLU()
             )
         self.fc2 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(4096, 4096),
+            nn.Linear(2048, 2048),
             nn.ReLU()
             )
-        self.fc3 = nn.Linear(4096, out_vector)
+        self.fc3 = nn.Linear(2048, out_vector)
 
     def forward(self, x):
         x = self.encoder(x)
