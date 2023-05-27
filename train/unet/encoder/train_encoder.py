@@ -10,6 +10,7 @@ import rarfile
 import argparse
 import torch_xla
 import torch_xla.core.xla_model as xm
+import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
@@ -66,8 +67,22 @@ def mutations(image):
     return image1, image2
 
 
-def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
+def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
                   batch_size=16, save_path='/home'):
+
+    train_sampler = torch.utils.data.distributed.DistributedSampler(
+        dataset,
+        num_replicas=xm.xrt_world_size(),
+        rank=xm.get_ordinal(),
+        shuffle=True)
+
+    train_loader = torch.utils.data.DataLoader(
+        dataset,
+        batch_size=batch_size,
+        sampler=train_sampler,
+        num_workers=8,
+        drop_last=True)
+
     device = xm.xla_device()
     print('Training with Device: {0}...'.format(device))
     model.to(device)
@@ -96,36 +111,38 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(1, num_epochs+1):
-        if epoch % 1 == 0:
-            start = time.time()
-        model.train()
-        images, _ = dataset.get_tr_random_batch(batch_size)
-        images = torch.from_numpy(np.array(images))
-        images1, images2 = mutations(images)
-        images1 = images1.to(device, dtype=torch.float32)
-        images2 = images2.to(device, dtype=torch.float32)
-        logits1, logits2 = model(images1), model(images2)
+        para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+        for batch in para_train_loader:
+            if epoch % 1 == 0:
+                start = time.time()
+            model.train()
+            images, _ = batch
+            images = torch.from_numpy(np.array(images))
+            images1, images2 = mutations(images)
+            images1 = images1.to(device, dtype=torch.float32)
+            images2 = images2.to(device, dtype=torch.float32)
+            logits1, logits2 = model(images1), model(images2)
 
-        optimizer.zero_grad()
-        train_loss = NT_Xent_loss(logits1, logits2)
-        train_loss.backward()
-        xm.optimizer_step(optimizer)
+            optimizer.zero_grad()
+            train_loss = NT_Xent_loss(logits1, logits2)
+            train_loss.backward()
+            xm.optimizer_step(optimizer)
 
-        if epoch % 200 == 0:
-            MMutils.save_model(model, save_path, epoch)
+            if epoch % 200 == 0:
+                MMutils.save_model(model, save_path, epoch)
 
-        if epoch % 1 == 0:
-            model.eval()
-            with torch.no_grad():
-                test_images, _ = dataset.get_tr_random_batch(32)
-                test_images = torch.from_numpy(np.array(test_images))
-                test_images1, test_images2 = mutations(test_images)
-                test_images1 = test_images1.to(device, dtype=torch.float32)
-                test_images2 = test_images2.to(device, dtype=torch.float32)
-                test_logits1 = model(test_images1)
-                test_logits2 = model(test_images2)
-                test_loss = NT_Xent_loss(test_logits1, test_logits2)
-                MMutils.print_iteration_stats(epoch, train_loss, test_loss, 50, time.time()-start) # noqa
+            if epoch % 1 == 0:
+                model.eval()
+                with torch.no_grad():
+                    test_images, _ = batch
+                    test_images = torch.from_numpy(np.array(test_images))
+                    test_images1, test_images2 = mutations(test_images)
+                    test_images1 = test_images1.to(device, dtype=torch.float32)
+                    test_images2 = test_images2.to(device, dtype=torch.float32)
+                    test_logits1 = model(test_images1)
+                    test_logits2 = model(test_images2)
+                    test_loss = NT_Xent_loss(test_logits1, test_logits2)
+                    MMutils.print_iteration_stats(epoch, train_loss, test_loss, 1, time.time()-start) # noqa
     return model
 
 
@@ -141,6 +158,8 @@ if __name__ == '__main__':
 
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
+    trained_model = xmp.spawn(train_encoder, args=(model, dataset, 1e-3, 10000, 32, os.path.dirname(os.path.realpath(__file__))), nprocs=8, start_method='fork') # noqa
+    '''
     trained_model = train_encoder(
         model,
         dataset,
@@ -149,3 +168,4 @@ if __name__ == '__main__':
         batch_size=32,
         save_path=os.path.dirname(os.path.realpath(__file__))
         )
+    '''

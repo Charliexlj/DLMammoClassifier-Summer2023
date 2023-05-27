@@ -48,23 +48,4 @@ class BreastImageSet(Dataset):
         image = normalise_intensity(self.images[idx])
         label = self.labels[idx]
         return image, label
-
-    def get_tr_random_batch(self, batch_size):
-        images, labels = [], []
-        indices = np.random.choice(int(len(self)*0.8), batch_size)
-        for idx in indices:
-            image, label = self[idx]
-            image = np.expand_dims(image, axis=0)
-            images.append(image)
-            labels.append(label)
-        return images, labels
-
-    def get_val_random_batch(self, batch_size):
-        images, labels = [], []
-        indices = np.random.choice(int(len(self)*0.2), batch_size)
-        for idx in indices:
-            image, label = self[idx+int(len(self)*0.8)]
-            image = np.expand_dims(image, axis=0)
-            images.append(image)
-            labels.append(label)
-        return images, labels
+    
