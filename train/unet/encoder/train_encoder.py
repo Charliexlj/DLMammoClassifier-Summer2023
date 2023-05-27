@@ -105,8 +105,8 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
     for epoch in range(1, num_epochs+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         for batch in para_train_loader:
-            if epoch % 1 == 0:
-                start = time.time()
+            # if epoch % 1 == 0:
+            #     start = time.time()
             model.train()
             images1, images2 = batch
             logits1, logits2 = model(images1), model(images2)
@@ -115,11 +115,12 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
             train_loss = NT_Xent_loss(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
-            
+            print(f'epoch: {epoch}, train_loss{train_loss}')
+            '''
             model.eval()
             with torch.no_grad():
                 MMutils.print_iteration_stats(epoch, train_loss, train_loss, 1, time.time()-start) # noqa
-            '''
+
             if epoch % 200 == 0:
                 MMutils.save_model(model, save_path, epoch)
 
