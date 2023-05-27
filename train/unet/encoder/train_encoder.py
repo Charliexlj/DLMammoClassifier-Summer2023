@@ -117,7 +117,9 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
                 start = time.time()
             model.train()
             images, _ = batch
+            print(batch.size())
             images = torch.from_numpy(np.array(images.cpu()))
+            print(images.size())
             images1, images2 = mutations(images)
             images1 = images1.to(device, dtype=torch.float32)
             images2 = images2.to(device, dtype=torch.float32)
@@ -158,7 +160,7 @@ if __name__ == '__main__':
 
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
-    trained_model = xmp.spawn(train_encoder, args=(model, dataset, 1e-3, 10000, 32, os.path.dirname(os.path.realpath(__file__))), nprocs=8, start_method='fork') # noqa
+    trained_model = xmp.spawn(train_encoder, args=(model, dataset, 1e-3, 1, 32, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa
     '''
     trained_model = train_encoder(
         model,
