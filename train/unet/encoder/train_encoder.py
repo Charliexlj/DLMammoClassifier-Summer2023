@@ -59,7 +59,7 @@ class Pretrain_Encoder(nn.Module):
         return x
 
 
-def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
+def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
                   batch_size=16, save_path='/home'):
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
@@ -77,7 +77,7 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
 
     device = xm.xla_device()
     print('Training with Device: {0}...'.format(device))
-    model.to(device)
+    model = Pretrain_Encoder().to(device).train()
 
     def NT_Xent_loss(a, b):
         tau = 1
@@ -107,7 +107,6 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
         for batch in para_train_loader:
             # if epoch % 1 == 0:
             #     start = time.time()
-            model.train()
             images1, images2 = batch
             logits1, logits2 = model(images1), model(images2)
 
@@ -148,7 +147,7 @@ if __name__ == '__main__':
 
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
-    trained_model = xmp.spawn(train_encoder, args=(model, dataset, 1e-3, 10, 32, os.path.dirname(os.path.realpath(__file__))), start_method='fork', nprocs=8) # noqa
+    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 32, os.path.dirname(os.path.realpath(__file__))), start_method='fork', nprocs=8) # noqa
     '''
     trained_model = train_encoder(
         model,
