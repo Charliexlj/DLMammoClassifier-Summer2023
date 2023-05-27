@@ -148,7 +148,7 @@ if __name__ == '__main__':
 
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
-    trained_model = xmp.spawn(train_encoder, args=(model, dataset, 1e-3, 10, 32, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa
+    trained_model = xmp.spawn(train_encoder, args=(model, dataset, 1e-3, 10, 32, os.path.dirname(os.path.realpath(__file__))), start_method='fork', nprocs=8) # noqa
     '''
     trained_model = train_encoder(
         model,
