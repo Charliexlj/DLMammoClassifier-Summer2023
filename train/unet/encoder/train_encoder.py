@@ -96,7 +96,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(1, num_epochs+1):
-        if epoch % 50 == 1:
+        if epoch % 1 == 1:
             start = time.time()
         model.train()
         images, _ = dataset.get_tr_random_batch(batch_size)
@@ -114,7 +114,7 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
         if epoch % 200 == 0:
             MMutils.save_model(model, save_path, epoch)
 
-        if epoch % 50 == 0:
+        if epoch % 1 == 0:
             model.eval()
             with torch.no_grad():
                 test_images, _ = dataset.get_tr_random_batch(32)
