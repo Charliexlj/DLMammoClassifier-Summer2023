@@ -103,8 +103,11 @@ def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(1, num_epochs+1):
+        print(f'Enter Epoch {epoch}')
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+        print('Finish ParallelLoader...')
         for batch in para_train_loader:
+            print('Enter batch')
             # if epoch % 1 == 0:
             #     start = time.time()
             images1, images2 = batch
@@ -114,8 +117,8 @@ def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
             train_loss = NT_Xent_loss(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
-            print(f'epoch: {epoch}, train_loss{train_loss.cpu()}')
-            '''
+        print(f'epoch: {epoch}, train_loss{train_loss.cpu()}')
+        '''
             model.eval()
             with torch.no_grad():
                 MMutils.print_iteration_stats(epoch, train_loss, train_loss, 1, time.time()-start) # noqa
