@@ -27,6 +27,34 @@ This repository contains the code and resources for the development of a mammogr
 | [Embed](https://pubs.rsna.org/doi/10.1148/ryai.220047) | 340000 | :heavy_check_mark: | :x: |
 | [OMI-DB](https://www.cancerresearchhorizons.com/licensing-opportunities/optimam-mammography-image-database-omi-db) | 2620 | :heavy_check_mark: | :x: |
 
-## Model Architechure
+## File Structure
 
-...
+    DLMammoClassifier-Summer2023/
+    └── data/
+    └── docs/
+        ├── week1.md
+        └── ...
+    └── scratch/
+    └── train/
+        ├── Mammolibs/
+        |   ├── __init__.py
+        │   ├── MMmodels.py
+        │   ├── MMdataset.py
+        |   └── MMutils.py
+        ├── unet/
+        |   ├── encoder/
+        |   |   ├── train_decoder.py
+        |   |   ├── model_epoch_200.pth
+        |   |   └── ...
+        |   ├── autoencoder/
+        |   |   └── ...
+        |   └── finetune.py
+        ├── classifier/
+        |   ├── resnet/
+        |   |   ├──train_decoder.py
+        |   |   ├── model_epoch_200.pth
+        |   |   └── ...
+        |   └── finetune.py
+        └── train.sh
+    └── README.md
+    └── requirements.txt
