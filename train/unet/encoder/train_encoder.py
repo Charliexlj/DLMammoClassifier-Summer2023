@@ -117,7 +117,7 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
                 start = time.time()
             model.train()
             images, _ = batch
-            print(batch.size())
+            # print(batch.size())
             images = torch.from_numpy(np.array(images.cpu()))
             print(images.size())
             images1, images2 = mutations(images)
