@@ -8,6 +8,7 @@ import sys
 import time
 import rarfile
 import argparse
+import torch_xla_py.xla_model as xm
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(parent_dir)
@@ -65,7 +66,7 @@ def mutations(image):
 
 def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
                   batch_size=16, save_path='/home'):
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = device = xm.xla_device()
     print('Training with Device: {0}...'.format(device))
     model.to(device)
 
@@ -106,7 +107,8 @@ def train_encoder(model, dataset, lr=1e-3, num_epochs=1000,
         optimizer.zero_grad()
         train_loss = NT_Xent_loss(logits1, logits2)
         train_loss.backward()
-        optimizer.step()
+        xm.optimizer_step(optimizer)
+        xm.mark_step()
 
         if epoch % 200 == 0:
             MMutils.save_model(model, save_path, epoch)
