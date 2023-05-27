@@ -115,7 +115,7 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
             train_loss = NT_Xent_loss(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
-            print(f'epoch: {epoch}, train_loss{train_loss}')
+            print(f'epoch: {epoch}, train_loss{train_loss.cpu()}')
             '''
             model.eval()
             with torch.no_grad():
