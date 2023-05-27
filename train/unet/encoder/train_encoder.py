@@ -117,7 +117,7 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
                 start = time.time()
             model.train()
             images, _ = batch
-            images = torch.from_numpy(np.array(images))
+            images = torch.from_numpy(np.array(images.cpu()))
             images1, images2 = mutations(images)
             images1 = images1.to(device, dtype=torch.float32)
             images2 = images2.to(device, dtype=torch.float32)
@@ -135,7 +135,7 @@ def train_encoder(index, model, dataset, lr=1e-3, num_epochs=1000,
                 model.eval()
                 with torch.no_grad():
                     test_images, _ = batch
-                    test_images = torch.from_numpy(np.array(test_images))
+                    test_images = torch.from_numpy(np.array(test_images.cpu()))
                     test_images1, test_images2 = mutations(test_images)
                     test_images1 = test_images1.to(device, dtype=torch.float32)
                     test_images2 = test_images2.to(device, dtype=torch.float32)
