@@ -111,12 +111,17 @@ def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
             # if epoch % 1 == 0:
             #     start = time.time()
             images1, images2 = batch
+            print('Get image from batch')
             logits1, logits2 = model(images1), model(images2)
-
+            print('Get logits from image')
             optimizer.zero_grad()
+            print('Optimizer')
             train_loss = NT_Xent_loss(logits1, logits2)
+            print('Loss')
             train_loss.backward()
+            print('Backward')
             xm.optimizer_step(optimizer)
+            print('Step')
         print(f'epoch: {epoch}, train_loss{train_loss.cpu()}')
         '''
             model.eval()
