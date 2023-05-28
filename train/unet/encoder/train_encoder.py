@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
 
-    pretrained_weights = torch.load('path/to/pretrained_model.pth')
+    pretrained_weights = torch.load('./train/unet/encoder/model_epoch_200.pth')
     model.load_state_dict(pretrained_weights)
     print('Total trainable parameters = '
           f'{sum(p.numel() for p in model.parameters())}')
