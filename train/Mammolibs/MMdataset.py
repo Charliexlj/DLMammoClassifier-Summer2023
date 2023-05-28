@@ -64,6 +64,7 @@ class MMImageSet(Dataset):
         self.fs = gcsfs.GCSFileSystem()
         self.filenames = self.fs.ls(gcs_path)
         self.stage = stage
+        print(f'The dataset contain {len(self.filenames)} images...')
 
     def __len__(self):
         return len(self.images)

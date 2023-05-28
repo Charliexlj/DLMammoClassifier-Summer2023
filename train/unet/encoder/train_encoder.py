@@ -140,10 +140,14 @@ if __name__ == '__main__':
     # print(model)
     print('Total trainable parameters = '
           f'{sum(p.numel() for p in model.parameters())}')
-
+    '''
     benign_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Benign Masses/' # noqa
     malignant_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Malignant Masses/' # noqa
 
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
+    '''
+
+    gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
+    dataset = MMdataset.MMImageSet(gcs_path)
 
     trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa
