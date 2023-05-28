@@ -110,7 +110,7 @@ def train_encoder(index, dataset, lr=1e-3, niters=1000,
             train_loss = NT_Xent_loss(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
-            if batch_no % 20 == 0:
+            if batch_no == 10 or batch_no % 200 == 0:
                 print(f'p{index} has completed {batch_no} batches in {MMutils.convert_seconds_to_time(time.time()-start)}') # noqa
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
         index, epoch, train_loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
