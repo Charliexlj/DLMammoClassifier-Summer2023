@@ -101,7 +101,9 @@ def train_encoder(index, dataset, lr=1e-3, niters=1000,
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for it in range(1, niters+1):
+        print('Start of iter 1...')
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+        print('Finished para_train_loader...')
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
             if batch_no == 0:
@@ -152,4 +154,4 @@ if __name__ == '__main__':
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
 
-    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, current_dir), start_method='fork') # noqa
+    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, current_dir), start_method='forkserver') # noqa
