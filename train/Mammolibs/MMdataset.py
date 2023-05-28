@@ -70,6 +70,7 @@ class MMImageSet(Dataset):
         return len(self.filenames)
 
     def __getitem__(self, idx):
+        print('Enter get_item...')
         with self.fs.open(self.filenames[idx], 'rb') as f:
             image = imageio.imread(f)
             print('Got an image...')
