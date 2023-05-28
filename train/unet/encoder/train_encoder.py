@@ -57,7 +57,7 @@ class Pretrain_Encoder(nn.Module):
         return x
 
 
-def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
+def train_encoder(index, dataset, lr=1e-3, niters=1000,
                   batch_size=16, save_path='/home'):
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
@@ -100,20 +100,21 @@ def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
-    for epoch in range(1, num_epochs+1):
+    for it in range(1, niters+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
-        for batch in para_train_loader: # noqa
+        for batch_no, batch in enumerate(para_train_loader): # noqa
             images1, images2 = batch
             logits1, logits2 = model(images1), model(images2)
             optimizer.zero_grad()
             train_loss = NT_Xent_loss(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
+            if batch_no % 20 == 0:
+                print(f'p{index} has completed {batch_no} batches in {MMutils.convert_seconds_to_time(time.time()-start)}') # noqa
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
         index, epoch, train_loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
-        if epoch % 10 == 0:
-            MMutils.save_model(model.cpu(), save_path, epoch)
+        MMutils.save_model(model.cpu(), save_path, it)
         '''
             model.eval()
             with torch.no_grad():
@@ -137,15 +138,13 @@ def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
 if __name__ == '__main__':
     print('Training Encoder...')
     model = Pretrain_Encoder()
-    # print(model)
+
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+
+    pretrained_weights = torch.load('path/to/pretrained_model.pth')
+    model.load_state_dict(pretrained_weights)
     print('Total trainable parameters = '
           f'{sum(p.numel() for p in model.parameters())}')
-    '''
-    benign_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Benign Masses/' # noqa
-    malignant_path = '/home/DLMammoClassifier-Summer2023/Dataset of Mammography with Benign Malignant Breast Masses/INbreast+MIAS+DDSM Dataset/Malignant Masses/' # noqa
-
-    dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
-    '''
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)

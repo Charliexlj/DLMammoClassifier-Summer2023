@@ -62,3 +62,25 @@ This repository contains the code and resources for the development of a mammogr
 ## Algorithms and Training Pipeline
 
 ![Algorithms and Training Pipeline](./res/Algorithm.svg)
+
+## Progress
+
+- [x] Algorithms and Training Pipeline
+- [x] Model Architecture
+- [x] Data Unification
+- [x] Cloud Platform
+- [x] Upload Data to GCP Cloud Storage Buckets
+- [x] Algorithms Test with Local Sample Data
+- [x] Store Model Parameters
+- [x] TPU Singlecore Support
+- [x] TPU Multicore Support
+- [x] Train Model using Data in GCP Cloud Storage Buckets
+- [ ] Tramsfer Learning
+- [ ] Shell Scripts
+- [ ] Full Model Complete
+- [ ] Pretrain Encoder Complete
+- [ ] Pretrain Autoencoder Complete
+- [ ] Pretrain Classifier Complete
+- [ ] Finetune U-Net
+- [ ] Finetune Classifier
+- [ ] First Iteration of Complete Model
