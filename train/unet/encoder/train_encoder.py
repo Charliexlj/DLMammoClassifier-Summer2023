@@ -107,22 +107,15 @@ def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         print('Finish ParallelLoader...')
         for batch in para_train_loader:
-            print('Enter batch')
             # if epoch % 1 == 0:
             #     start = time.time()
             images1, images2 = batch
-            print('Get image from batch')
             logits1, logits2 = model(images1), model(images2)
-            print('Get logits from image')
             optimizer.zero_grad()
-            print('Optimizer')
             train_loss = NT_Xent_loss(logits1, logits2)
-            print('Loss')
             train_loss.backward()
-            print('Backward')
             xm.optimizer_step(optimizer)
-            print('Step')
-        print(f'epoch: {epoch}, train_loss{train_loss.cpu()}')
+        print(f'process {index}: epoch: {epoch}, train_loss{train_loss.cpu()}')
         '''
             model.eval()
             with torch.no_grad():
@@ -155,7 +148,7 @@ if __name__ == '__main__':
 
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
-    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 32, os.path.dirname(os.path.realpath(__file__))), start_method='fork', nprocs=8) # noqa
+    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, os.path.dirname(os.path.realpath(__file__))), start_method='fork', nprocs=8) # noqa
     '''
     trained_model = train_encoder(
         model,
