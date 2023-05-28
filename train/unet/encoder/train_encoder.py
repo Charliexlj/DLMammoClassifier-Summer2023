@@ -105,6 +105,7 @@ def train_encoder(index, dataset, lr=1e-3, niters=1000,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         print('Finished para_train_loader...')
         start = time.time()
+        loss = 100000
         for batch_no, batch in enumerate(para_train_loader): # noqa
             if batch_no == 0:
                 print('Start to train batch 1...')
@@ -114,10 +115,11 @@ def train_encoder(index, dataset, lr=1e-3, niters=1000,
             train_loss = NT_Xent_loss(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
+            loss = train_loss.cpu()
             if batch_no == 0 or batch_no == 9 or (batch_no+1) % 200 == 0:
                 print(f'p{index} has completed {batch_no} batches in {MMutils.convert_seconds_to_time(time.time()-start)}') # noqa
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-        index, it, train_loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+        index, it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
         MMutils.save_model(model.cpu(), save_path, it)
         '''
             model.eval()
