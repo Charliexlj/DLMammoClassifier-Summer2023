@@ -9,6 +9,7 @@ import argparse
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
+import tqdm
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(parent_dir)
@@ -103,7 +104,7 @@ def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
     for epoch in range(1, num_epochs+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
-        for batch in para_train_loader:
+        for batch in tqdm(para_train_loader, ascii=True, desc=f'process {index}'): # noqa
             images1, images2 = batch
             logits1, logits2 = model(images1), model(images2)
             optimizer.zero_grad()
