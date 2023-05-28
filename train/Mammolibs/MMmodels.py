@@ -16,26 +16,26 @@ def conv_block(in_channels, out_channels):
 class Mammo_Encoder(nn.Module):
     def __init__(self, in_channel=1, base_channel=32):
         super(Mammo_Encoder, self).__init__()
-        # 512*512*1
+        # 256*256*1
         n = base_channel
         self.conv1 = conv_block(1, n)
         self.pool1 = nn.MaxPool2d(kernel_size=2, stride=2)
-        # 256*256*32
+        # 128*128*32
         n = n*2
         self.conv2 = conv_block(n//2, n)
         self.pool2 = nn.MaxPool2d(kernel_size=2, stride=2)
-        # 128*128*64
+        # 64*64*64
         n = n*2
         self.conv3 = conv_block(n//2, n)
         self.pool3 = nn.MaxPool2d(kernel_size=2, stride=2)
-        # 64*64*128
+        # 32*32*128
         n = n*2
         self.conv4 = conv_block(n//2, n)
         self.pool4 = nn.MaxPool2d(kernel_size=2, stride=2)
-        # 32*32*256
+        # 16*16*256
         n = n*2
         self.conv5 = conv_block(n//2, n)
-        # 32*32*512
+        # 16*16*512
 
     def forward(self, x):
         x = self.conv1(x)
@@ -49,28 +49,28 @@ class Mammo_Encoder(nn.Module):
 class Mammo_Decoder(nn.Module):
     def __init__(self, in_channel=512, out_channel=2, mode="Autoencoder"):
         super(Mammo_Decoder, self).__init__()
-        # 32*32*512
+        # 16*16*512
         n = in_channel//2
         self.upconv4 = nn.ConvTranspose2d(n*2, n, kernel_size=2, stride=2)
-        # 32*32*256
+        # 16*16*256
         if mode == "Autoencoder": self.conv4 = conv_block(n, n) # noqa
         else: self.conv4 = conv_block(n*2, n) # noqa
-        # 64*64*128
+        # 32*32*128
         n = n//2
         self.upconv3 = nn.ConvTranspose2d(n*2, n, kernel_size=2, stride=2)
         if mode == "Autoencoder": self.conv3 = conv_block(n, n) # noqa
         else: self.conv3 = conv_block(n*2, n) # noqa
-        # 128*128*64
+        # 64*64*64
         n = n//2
         self.upconv2 = nn.ConvTranspose2d(n*2, n, kernel_size=2, stride=2)
         if mode == "Autoencoder": self.conv2 = conv_block(n, n) # noqa
         else: self.conv2 = conv_block(n*2, n) # noqa
-        # 256*256*32
+        # 128*128*32
         n = n//2
         self.upconv1 = nn.ConvTranspose2d(n*2, n, kernel_size=2, stride=2)
         if mode == "Autoencoder": self.conv1 = conv_block(n, out_channel) # noqa
         else: self.conv1 = conv_block(n*2, out_channel) # noqa
-        # 512*512*2
+        # 256*256*2
         self.conv = nn.Conv2d(in_channels=out_channel, out_channels=out_channel, kernel_size=1) # noqa
 
     def forward(self, x):

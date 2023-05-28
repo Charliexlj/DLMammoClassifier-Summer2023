@@ -4,8 +4,7 @@ import torch.optim as optim
 import os
 import sys
 import time
-import rarfile
-import argparse
+import argparse # noqa
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
@@ -14,21 +13,6 @@ parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(parent_dir)
 
 from Mammolibs import MMmodels, MMdataset, MMutils # noqa
-
-parser = argparse.ArgumentParser()
-parser.add_argument('--ori', type=str, required=True)
-parser.add_argument('--dest', type=str, required=True)
-args = parser.parse_args()
-
-# Specify the path to the RAR file and the destination directory
-rar_path = args.ori
-extract_dir = args.dest
-
-os.makedirs(extract_dir, exist_ok=True)
-
-# Open the RAR file and extract its contents to the destination directory
-with rarfile.RarFile(rar_path) as rf:
-    rf.extractall(extract_dir)
 
 
 class Pretrain_Encoder(nn.Module):
