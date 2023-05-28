@@ -58,6 +58,10 @@ class BreastImageSet(Dataset):
         return mutations(image)
 
 
+def rgb_to_grayscale(img):
+    return img.mean(dim=0, keepdim=True)
+
+
 class MMImageSet(Dataset):
     def __init__(self, gcs_path, stage='encoder'):
         super(MMImageSet, self).__init__()
@@ -73,5 +77,7 @@ class MMImageSet(Dataset):
     def __getitem__(self, idx):
         with self.fs.open(self.filenames[idx], 'rb') as f:
             image = imageio.imread(f)
+        if image.shape[0] == 3:
+            image = rgb_to_grayscale(image)
         image = ToTensor()(image)
         return mutations(image)
