@@ -77,6 +77,7 @@ class MMImageSet(Dataset):
     def __getitem__(self, idx):
         with self.fs.open(self.filenames[idx], 'rb') as f:
             image = imageio.imread(f)
+        print(image.shape())
         if image.shape[0] == 3:
             image = rgb_to_grayscale(image)
         image = ToTensor()(image)
