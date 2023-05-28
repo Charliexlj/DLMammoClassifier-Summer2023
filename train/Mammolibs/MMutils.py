@@ -18,13 +18,13 @@ def convert_seconds_to_time(seconds):
     return time_string
 
 
-def print_iteration_stats(epoch, train_loss, val_loss, n_iters, time_per_n_iters): # noqa
+def print_iteration_stats(iter, train_loss, val_loss, n_iters, time_per_n_iters): # noqa
     print("Iter:{:5d}  |  Tr_loss: {:.4f}  |  Val_loss: {:.4f}  |  Time per {} iter: {}".format( # noqa
-        epoch, train_loss, val_loss, n_iters, convert_seconds_to_time(time_per_n_iters))) # noqa
+        iter, train_loss, val_loss, n_iters, convert_seconds_to_time(time_per_n_iters))) # noqa
 
 
-def save_model(model, file_path, epoch):
-    save_path = os.path.join(file_path, 'model_epoch_{}.pth'.format(epoch)) # noqa
+def save_model(model, file_path, iter):
+    save_path = os.path.join(file_path, 'model_iter_{}.pth'.format(iter)) # noqa
     torch.save(model.state_dict(), save_path)
     if os.path.exists(save_path):
         print(f'{save_path} saved successfully')

@@ -117,7 +117,7 @@ def train_encoder(index, dataset, lr=1e-3, niters=1000,
             if batch_no == 0 or batch_no == 9 or (batch_no+1) % 200 == 0:
                 print(f'p{index} has completed {batch_no} batches in {MMutils.convert_seconds_to_time(time.time()-start)}') # noqa
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-        index, epoch, train_loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+        index, it, train_loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
         MMutils.save_model(model.cpu(), save_path, it)
         '''
             model.eval()
