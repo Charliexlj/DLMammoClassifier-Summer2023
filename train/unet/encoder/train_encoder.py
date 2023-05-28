@@ -40,15 +40,15 @@ class Pretrain_Encoder(nn.Module):
             in_channel=in_channel, base_channel=num_filter)
         self.fc1 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(32*32*512, 4096),
+            nn.Linear(32*32*512, 2048),
             nn.ReLU()
             )
         self.fc2 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(4096, 4096),
+            nn.Linear(2048, 2048),
             nn.ReLU()
             )
-        self.fc3 = nn.Linear(4096, out_vector)
+        self.fc3 = nn.Linear(2048, out_vector)
 
     def forward(self, x):
         x = self.encoder(x)
@@ -112,8 +112,8 @@ def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
             train_loss = NT_Xent_loss(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
-        print("Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-        epoch, train_loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+        print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
+        index, epoch, train_loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
         if epoch % 50 == 0:
             MMutils.save_model(model.cpu(), save_path, epoch)
         '''
@@ -148,14 +148,5 @@ if __name__ == '__main__':
 
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
-    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, os.path.dirname(os.path.realpath(__file__))), start_method='fork', nprocs=8) # noqa
-    '''
-    trained_model = train_encoder(
-        model,
-        dataset,
-        lr=1e-3,
-        num_epochs=10000,
-        batch_size=32,
-        save_path=os.path.dirname(os.path.realpath(__file__))
-        )
-    '''
+    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 64, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa
+
