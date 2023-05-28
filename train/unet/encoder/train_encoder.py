@@ -40,7 +40,7 @@ class Pretrain_Encoder(nn.Module):
             in_channel=in_channel, base_channel=num_filter)
         self.fc1 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(32*32*512, 2048),
+            nn.Linear(16*16*512, 2048),
             nn.ReLU()
             )
         self.fc2 = nn.Sequential(
@@ -149,4 +149,3 @@ if __name__ == '__main__':
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
     trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 64, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa
-
