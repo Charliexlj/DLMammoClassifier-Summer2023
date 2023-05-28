@@ -140,13 +140,14 @@ if __name__ == '__main__':
     model = Pretrain_Encoder()
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
-
+    '''
     pretrained_weights = torch.load('./train/unet/encoder/model_epoch_200.pth')
     model.load_state_dict(pretrained_weights)
+    '''
     print('Total trainable parameters = '
           f'{sum(p.numel() for p in model.parameters())}')
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
 
-    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa
+    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, current_dir), start_method='fork') # noqa
