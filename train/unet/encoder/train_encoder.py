@@ -141,5 +141,5 @@ if __name__ == '__main__':
     dataset = MMdataset.MMImageSet(gcs_path)
     try:
         trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, current_dir), start_method='fork') # noqa
-    except KeyboardInterrupt():
+    except KeyboardInterrupt:
         traceback.print_exc()
