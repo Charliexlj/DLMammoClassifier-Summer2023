@@ -72,5 +72,6 @@ class MMImageSet(Dataset):
     def __getitem__(self, idx):
         with self.fs.open(self.filenames[idx], 'rb') as f:
             image = imageio.imread(f)
+            print('Got an image...')
         image = ToTensor()(image)
         return mutations(image)
