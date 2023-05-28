@@ -61,22 +61,18 @@ class BreastImageSet(Dataset):
 class MMImageSet(Dataset):
     def __init__(self, gcs_path, stage='encoder'):
         super(MMImageSet, self).__init__()
-        # fs = gcsfs.GCSFileSystem()
-        # self.filenames = fs.ls(gcs_path)
-        self.filenames = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
-        # self.stage = stage
-        # print(f'The dataset contain {len(self.filenames)} images...')
-        # Finished init
+        fs = gcsfs.GCSFileSystem()
+        self.filenames = fs.ls(gcs_path)
+        print(self.filenames[:10])
+        self.stage = stage
+        print(f'The dataset contain {len(self.filenames)} images...')
 
     def __len__(self):
         return len(self.filenames)
 
     def __getitem__(self, idx):
-        print('Enter get_item...')
         fs = gcsfs.GCSFileSystem()
-        print('Finished fs...')
         with fs.open(self.filenames[idx], 'rb') as f:
             image = imageio.imread(f)
-            print('Got an image...')
         image = ToTensor()(image)
         return mutations(image)

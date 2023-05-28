@@ -101,9 +101,7 @@ def train_encoder(index, dataset, lr=1e-3, niters=1000,
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for it in range(1, niters+1):
-        print('Start of iter 1...')
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-        print('Finished para_train_loader...')
         start = time.time()
         loss = 100000
         for batch_no, batch in enumerate(para_train_loader): # noqa
@@ -120,8 +118,8 @@ def train_encoder(index, dataset, lr=1e-3, niters=1000,
                 print(f'p{index} has completed {batch_no} batches in {MMutils.convert_seconds_to_time(time.time()-start)}') # noqa
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
         index, it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
-        MMutils.save_model(model.cpu(), save_path, it)
-        '''
+    MMutils.save_model(model.cpu(), save_path, niters)
+    '''
             model.eval()
             with torch.no_grad():
                 MMutils.print_iteration_stats(epoch, train_loss, train_loss, 1, time.time()-start) # noqa
