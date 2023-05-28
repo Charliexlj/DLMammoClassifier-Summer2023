@@ -89,6 +89,7 @@ def train_encoder(index, dataset, lr=1e-3, niters=1000,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
         loss = 100000
+        print(len(para_train_loader))
         for batch_no, batch in enumerate(para_train_loader): # noqa
             print("Batch number:", batch_no)
             print("Batch contents:", batch)
