@@ -63,7 +63,7 @@ class MMImageSet(Dataset):
         super(MMImageSet, self).__init__()
         # fs = gcsfs.GCSFileSystem()
         # self.filenames = fs.ls(gcs_path)
-        self.filenames = ['a', 'b', 'c']
+        self.filenames = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
         # self.stage = stage
         # print(f'The dataset contain {len(self.filenames)} images...')
         # Finished init
