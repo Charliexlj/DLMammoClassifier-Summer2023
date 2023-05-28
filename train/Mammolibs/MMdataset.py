@@ -67,7 +67,7 @@ class MMImageSet(Dataset):
         print(f'The dataset contain {len(self.filenames)} images...')
 
     def __len__(self):
-        return len(self.images)
+        return len(self.filenames)
 
     def __getitem__(self, idx):
         with self.fs.open(self.filenames[idx], 'rb') as f:
