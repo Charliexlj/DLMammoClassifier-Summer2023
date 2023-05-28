@@ -8,6 +8,7 @@ import argparse # noqa
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
+import traceback
 
 parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 sys.path.append(parent_dir)
@@ -137,5 +138,7 @@ if __name__ == '__main__':
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
-
-    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, current_dir), start_method='fork') # noqa
+    try:
+        trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, current_dir), start_method='fork') # noqa
+    except KeyboardInterrupt:
+        traceback.print_exc()
