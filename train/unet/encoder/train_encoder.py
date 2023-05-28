@@ -91,8 +91,8 @@ def train_encoder(index, dataset, lr=1e-3, niters=1000,
         loss = 100000
         print(len(para_train_loader))
         for batch_no, batch in enumerate(para_train_loader): # noqa
-            print("Batch number:", batch_no)
-            print("Batch contents:", batch)
+            if batch_no == 0:
+                print('Finally enter batch...')
             images1, images2 = batch
             logits1, logits2 = model(images1), model(images2)
             optimizer.zero_grad()
@@ -140,6 +140,6 @@ if __name__ == '__main__':
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
     try:
-        trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 32, current_dir), start_method='forkserver') # noqa
+        trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 64, current_dir), start_method='forkserver') # noqa
     except KeyboardInterrupt:
         traceback.print_exc()
