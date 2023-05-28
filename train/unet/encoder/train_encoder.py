@@ -40,15 +40,15 @@ class Pretrain_Encoder(nn.Module):
             in_channel=in_channel, base_channel=num_filter)
         self.fc1 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(16*16*512, 2048),
+            nn.Linear(32*32*512, 4096),
             nn.ReLU()
             )
         self.fc2 = nn.Sequential(
             nn.Dropout(0.5),
-            nn.Linear(2048, 2048),
+            nn.Linear(4096, 4096),
             nn.ReLU()
             )
-        self.fc3 = nn.Linear(2048, out_vector)
+        self.fc3 = nn.Linear(4096, out_vector)
 
     def forward(self, x):
         x = self.encoder(x)
@@ -103,19 +103,19 @@ def train_encoder(index, dataset, lr=1e-3, num_epochs=1000,
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     for epoch in range(1, num_epochs+1):
-        print(f'Enter Epoch {epoch}')
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-        print('Finish ParallelLoader...')
+        start = time.time()
         for batch in para_train_loader:
-            # if epoch % 1 == 0:
-            #     start = time.time()
             images1, images2 = batch
             logits1, logits2 = model(images1), model(images2)
             optimizer.zero_grad()
             train_loss = NT_Xent_loss(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
-        print(f'process {index}: epoch: {epoch}, train_loss{train_loss.cpu()}')
+        print("Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
+        epoch, train_loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+        if epoch % 50 == 0:
+            MMutils.save_model(model.cpu(), save_path, epoch)
         '''
             model.eval()
             with torch.no_grad():

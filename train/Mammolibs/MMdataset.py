@@ -10,7 +10,7 @@ import cv2
 def normalise_intensity(image, thres_roi=1.0):
     """ Normalise the image intensity by the mean and standard deviation """
     # ROI defines the image foreground
-    image = cv2.resize(image, (256, 256))
+    image = cv2.resize(image, (512, 512))
     val_l = np.percentile(image, thres_roi)
     roi = (image >= val_l)
     mu, sigma = np.mean(image[roi]), np.std(image[roi])
