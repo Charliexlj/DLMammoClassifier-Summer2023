@@ -1,8 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torchvision.transforms as T
-import numpy as np
 import os
 import sys
 import time
@@ -148,4 +146,4 @@ if __name__ == '__main__':
 
     dataset = MMdataset.BreastImageSet([benign_path, malignant_path])
 
-    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 64, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa
+    trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 128, os.path.dirname(os.path.realpath(__file__))), start_method='fork') # noqa

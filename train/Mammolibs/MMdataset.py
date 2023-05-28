@@ -1,6 +1,7 @@
 import imageio
 from torch.utils.data import Dataset
 from torchvision.transforms import ToTensor
+import gcsfs
 import torchvision.transforms as T
 import numpy as np
 import os
@@ -17,6 +18,10 @@ def normalise_intensity(image, thres_roi=1.0):
     eps = 1e-6
     image2 = (image - mu) / (sigma + eps)
     return image2
+
+
+def resize_256(image):
+    return cv2.resize(image, (256, 256))
 
 
 def mutations(image):
@@ -49,5 +54,22 @@ class BreastImageSet(Dataset):
 
     def __getitem__(self, idx):
         image = normalise_intensity(self.images[idx])
+        image = ToTensor()(image)
+        return mutations(image)
+
+
+class MMImageSet(Dataset):
+    def __init__(self, gcs_path, stage='encoder'):
+        super(MMImageSet, self).__init__()
+        self.fs = gcsfs.GCSFileSystem()
+        self.filenames = self.fs.ls(gcs_path)
+        self.stage = stage
+
+    def __len__(self):
+        return len(self.images)
+
+    def __getitem__(self, idx):
+        with self.fs.open(self.filenames[idx], 'rb') as f:
+            image = imageio.imread(f)
         image = ToTensor()(image)
         return mutations(image)
