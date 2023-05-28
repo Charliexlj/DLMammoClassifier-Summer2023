@@ -140,6 +140,6 @@ if __name__ == '__main__':
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
     try:
-        trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 64, current_dir), start_method='forkserver') # noqa
+        trained_model = xmp.spawn(train_encoder, args=(dataset, 1e-3, 10, 32, current_dir), start_method='forkserver') # noqa
     except KeyboardInterrupt:
         traceback.print_exc()
