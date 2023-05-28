@@ -61,10 +61,12 @@ class BreastImageSet(Dataset):
 class MMImageSet(Dataset):
     def __init__(self, gcs_path, stage='encoder'):
         super(MMImageSet, self).__init__()
-        fs = gcsfs.GCSFileSystem()
-        self.filenames = fs.ls(gcs_path)
-        self.stage = stage
-        print(f'The dataset contain {len(self.filenames)} images...')
+        # fs = gcsfs.GCSFileSystem()
+        # self.filenames = fs.ls(gcs_path)
+        self.filenames = ['a', 'b', 'c']
+        # self.stage = stage
+        # print(f'The dataset contain {len(self.filenames)} images...')
+        # Finished init
 
     def __len__(self):
         return len(self.filenames)
