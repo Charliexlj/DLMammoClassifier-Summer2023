@@ -99,7 +99,7 @@ This repository contains the code and resources for the development of a mammogr
 - [x] TPU Singlecore Support
 - [x] TPU Multicore Support
 - [x] Train Model using Data in GCP Cloud Storage Buckets
-- [ ] Tramsfer Learning
+- [x] Tramsfer Learning
 - [ ] Shell Scripts
 - [ ] Full Model Complete
 - [ ] Pretrain Encoder Complete
