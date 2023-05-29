@@ -76,7 +76,7 @@ if __name__ == '__main__':
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
-    dataset = MMdataset.MMImageSet(gcs_path)
+    dataset = MMdataset.MMImageSet(gcs_path, stage='autoencoder')
 
     n_iter = 20
     if args.it:

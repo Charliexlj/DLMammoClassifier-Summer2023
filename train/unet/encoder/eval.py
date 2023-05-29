@@ -24,7 +24,7 @@ def eval(model):
 
 
 if __name__ == '__main__':
-    print('Training Encoder...')
+    print('Testing Encoder...')
     model = MMmodels.Pretrain_Encoder()
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
