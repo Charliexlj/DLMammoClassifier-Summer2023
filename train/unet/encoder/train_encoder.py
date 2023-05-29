@@ -52,8 +52,6 @@ def train_encoder(index, mmd, dataset, lr=1e-3, pre_iter=0, niters=100,
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
         index, it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
-    MMutils.save_model(model.cpu(), save_path, niters)
-
     return model
 
 
@@ -95,3 +93,5 @@ if __name__ == '__main__':
         128,            # batch_size
         current_dir     # saving_dir
         ), start_method='forkserver')
+
+    MMutils.save_model(model.cpu(), current_dir, n_iter)
