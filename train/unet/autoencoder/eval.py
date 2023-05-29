@@ -18,7 +18,7 @@ def eval(model):
         test_dataloader = DataLoader(dataset, batch_size=128, shuffle=True)
         images = next(iter(test_dataloader))
         logits = model(images)
-        test_loss = nn.MSELOSS(logits, images)
+        test_loss = nn.MSELoss(logits, images)
 
         print('------------------------')
         print('Test Loss: ', test_loss.item())
