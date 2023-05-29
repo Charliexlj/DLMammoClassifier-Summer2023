@@ -61,7 +61,7 @@ This repository contains the code and resources for the development of a mammogr
 
 ## Algorithms and Training Pipeline
 
-![Algorithms and Training Pipeline](./res/Algorithm.svg)
+![Algorithms and Training Pipeline](./res/Algorithm.png)
 
 ## User Menu
 
