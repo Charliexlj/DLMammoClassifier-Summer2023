@@ -56,8 +56,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=100,
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
         index, it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
-    # MMutils.save_model(model, current_dir, n_iter)
-    return model
+    MMutils.save_model(model, current_dir, n_iter)
 
 
 if __name__ == '__main__':
@@ -84,7 +83,7 @@ if __name__ == '__main__':
     if args.lr:
         lr = args.lr
 
-    trained_model = xmp.spawn(train_encoder, args=(
+    xmp.spawn(train_encoder, args=(
         state_dict,     # model
         dataset,        # dataset
         lr,             # lr
@@ -93,5 +92,3 @@ if __name__ == '__main__':
         128,            # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
-
-    MMutils.save_model(trained_model.cpu(), current_dir, n_iter)
