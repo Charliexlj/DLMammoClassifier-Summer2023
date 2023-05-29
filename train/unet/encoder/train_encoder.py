@@ -12,8 +12,8 @@ from Mammolibs import MMmodels, MMdataset, MMutils
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pretrain', type=str, required=True)
-parser.add_argument('--niters', type=int, required=False)
-parser.add_argument('--lr', type=int, required=False)
+parser.add_argument('--it', type=int, required=False)
+parser.add_argument('--lr', type=float, required=False)
 args = parser.parse_args()
 
 
@@ -79,8 +79,8 @@ if __name__ == '__main__':
     dataset = MMdataset.MMImageSet(gcs_path)
 
     n_iter = 20
-    if args.niters:
-        n_iter = args.niters
+    if args.it:
+        n_iter = args.it
 
     lr = 1e-3
     if args.lr:
