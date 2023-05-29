@@ -13,7 +13,6 @@ from Mammolibs import MMmodels, MMdataset, MMutils
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pretrain', type=str, required=True)
-parser.add_argument('--preiter', type=str, required=False)
 parser.add_argument('--encoder', type=str, required=False)
 parser.add_argument('--it', type=int, required=False)
 parser.add_argument('--lr', type=float, required=False)
@@ -60,7 +59,7 @@ def train_autoencoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10
         index, it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
     if index == 0:
-        MMutils.save_model(model.cpu(), save_path, niters)
+        MMutils.save_model(model.cpu(), save_path, niters+pre_iter)
 
 
 if __name__ == '__main__':
@@ -71,7 +70,6 @@ if __name__ == '__main__':
     if args.pretrain == 'no':
         pre_iter = int(args.encoder)
         state_dict = torch.load(f'{current_dir}/../encoder/model_iter_{pre_iter}.pth') # noqa
-        state_dict = {k: v for k, v in state_dict.items() if 'encoder' in k} # noqa
     else:
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
