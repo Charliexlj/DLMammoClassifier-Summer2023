@@ -12,6 +12,7 @@ from Mammolibs import MMmodels, MMdataset, MMutils
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pretrain', type=str, required=True)
+parser.add_argument('--niters', type=int, required=False)
 args = parser.parse_args()
 
 
@@ -76,12 +77,16 @@ if __name__ == '__main__':
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
 
+    n_iter = 20
+    if args.niters:
+        n_iter = args.niters
+
     trained_model = xmp.spawn(train_encoder, args=(
         model,          # model
         dataset,        # dataset
         1e-3,           # lr
         pre_iter,       # pre_iter
-        200,              # niters
-        128,             # batch_size
+        n_iter,         # niters
+        128,            # batch_size
         current_dir     # saving_dir
         ), start_method='forkserver')
