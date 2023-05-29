@@ -65,6 +65,7 @@ def train_autoencoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10
 if __name__ == '__main__':
     print('Training Autoencoder...')
     model = MMmodels.Autoencoder()
+    print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters() if p.requires_grad)}') # noqa
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
     if args.pretrain == 'no':
