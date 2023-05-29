@@ -17,7 +17,7 @@ parser.add_argument('--lr', type=float, required=False)
 args = parser.parse_args()
 
 
-def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=100,
+def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                   batch_size=16, current_dir='/home'):
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
