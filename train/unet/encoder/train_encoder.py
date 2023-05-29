@@ -38,7 +38,6 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=100,
     model = MMmodels.Pretrain_Encoder()
     if state_dict:
         model.load_state_dict(state_dict)
-        print(f'Now start to train from iter {pre_iter}...')
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -71,6 +70,7 @@ if __name__ == '__main__':
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
+        print(f'Now start to train from iter {pre_iter}...')
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
@@ -92,4 +92,4 @@ if __name__ == '__main__':
         128,            # batch_size
         ), start_method='forkserver')
 
-    MMutils.save_model(trained_model.cpu(), current_dir, n_iter)
+    MMutils.save_model(trained_model, current_dir, n_iter)
