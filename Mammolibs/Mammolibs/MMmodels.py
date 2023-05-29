@@ -83,10 +83,10 @@ class Decoder(nn.Module):
 
 
 class Autoencoder(nn.Module):
-    def __init__(self, in_channel=1, out_channel=2, num_filter=32):
+    def __init__(self, in_channel=1, out_channel=1, num_filter=32):
         super(Autoencoder, self).__init__()
-        self.encoder = Encoder(in_channel=in_channel, base_channel=32)
-        self.decoder = Decoder(out_channel=2, mode="Autoencoder")
+        self.encoder = Encoder(in_channel=in_channel, base_channel=num_filter)
+        self.decoder = Decoder(out_channel=out_channel, mode="Autoencoder")
 
     def forward(self, x):
         x = self.encoder(x)
