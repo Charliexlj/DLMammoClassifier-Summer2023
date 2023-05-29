@@ -72,18 +72,18 @@ This repository contains the code and resources for the development of a mammogr
 
 	- Start from scratch: `sudo PJRT_DEVICE=TPU python3 train/unet/encoder/train_encoder.py --pretrain no 2>&1 | grep -v "^tcmalloc"`
 	- Start from saved state_dict: `sudo PJRT_DEVICE=TPU python3 train/unet/encoder/train_encoder.py --pretrain 20 2>&1 | grep -v "^tcmalloc"`
-    > Args
-        - `--pretrain: no / number of iterations of saved state_dict`
-        - `--lr(optional) learning rate`
-        - `--it(optional) how many iterations you want to train further`
+    > Args\
+        `--pretrain: no / number of iterations of saved state_dict`\
+        `--lr(optional) learning rate`\
+        `--it(optional) how many iterations you want to train further`
 3. Pre-train Autoencoder
 	- Start from pre-trained decoder: `sudo PJRT_DEVICE=TPU python3 train/unet/autoencoder/train_autoencoder.py --pretrain no --encoder 20 2>&1 | grep -v "^tcmalloc"`
 	- Start from saved state_dict: `sudo PJRT_DEVICE=TPU python3 train/unet/autoencoder/train_autoencoder.py --pretrain 10 2>&1 | grep -v "^tcmalloc"`
-    > Args
-        - `--pretrain: no / number of iterations of saved state_dict`
-        - `--encoder(optional) if no start from scratch, load encoder state_dict`
-        - `--lr(optional) learning rate`
-        - `--it(optional) how many iterations you want to train further`
+    > Args\
+        `--pretrain: no / number of iterations of saved state_dict`\
+        `--encoder(optional) if no start from scratch, load encoder state_dict`\
+        `--lr(optional) learning rate`\
+        `--it(optional) how many iterations you want to train further`
 
 
 
