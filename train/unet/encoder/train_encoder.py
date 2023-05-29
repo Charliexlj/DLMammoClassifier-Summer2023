@@ -62,7 +62,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
 if __name__ == '__main__':
     print('Training Encoder...')
-    model = MMmodels.Encoder()
+    model = MMmodels.Pretrain_Encoder()
     print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters() if p.requires_grad)}') # noqa
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -75,7 +75,7 @@ if __name__ == '__main__':
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
         print(f'Now start to train from iter {pre_iter}...')
 
-    gcs_path = 'gs://unlabelled-dataset/BreastMammography/'
+    gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
 
     n_iter = 20
