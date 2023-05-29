@@ -17,8 +17,8 @@ parser.add_argument('--lr', type=float, required=False)
 args = parser.parse_args()
 
 
-def train_encoder(index, mmd, dataset, lr=1e-3, pre_iter=0, niters=100,
-                  batch_size=16, save_path='/home'):
+def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=100,
+                  batch_size=16):
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
         dataset,
@@ -34,7 +34,12 @@ def train_encoder(index, mmd, dataset, lr=1e-3, pre_iter=0, niters=100,
         drop_last=True)
 
     device = xm.xla_device()
-    model = MMmodels.Pretrain_Encoder().to(device).train()
+
+    model = MMmodels.Pretrain_Encoder()
+    if state_dict:
+        model.load_state_dict(state_dict)
+        print(f'Now start to train from iter {pre_iter}...')
+    model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
     loss = 100
@@ -57,21 +62,15 @@ def train_encoder(index, mmd, dataset, lr=1e-3, pre_iter=0, niters=100,
 
 if __name__ == '__main__':
     print('Training Encoder...')
-    model = MMmodels.Pretrain_Encoder()
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
 
     pre_iter = 0
-    if args.pretrain == 'no':
-        pass
-    else:
+    state_dict = None
+    if args.pretrain != 'no':
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
-        model.load_state_dict(state_dict)
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
-
-    print('Total trainable parameters = '
-          f'{sum(p.numel() for p in model.parameters())}')
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
@@ -80,18 +79,17 @@ if __name__ == '__main__':
     if args.it:
         n_iter = args.it
 
-    lr = 1e-3
+    lr = 3e-3
     if args.lr:
         lr = args.lr
 
     trained_model = xmp.spawn(train_encoder, args=(
-        model,          # model
+        state_dict,     # model
         dataset,        # dataset
         lr,             # lr
         pre_iter,       # pre_iter
         n_iter,         # niters
         128,            # batch_size
-        current_dir     # saving_dir
         ), start_method='forkserver')
 
-    MMutils.save_model(model.cpu(), current_dir, n_iter)
+    MMutils.save_model(trained_model.cpu(), current_dir, n_iter)
