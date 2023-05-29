@@ -129,7 +129,7 @@ if __name__ == '__main__':
         dataset,        # dataset
         1e-3,           # lr
         pre_iter,       # pre_iter
-        2,              # niters
-        64,             # batch_size
+        200,              # niters
+        128,             # batch_size
         current_dir     # saving_dir
         ), start_method='forkserver')
