@@ -59,7 +59,8 @@ def train_encoder(index, mmd, dataset, lr=1e-3, pre_iter=0, niters=100,
         drop_last=True)
 
     device = xm.xla_device()
-    model = mmd.to(device).train()
+    model = mmd
+    model = model.to(device).train()
 
     def NT_Xent_loss(a, b):
         tau = 1
