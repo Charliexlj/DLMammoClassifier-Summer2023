@@ -9,3 +9,4 @@ argparse
 gcsfs
 cloud-tpu-client
 opencv-python
+./Mammolibs

@@ -13,9 +13,9 @@ def conv_block(in_channels, out_channels):
     )
 
 
-class Mammo_Encoder(nn.Module):
+class Encoder(nn.Module):
     def __init__(self, in_channel=1, base_channel=32):
-        super(Mammo_Encoder, self).__init__()
+        super(Encoder, self).__init__()
         # 256*256*1
         n = base_channel
         self.conv1 = conv_block(1, n)
@@ -46,9 +46,9 @@ class Mammo_Encoder(nn.Module):
         return x
 
 
-class Mammo_Decoder(nn.Module):
+class Decoder(nn.Module):
     def __init__(self, in_channel=512, out_channel=2, mode="Autoencoder"):
-        super(Mammo_Decoder, self).__init__()
+        super(Decoder, self).__init__()
         # 16*16*512
         n = in_channel//2
         self.upconv4 = nn.ConvTranspose2d(n*2, n, kernel_size=2, stride=2)
@@ -82,11 +82,11 @@ class Mammo_Decoder(nn.Module):
         return x
 
 
-class Mammo_Autoencoder(nn.Module):
+class Autoencoder(nn.Module):
     def __init__(self, in_channel=1, out_channel=2, num_filter=32):
-        super(Mammo_Autoencoder, self).__init__()
-        self.encoder = Mammo_Encoder(in_channel=in_channel, base_channel=32)
-        self.decoder = Mammo_Decoder(out_channel=2, mode="Autoencoder")
+        super(Autoencoder, self).__init__()
+        self.encoder = Encoder(in_channel=in_channel, base_channel=32)
+        self.decoder = Decoder(out_channel=2, mode="Autoencoder")
 
     def forward(self, x):
         x = self.encoder(x)
@@ -94,11 +94,11 @@ class Mammo_Autoencoder(nn.Module):
         return torch.sigmoid(x)
 
 
-class Mammo_UNet(nn.Module):
+class UNet(nn.Module):
     def __init__(self, in_channel=1, out_channel=2, num_filter=32):
-        super(Mammo_UNet, self).__init__()
-        self.encoder = Mammo_Encoder(in_channel=in_channel, n=32)
-        self.decoder = Mammo_Decoder(in_channel=512, out_channel=out_channel, mode="UNet") # noqa
+        super(UNet, self).__init__()
+        self.encoder = Encoder(in_channel=in_channel, n=32)
+        self.decoder = Decoder(in_channel=512, out_channel=out_channel, mode="UNet") # noqa
 
     def forward(self, x):
         enc1 = self.encoder.conv1(x)

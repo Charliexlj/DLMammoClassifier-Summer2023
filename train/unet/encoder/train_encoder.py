@@ -1,19 +1,15 @@
+import os
+import time
+import argparse
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import os
-import sys
-import time
-import argparse # noqa
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
-import traceback
 
-parent_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-sys.path.append(parent_dir)
-
-from Mammolibs import MMmodels, MMdataset, MMutils # noqa
+from Mammolibs import MMmodels, MMdataset, MMutils
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--pretrain', type=str, required=True)
@@ -23,7 +19,7 @@ args = parser.parse_args()
 class Pretrain_Encoder(nn.Module):
     def __init__(self, in_channel=1, out_vector=1024, num_filter=32):
         super(Pretrain_Encoder, self).__init__()
-        self.encoder = MMmodels.Mammo_Encoder(
+        self.encoder = MMmodels.Encoder(
             in_channel=in_channel, base_channel=num_filter)
         self.fc1 = nn.Sequential(
             nn.Dropout(0.5),
@@ -46,7 +42,7 @@ class Pretrain_Encoder(nn.Module):
         return x
 
 
-def train_encoder(index, dataset, lr=1e-3, pre_iter=0, niters=100,
+def train_encoder(index, model, dataset, lr=1e-3, pre_iter=0, niters=100,
                   batch_size=16, save_path='/home'):
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
@@ -63,8 +59,7 @@ def train_encoder(index, dataset, lr=1e-3, pre_iter=0, niters=100,
         drop_last=True)
 
     device = xm.xla_device()
-    print('Training with Device: {0}...'.format(device))
-    model = Pretrain_Encoder().to(device).train()
+    model = model.to(device).train()
 
     def NT_Xent_loss(a, b):
         tau = 1
@@ -88,12 +83,10 @@ def train_encoder(index, dataset, lr=1e-3, pre_iter=0, niters=100,
         return torch.mean(neglog_num_by_den)
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
-
+    loss = 100
     for it in range(pre_iter+1, pre_iter+niters+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
-        loss = 100000
-        print(len(para_train_loader))
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images1, images2 = batch
             logits1, logits2 = model(images1), model(images2)
@@ -104,24 +97,9 @@ def train_encoder(index, dataset, lr=1e-3, pre_iter=0, niters=100,
             loss = train_loss.cpu()
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
         index, it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+
     MMutils.save_model(model.cpu(), save_path, niters)
-    '''
-            model.eval()
-            with torch.no_grad():
-                MMutils.print_iteration_stats(epoch, train_loss, train_loss, 1, time.time()-start) # noqa
 
-            if epoch % 200 == 0:
-                MMutils.save_model(model, save_path, epoch)
-
-            if epoch % 1 == 0:
-                model.eval()
-                with torch.no_grad():
-                    test_images1, test_images2 = batch
-                    test_logits1 = model(test_images1)
-                    test_logits2 = model(test_images2)
-                    test_loss = NT_Xent_loss(test_logits1, test_logits2)
-                    MMutils.print_iteration_stats(epoch, train_loss, test_loss, 1, time.time()-start) # noqa
-            '''
     return model
 
 
@@ -134,22 +112,22 @@ if __name__ == '__main__':
         pass
     else:
         pre_iter = int(args.pretrain)
-        pretrained_weights = torch.load(f'./train/unet/encoder/model_iter_{pre_iter}.pth') # noqa
-        model.load_state_dict(pretrained_weights)
+        state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
+        model.load_state_dict(state_dict)
+        print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
 
     print('Total trainable parameters = '
           f'{sum(p.numel() for p in model.parameters())}')
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path)
-    try:
-        trained_model = xmp.spawn(train_encoder, args=(
-            dataset,        # dataset
-            1e-3,           # lr
-            pre_iter,       # pre_iter
-            50,             # niters
-            64,             # batch_size
-            current_dir     # saving_dir
-            ), start_method='forkserver')
-    except KeyboardInterrupt:
-        traceback.print_exc()
+
+    trained_model = xmp.spawn(train_encoder, args=(
+        model,          # model
+        dataset,        # dataset
+        1e-3,           # lr
+        pre_iter,       # pre_iter
+        2,              # niters
+        64,             # batch_size
+        current_dir     # saving_dir
+        ), start_method='forkserver')
