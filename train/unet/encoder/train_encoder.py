@@ -94,4 +94,4 @@ if __name__ == '__main__':
         current_dir     # current_dir
         ), start_method='forkserver')
 
-    MMutils.save_model(trained_model, current_dir, n_iter)
+    MMutils.save_model(trained_model.cpu(), current_dir, n_iter)
