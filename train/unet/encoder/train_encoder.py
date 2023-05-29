@@ -18,7 +18,7 @@ args = parser.parse_args()
 
 
 def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=100,
-                  batch_size=16):
+                  batch_size=16, current_dir='/home'):
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
         dataset,
@@ -56,7 +56,8 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=100,
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
         index, it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
-    MMutils.save_model(model, current_dir, n_iter)
+    # MMutils.save_model(model, current_dir, n_iter)
+    return model
 
 
 if __name__ == '__main__':
@@ -83,11 +84,14 @@ if __name__ == '__main__':
     if args.lr:
         lr = args.lr
 
-    xmp.spawn(train_encoder, args=(
+    trained_model = xmp.spawn(train_encoder, args=(
         state_dict,     # model
         dataset,        # dataset
         lr,             # lr
         pre_iter,       # pre_iter
         n_iter,         # niters
         128,            # batch_size
+        current_dir     # current_dir
         ), start_method='forkserver')
+
+    MMutils.save_model(trained_model, current_dir, n_iter)
