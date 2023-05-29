@@ -7,5 +7,5 @@ model = MMmodels.Autoencoder()
 for name in en_state_dict.keys():
     print(name)
 
-for name in model.state_dict.keys():
+for name in model.state_dict().keys():
     print(name)
