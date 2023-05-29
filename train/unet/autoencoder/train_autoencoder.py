@@ -72,7 +72,6 @@ if __name__ == '__main__':
         pre_iter = int(args.encoder)
         state_dict = torch.load(f'{current_dir}/../encoder/model_iter_{pre_iter}.pth') # noqa
         state_dict = {k: v for k, v in state_dict.items() if 'encoder' in k} # noqa
-        state_dict = {k.replace('encoder.', ''): v for k, v in state_dict.items()} # noqa
     else:
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
