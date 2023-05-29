@@ -121,3 +121,51 @@ class UNet(nn.Module):
         dec1 = torch.cat((dec1, enc1), dim=1)
         dec1 = self.decoder.conv1(dec1)
         return torch.sigmoid(self.decoder.conv(dec1))
+
+
+class Pretrain_Encoder(nn.Module):
+    def __init__(self, in_channel=1, out_vector=1024, num_filter=32):
+        super(Pretrain_Encoder, self).__init__()
+        self.encoder = Encoder(
+            in_channel=in_channel, base_channel=num_filter)
+        self.fc1 = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(16*16*512, 2048),
+            nn.ReLU()
+            )
+        self.fc2 = nn.Sequential(
+            nn.Dropout(0.5),
+            nn.Linear(2048, 2048),
+            nn.ReLU()
+            )
+        self.fc3 = nn.Linear(2048, out_vector)
+
+    def forward(self, x):
+        x = self.encoder(x)
+        x = x.view(x.size(0), -1)
+        x = self.fc1(x)
+        x = self.fc2(x)
+        x = self.fc3(x)
+        return x
+
+
+def NT_Xent_loss(a, b):
+    tau = 1
+    a_norm = torch.norm(a, dim=1).reshape(-1, 1)
+    a_cap = torch.div(a, a_norm)
+    b_norm = torch.norm(b, dim=1).reshape(-1, 1)
+    b_cap = torch.div(b, b_norm)
+    a_cap_b_cap = torch.cat([a_cap, b_cap], dim=0)
+    a_cap_b_cap_transpose = torch.t(a_cap_b_cap)
+    b_cap_a_cap = torch.cat([b_cap, a_cap], dim=0)
+    sim = torch.mm(a_cap_b_cap, a_cap_b_cap_transpose)
+    sim_by_tau = torch.div(sim, tau)
+    exp_sim_by_tau = torch.exp(sim_by_tau)
+    sum_of_rows = torch.sum(exp_sim_by_tau, dim=1)
+    exp_sim_by_tau_diag = torch.diag(exp_sim_by_tau)
+    numerators = torch.exp(torch.div(torch.nn.CosineSimilarity()
+                           (a_cap_b_cap, b_cap_a_cap), tau))
+    denominators = sum_of_rows - exp_sim_by_tau_diag
+    num_by_den = torch.div(numerators, denominators)
+    neglog_num_by_den = -torch.log(num_by_den)
+    return torch.mean(neglog_num_by_den)
