@@ -2,6 +2,7 @@ import os
 import argparse
 
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 
 from Mammolibs import MMmodels, MMdataset
@@ -15,17 +16,17 @@ def eval(model):
     model.eval()
     with torch.no_grad():
         test_dataloader = DataLoader(dataset, batch_size=128, shuffle=True)
-        images1, images2 = next(iter(test_dataloader))
-        logits1, logits2 = model(images1), model(images2)
-        test_loss = MMmodels.NT_Xent_loss(logits1, logits2)
+        images = next(iter(test_dataloader))
+        logits = model(images)
+        test_loss = nn.MSELOSS(logits, images)
 
         print('------------------------')
         print('Test Loss: ', test_loss.item())
 
 
 if __name__ == '__main__':
-    print('Testing Encoder...')
-    model = MMmodels.Pretrain_Encoder()
+    print('Testing Autoencoder...')
+    model = MMmodels.Autoencoder()
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -35,6 +36,6 @@ if __name__ == '__main__':
     print(f'Find model weights at {current_dir}/model_iter_{niter}.pth, loading...') # noqa
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
-    dataset = MMdataset.MMImageSet(gcs_path)
+    dataset = MMdataset.MMImageSet(gcs_path, stage='autoencoder')
 
     eval(model)
