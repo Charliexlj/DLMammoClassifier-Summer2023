@@ -90,6 +90,6 @@ if __name__ == '__main__':
         pre_iter,       # pre_iter
         n_iter,         # niters
         128,            # batch_size
-        ), start_method='forkserver')
+        ), start_method='forkserver').cpu()
 
     MMutils.save_model(trained_model, current_dir, n_iter)
