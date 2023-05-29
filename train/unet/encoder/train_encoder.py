@@ -108,6 +108,8 @@ if __name__ == '__main__':
     model = Pretrain_Encoder()
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
+
+    pre_iter = 0
     if args.pretrain == 'no':
         pass
     else:
