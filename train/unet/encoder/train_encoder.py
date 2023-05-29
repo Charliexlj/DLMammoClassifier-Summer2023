@@ -42,7 +42,7 @@ class Pretrain_Encoder(nn.Module):
         return x
 
 
-def train_encoder(index, model, dataset, lr=1e-3, pre_iter=0, niters=100,
+def train_encoder(index, mmd, dataset, lr=1e-3, pre_iter=0, niters=100,
                   batch_size=16, save_path='/home'):
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
@@ -59,7 +59,7 @@ def train_encoder(index, model, dataset, lr=1e-3, pre_iter=0, niters=100,
         drop_last=True)
 
     device = xm.xla_device()
-    model = model.to(device).train()
+    model = mmd.to(device).train()
 
     def NT_Xent_loss(a, b):
         tau = 1
