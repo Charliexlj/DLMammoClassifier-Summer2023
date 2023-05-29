@@ -14,7 +14,7 @@ args = parser.parse_args()
 def eval(model):
     model.eval()
     with torch.no_grad():
-        test_dataloader = DataLoader(dataset, batch_size=64, shuffle=True)
+        test_dataloader = DataLoader(dataset, batch_size=128, shuffle=True)
         images1, images2 = next(iter(test_dataloader))
         logits1, logits2 = model(images1), model(images2)
         test_loss = MMmodels.NT_Xent_loss(logits1, logits2)
