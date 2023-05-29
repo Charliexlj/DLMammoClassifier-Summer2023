@@ -13,6 +13,7 @@ from Mammolibs import MMmodels, MMdataset, MMutils
 parser = argparse.ArgumentParser()
 parser.add_argument('--pretrain', type=str, required=True)
 parser.add_argument('--niters', type=int, required=False)
+parser.add_argument('--lr', type=int, required=False)
 args = parser.parse_args()
 
 
@@ -81,10 +82,14 @@ if __name__ == '__main__':
     if args.niters:
         n_iter = args.niters
 
+    lr = 1e-3
+    if args.lr:
+        lr = args.lr
+
     trained_model = xmp.spawn(train_encoder, args=(
         model,          # model
         dataset,        # dataset
-        1e-3,           # lr
+        lr,             # lr
         pre_iter,       # pre_iter
         n_iter,         # niters
         128,            # batch_size
