@@ -58,9 +58,9 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             print(f'Batch: {batch.size()}')
             images = batch
             print(f'Images: {images[0].size()}')
-            '''
-            image0 = images[0]*8
+            image0 = images[0]*64
             print(f'Image0: {image0.size()}')
+            '''
             image0 = MMdataset.mutations(image0)
             images = MMdataset.mutations(images)
             images = torch.stack([image0, images], dim=0)
