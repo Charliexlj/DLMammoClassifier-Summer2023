@@ -62,7 +62,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             images = torch.stack([image0, images], dim=0)
             
             # Show the first batch of images
-            if batch_no == 0:
+            if batch_no == 0 and index == 0:
                 fig, axes = plt.subplots(nrows=4, ncols=8, figsize=(12, 6))
                 for i, ax in enumerate(axes.flatten()):
                     ax.imshow(images[i].permute(1, 2, 0))  # Assuming image tensor shape is (C, H, W)
