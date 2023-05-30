@@ -9,6 +9,7 @@ import torch.optim as optim
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
+import torchvision.transforms as T
 from pytorch_metric_learning import losses
 
 from Mammolibs import MMmodels, MMdataset, MMutils
@@ -47,8 +48,10 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     criterion = losses.NTXentLoss(temperature=0.05)
     
     labels = [0]*9 + list(range(1,8))
+    labels = T.ToTensor()(labels)
     if index == 0:
-        print(f'Labels: {labels}') # noqa
+        print(f'Labels: {labels}')
+        print(f'Label\'s shape: {labels.size()}')
     
     loss = 100
     for it in range(pre_iter+1, pre_iter+niters+1):
@@ -58,7 +61,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             print(f'Batch: {batch.size()}')
             images = batch
             print(f'Images: {images[0].size()}')
-            image0 = [images[0]]*64
+            image0 = T.ToTensor()([images[0]]*64)
             print(f'Image0: {image0.size()}')
             '''
             image0 = MMdataset.mutations(image0)
