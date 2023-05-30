@@ -50,8 +50,6 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     
     labels = [0]*65 + list(range(1,64))
     labels = torch.tensor(labels)
-    if index == 0:
-        print(f'Labels: {labels}')
     
     loss = 100
     for it in range(pre_iter+1, pre_iter+niters+1):
@@ -68,10 +66,10 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(24, 12))
                 for i, ax in enumerate(axes.flatten()):
                     if i < 4:
-                        ax.imshow(images[i].cpu().permute(1, 2, 0).numpy())  # Assuming image tensor shape is (C, H, W)
+                        ax.imshow(images[i].cpu().permute(1, 2, 0).numpy(), cmap='gray')
                         ax.set_title(f"Image {i+1}")
                     else:
-                        ax.imshow(images[i+60].cpu().permute(1, 2, 0).numpy())  # Assuming image tensor shape is (C, H, W)
+                        ax.imshow(images[i+60].cpu().permute(1, 2, 0).numpy(), cmap='gray')
                         ax.set_title(f"Image {i+61}")
                     ax.axis('off')
                 plt.savefig(f'{current_dir}/sample.png')
