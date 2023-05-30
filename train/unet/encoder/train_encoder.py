@@ -46,7 +46,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     optimizer = optim.Adam(model.parameters(), lr=lr)
     criterion = losses.NTXentLoss(temperature=0.05)
     
-    labels = [0]*17 + list(range(1,16))
+    labels = [0]*9 + list(range(1,8))
     if index == 0:
         print(f'Labels: {labels}') # noqa
     
@@ -58,7 +58,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             print(f'Batch: {batch.size()}')
             images = batch
             print(f'Images: {images[0].size()}')
-            image0 = images[0]*16
+            image0 = images[0]*8
             print(f'Image0: {image0.size()}')
             image0 = MMdataset.mutations(image0)
             images = MMdataset.mutations(images)
@@ -119,6 +119,6 @@ if __name__ == '__main__':
         lr,             # lr
         pre_iter,       # pre_iter
         n_iter,         # niters
-        128,            # batch_size
+        64,             # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
