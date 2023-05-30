@@ -7,6 +7,7 @@ import torch.optim as optim
 import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
+from pytorch_metric_learning import losses
 
 from Mammolibs import MMmodels, MMdataset, MMutils
 
@@ -41,6 +42,8 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
+    criterion = losses.NTXentLoss(temperature=0.05)
+    
     loss = 100
     for it in range(pre_iter+1, pre_iter+niters+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
@@ -49,12 +52,12 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             images1, images2 = batch
             logits1, logits2 = model(images1), model(images2)
             optimizer.zero_grad()
-            train_loss = MMmodels.NT_Xent_loss(logits1, logits2)
+            train_loss = criterion(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
         print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-        index, it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+        index, it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
     if index == 0:
         MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)

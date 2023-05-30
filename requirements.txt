@@ -9,4 +9,5 @@ argparse
 gcsfs
 cloud-tpu-client
 opencv-python
+pytorch_metric_learning
 ./Mammolibs

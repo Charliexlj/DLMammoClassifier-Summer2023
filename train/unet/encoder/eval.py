@@ -3,6 +3,7 @@ import argparse
 
 import torch
 from torch.utils.data import DataLoader
+from pytorch_metric_learning import losses
 
 from Mammolibs import MMmodels, MMdataset
 
@@ -13,11 +14,12 @@ args = parser.parse_args()
 
 def eval(model):
     model.eval()
+    criterion = losses.NTXentLoss(temperature=0.05)
     with torch.no_grad():
         test_dataloader = DataLoader(dataset, batch_size=128, shuffle=True)
         images1, images2 = next(iter(test_dataloader))
         logits1, logits2 = model(images1), model(images2)
-        test_loss = MMmodels.NT_Xent_loss(logits1, logits2)
+        test_loss = criterion(logits1, logits2)
 
         print('------------------------')
         print('Test Loss: ', test_loss.item())
