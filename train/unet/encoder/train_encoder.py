@@ -55,6 +55,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
+            '''
             print(f'Batch: {batch.size()}')
             images = batch
             print(f'Images: {images[0].size()}')
@@ -72,7 +73,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                     ax.set_title(f"Image {i+1}")
                     ax.axis('off')
                 plt.show()
-            
+            '''
             logits = model(images)
             train_loss = criterion(logits, labels)
             optimizer.zero_grad()
