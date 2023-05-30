@@ -60,18 +60,19 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images = batch
             image0 = images[0].unsqueeze(0).repeat(64, 1, 1, 1)
-            
             images = torch.cat([image0, images], dim=0)
-            
-            start = time.time()
-            images = MMdataset.mutations(images)
+            images = torch.tensor([MMdataset.mutations(image) for image in images])
             # Show the first batch of images
             if batch_no == 0 and index == 0:
                 print(f'Mutation time for each batch = {time.time()-start}')
-                fig, axes = plt.subplots(nrows=4, ncols=8, figsize=(12, 6))
+                fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(24, 12))
                 for i, ax in enumerate(axes.flatten()):
-                    ax.imshow(images[i].cpu().permute(1, 2, 0).numpy())  # Assuming image tensor shape is (C, H, W)
-                    ax.set_title(f"Image {i+1}")
+                    if i < 4:
+                        ax.imshow(images[i].cpu().permute(1, 2, 0).numpy())  # Assuming image tensor shape is (C, H, W)
+                        ax.set_title(f"Image {i+1}")
+                    else:
+                        ax.imshow(images[i+60].cpu().permute(1, 2, 0).numpy())  # Assuming image tensor shape is (C, H, W)
+                        ax.set_title(f"Image {i+61}")
                     ax.axis('off')
                 plt.savefig(f'{current_dir}/sample.png')
             
