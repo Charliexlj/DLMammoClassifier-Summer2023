@@ -2,8 +2,6 @@ import os
 import time
 import argparse
 
-import numpy as np
-
 import matplotlib.pyplot as plt
 
 import torch
@@ -48,7 +46,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     optimizer = optim.Adam(model.parameters(), lr=lr)
     criterion = losses.NTXentLoss(temperature=0.05)
     
-    labels = [0]*17 + np.arange(1,15)
+    labels = [0]*17 + list(range(1,16))
     if index == 0:
         print(f'Labels: {labels}') # noqa
     
