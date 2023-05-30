@@ -29,7 +29,7 @@ class MMImageSet(Dataset):
             self.filenames = self.fs.ls(gcs_path)
         else:
             self.filenames = [s for s in  self.fs.ls(gcs_path) if s.count('_') == 1]
-            
+        print(self.filenames[:10])
         self.stage = stage
         print(f'The dataset contain {len(self.filenames)} images...')
 

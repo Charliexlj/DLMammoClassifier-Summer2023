@@ -4,6 +4,8 @@ import argparse
 
 import numpy as np
 
+import matplotlib.pyplot as plt
+
 import torch
 import torch.optim as optim
 import torch_xla.core.xla_model as xm
@@ -47,6 +49,8 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     criterion = losses.NTXentLoss(temperature=0.05)
     
     labels = [0]*17 + np.arange(1,15)
+    if index == 0:
+        print(f'Labels: {labels}') # noqa
     
     loss = 100
     for it in range(pre_iter+1, pre_iter+niters+1):
@@ -58,6 +62,16 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             image0 = MMdataset.mutations(image0)
             images = MMdatasetmutations(images)
             images = torch.stack([image0, images], dim=0)
+            
+            # Show the first batch of images
+            if batch_no == 0:
+                fig, axes = plt.subplots(nrows=4, ncols=8, figsize=(12, 6))
+                for i, ax in enumerate(axes.flatten()):
+                    ax.imshow(images[i].permute(1, 2, 0))  # Assuming image tensor shape is (C, H, W)
+                    ax.set_title(f"Image {i+1}")
+                    ax.axis('off')
+                plt.show()
+            
             logits = model(images)
             train_loss = criterion(logits, labels)
             optimizer.zero_grad()
@@ -88,7 +102,7 @@ if __name__ == '__main__':
         print(f'Now start to train from iter {pre_iter}...')
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
-    dataset = MMdataset.MMImageSet(gcs_path)
+    dataset = MMdataset.MMImageSet(gcs_path, aug=False)
 
     n_iter = 20
     if args.it:
