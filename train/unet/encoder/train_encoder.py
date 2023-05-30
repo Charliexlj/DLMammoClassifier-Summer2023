@@ -49,6 +49,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     criterion = losses.NTXentLoss(temperature=0.05)
     
     labels = [0]*9 + list(range(1,8))
+    labels = torch.tensor(labels)
     if index == 0:
         print(f'Labels: {labels}')
     
