@@ -61,7 +61,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             images = batch
             image0 = images[0].unsqueeze(0).repeat(64, 1, 1, 1)
             images = torch.cat([image0, images], dim=0)
-            images = torch.tensor([MMdataset.mutations(image) for image in images])
+            images = torch.stack([MMdataset.mutations(image) for image in images])
             # Show the first batch of images
             if batch_no == 0 and index == 0:
                 print(f'Mutation time for each batch = {time.time()-start}')
