@@ -5,10 +5,10 @@ import torchvision.transforms as T
 
 
 def mutations(image):
-    image1, image2 = T.RandomRotation(180)(image), T.RandomRotation(180)(image)
-    image1 = T.RandomAutocontrast()(image1)
-    image2 = T.RandomAutocontrast()(image2)
-    return image1, image2
+    image = T.RandomRotation(180)(image)
+    image = T.RandomAutocontrast()(image)
+    image = T.RandomPerspective()(image)
+    return image
 
 
 def mutation(image):
@@ -22,10 +22,14 @@ def rgb_to_grayscale(img):
 
 
 class MMImageSet(Dataset):
-    def __init__(self, gcs_path, stage='encoder'):
+    def __init__(self, gcs_path, stage='encoder', aug=True):
         super(MMImageSet, self).__init__()
         self.fs = gcsfs.GCSFileSystem()
-        self.filenames = self.fs.ls(gcs_path)
+        if aug:
+            self.filenames = self.fs.ls(gcs_path)
+        else:
+            self.filenames = [s for s in  self.fs.ls(gcs_path) if s.count('_') == 1]
+            
         self.stage = stage
         print(f'The dataset contain {len(self.filenames)} images...')
 
@@ -40,6 +44,4 @@ class MMImageSet(Dataset):
         if image.shape[0] == 3:
             image = rgb_to_grayscale(image)
 
-        if self.stage == 'encoder':
-            return mutations(image)
-        return mutation(image)
+        return image, self.filenames[idx]

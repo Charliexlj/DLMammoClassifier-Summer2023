@@ -2,6 +2,8 @@ import os
 import time
 import argparse
 
+import numpy as np
+
 import torch
 import torch.optim as optim
 import torch_xla.core.xla_model as xm
@@ -44,15 +46,21 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     optimizer = optim.Adam(model.parameters(), lr=lr)
     criterion = losses.NTXentLoss(temperature=0.05)
     
+    labels = [0]*17 + np.arange(1,15)
+    
     loss = 100
     for it in range(pre_iter+1, pre_iter+niters+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
-            images1, images2 = batch
-            logits1, logits2 = model(images1), model(images2)
+            images = batch
+            image0 = images[0]*16
+            image0 = MMdataset.mutations(image0)
+            images = MMdatasetmutations(images)
+            images = torch.stack([image0, images], dim=0)
+            logits = model(images)
+            train_loss = criterion(logits, labels)
             optimizer.zero_grad()
-            train_loss = criterion(logits1, logits2)
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
