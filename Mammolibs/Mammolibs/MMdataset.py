@@ -13,7 +13,6 @@ def mutations(image):
 
 def mutation(image):
     image1 = T.RandomRotation(180)(image)
-    image1 = T.RandomAutocontrast()(image1)
     return image1
 
 
@@ -44,4 +43,4 @@ class MMImageSet(Dataset):
         if image.shape[0] == 3:
             image = rgb_to_grayscale(image)
 
-        return image
+        return mutation(image)
