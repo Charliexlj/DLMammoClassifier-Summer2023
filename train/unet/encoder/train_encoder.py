@@ -72,7 +72,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                     ax.imshow(images[i].cpu().permute(1, 2, 0).numpy())  # Assuming image tensor shape is (C, H, W)
                     ax.set_title(f"Image {i+1}")
                     ax.axis('off')
-                plt.show()
+                plt.savefig(f'{current_dir}/sample.png')
             
             logits = model(images)
             train_loss = criterion(logits, labels)
