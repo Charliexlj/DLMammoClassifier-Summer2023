@@ -57,14 +57,10 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
-            print(f'Batch: {batch.size()}')
             images = batch
-            print(f'Images[0]: {images[0].size()}')
             image0 = images[0].unsqueeze(0).repeat(64, 1, 1, 1)
-            print(f'Image0: {image0.size()}')
             
             images = torch.cat([image0, images], dim=0)
-            print(f'Images: {images.size()}')
             
             images = MMdataset.mutations(images)
             
@@ -72,7 +68,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             if batch_no == 0 and index == 0:
                 fig, axes = plt.subplots(nrows=4, ncols=8, figsize=(12, 6))
                 for i, ax in enumerate(axes.flatten()):
-                    ax.imshow(images[i].cpu().to_numpy().permute(1, 2, 0))  # Assuming image tensor shape is (C, H, W)
+                    ax.imshow(images[i].cpu().numpy().permute(1, 2, 0))  # Assuming image tensor shape is (C, H, W)
                     ax.set_title(f"Image {i+1}")
                     ax.axis('off')
                 plt.show()
