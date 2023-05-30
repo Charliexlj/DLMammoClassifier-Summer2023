@@ -64,8 +64,9 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
-        print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-        index, it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+        if index == 0:
+            print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
+            it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
     if index == 0:
         MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
