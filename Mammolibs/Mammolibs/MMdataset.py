@@ -44,4 +44,4 @@ class MMImageSet(Dataset):
         if image.shape[0] == 3:
             image = rgb_to_grayscale(image)
 
-        return image, self.filenames[idx]
+        return image
