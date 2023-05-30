@@ -63,10 +63,11 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             
             images = torch.cat([image0, images], dim=0)
             
+            start = time.time()
             images = MMdataset.mutations(images)
-            
             # Show the first batch of images
             if batch_no == 0 and index == 0:
+                print(f'Mutation time for each batch = {time.time()-start}')
                 fig, axes = plt.subplots(nrows=4, ncols=8, figsize=(12, 6))
                 for i, ax in enumerate(axes.flatten()):
                     ax.imshow(images[i].cpu().permute(1, 2, 0).numpy())  # Assuming image tensor shape is (C, H, W)
