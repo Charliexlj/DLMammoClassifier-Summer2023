@@ -49,14 +49,16 @@ def train_autoencoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images = batch
+            images = torch.stack([MMdataset.mutations(image) for image in images])
             logits = model(images)
             optimizer.zero_grad()
             train_loss = criterion(logits, images)
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
-        print("Process: {:1d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-        index, it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+        if index == 0:
+            print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
+            it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
     if index == 0:
         MMutils.save_model(model.cpu(), save_path, niters+pre_iter)
@@ -69,15 +71,15 @@ if __name__ == '__main__':
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
     if args.pretrain == 'no':
-        pre_iter = int(args.encoder)
-        state_dict = torch.load(f'{current_dir}/../encoder/model_iter_{pre_iter}.pth') # noqa
+        pre_iter = 0
+        state_dict = torch.load(f'{current_dir}/../encoder/model_iter_{int(args.encoder)}.pth') # noqa
     else:
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
 
     gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
-    dataset = MMdataset.MMImageSet(gcs_path, stage='autoencoder')
+    dataset = MMdataset.MMImageSet(gcs_path, stage='autoencoder', aug=False)
 
     n_iter = 20
     if args.it:
@@ -93,6 +95,6 @@ if __name__ == '__main__':
         lr,             # lr
         pre_iter,       # pre_iter
         n_iter,         # niters
-        128,            # batch_size
+        64,            # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')

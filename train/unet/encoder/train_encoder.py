@@ -60,19 +60,6 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             image0 = images[0].unsqueeze(0).repeat(64, 1, 1, 1)
             images = torch.cat([image0, images], dim=0)
             images = torch.stack([MMdataset.mutations(image) for image in images])
-            # Show the first batch of images
-            if batch_no == 0 and index == 0:
-                print(f'Mutation time for each batch = {time.time()-start}')
-                fig, axes = plt.subplots(nrows=2, ncols=4, figsize=(24, 12))
-                for i, ax in enumerate(axes.flatten()):
-                    if i < 4:
-                        ax.imshow(images[i].cpu().permute(1, 2, 0).numpy(), cmap='gray')
-                        ax.set_title(f"Image {i+1}")
-                    else:
-                        ax.imshow(images[i+60].cpu().permute(1, 2, 0).numpy(), cmap='gray')
-                        ax.set_title(f"Image {i+61}")
-                    ax.axis('off')
-                plt.savefig(f'{current_dir}/sample.png')
             
             logits = model(images)
             train_loss = criterion(logits, labels)
@@ -90,8 +77,11 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
 if __name__ == '__main__':
     print('Training Encoder...')
+    '''
     model = MMmodels.Pretrain_Encoder()
     print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters() if p.requires_grad)}') # noqa
+    '''
+    print(f'Total trainable parameters = {279447648}') # noqa
 
     current_dir = os.path.dirname(os.path.realpath(__file__))
 
