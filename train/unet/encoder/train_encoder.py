@@ -48,7 +48,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     optimizer = optim.Adam(model.parameters(), lr=lr)
     criterion = losses.NTXentLoss(temperature=0.05)
     
-    labels = torch.cat([torch.tensor([0]*batch_size+1), torch.arange(1, batch_size)], dim=0)
+    labels = torch.cat([torch.tensor([0]*(batch_size+1)), torch.arange(1, batch_size)], dim=0)
     
     loss = 100
     for it in range(pre_iter+1, pre_iter+niters+1):
