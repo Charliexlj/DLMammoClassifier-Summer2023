@@ -34,9 +34,8 @@ class MMImageSet(Dataset):
             try:
                 image = imageio.imread(f)
                 return self.process_image(image)
-            except:
-                print(f"Error reading image at: {path}")
-                return None
+            except Exception as e:
+                raise e
 
     def __getitem__(self, idx):
         image = self.read_image(self.filenames[idx])
