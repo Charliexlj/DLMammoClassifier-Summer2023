@@ -56,6 +56,8 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images = batch
+            if index==0 and batch_no==0:
+                print('images shape: ', images.shape())
             image0 = images[0].unsqueeze(0).repeat(batch_size, 1, 1, 1)
             images = torch.cat([image0, images], dim=0)
             images = torch.stack([MMdataset.mutations(image) for image in images])

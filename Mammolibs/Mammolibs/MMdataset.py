@@ -27,15 +27,12 @@ class MMImageSet(Dataset):
     
     def process_image(self, image):
         image = image if image.shape[0] != 3 else image.mean(dim=0, keepdim=True)
-        print('grayscale image shape: ', image.shape)
-        print('tensor image shape: ', T.ToTensor()(image).shape())
         return T.ToTensor()(image)
     
     def read_image(self, path):
         with self.fs.open(path, 'rb') as f:
             try:
                 image = imageio.imread(f)
-                print('raw image shape: ', image.shape)
                 return self.process_image(image)
             except:
                 print(f"Error reading image at: {path}")
