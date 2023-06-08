@@ -19,11 +19,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--pretrain', type=str, required=True)
 parser.add_argument('--it', type=int, required=False)
 parser.add_argument('--lr', type=float, required=False)
+parser.add_argument('-test', action='store_true', required=False)
 args = parser.parse_args()
 
 
 def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
-                  batch_size=16, current_dir='/home'):
+                  batch_size=16, current_dir='/home', test_flag=Flase):
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
         dataset,
@@ -71,6 +72,8 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
+            if test_flag:
+                break
         if index == 0:
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
             it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
@@ -115,5 +118,6 @@ if __name__ == '__main__':
         pre_iter,       # pre_iter
         n_iter,         # niters
         64,             # batch_size
-        current_dir     # current_dir
+        current_dir,     # current_dir
+        args.test
         ), start_method='forkserver')
