@@ -14,7 +14,7 @@ Additionally, it helps mitigate the risk of overfitting, ensuring that the model
 | [CDD-CESM](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=109379611) | 2006 | :x: |  :grey_question: |
 | [CMMD](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70230508) | 5202 | :heavy_check_mark: | :x: |
 | [Duke Breast Cancer MRI](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903) | 773888 | :x: | :grey_question: |
-| [King Abdulaziz](https://www.mdpi.com/2306-5729/6/11/111#) | 2378 | :heavy_check_mark: | :heavy_check_mark: |
+| [King Abdulaziz](https://www.mdpi.com/2306-5729/6/11/111#) | 2378 | :heavy_check_mark: | :x: |
 | [Embed](https://pubs.rsna.org/doi/10.1148/ryai.220047) | 68000 | :heavy_check_mark: | :heavy_check_mark: |
 | [OMI-DB](https://www.cancerresearchhorizons.com/licensing-opportunities/optimam-mammography-image-database-omi-db) | 2620 | :x: | :grey_question: |
 
