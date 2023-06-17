@@ -35,7 +35,8 @@ class MMImageSet(Dataset):
                 image = imageio.imread(f)
                 return self.process_image(image)
             except Exception as e:
-                raise e
+                print(e)
+                return None
 
     def __getitem__(self, idx):
         image = self.read_image(self.filenames[idx])
