@@ -20,6 +20,7 @@ class MMImageSet(Dataset):
         if self.stage == 'finetune':
             self.labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace('CBIS', 'CBIS_ROI') for filename in self.filenames] # noqa
         print(f'The dataset contain {len(self.filenames)} images...')
+        self.count = 0
 
     def __len__(self):
         return len(self.filenames)
@@ -45,6 +46,8 @@ class MMImageSet(Dataset):
             # Replace with the correct shape for your images.
             return torch.zeros(1, 256, 256)
         else:
+            print(self.count)
+            self.count+=1
             return image
         # else:
         #     roi = self.read_image(self.labels[idx])
