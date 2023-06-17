@@ -125,7 +125,7 @@ if __name__ == '__main__':
 
     train_loader = torch.utils.data.DataLoader(
         dataset,
-        batch_size=batch_size,
+        batch_size=64,
         sampler=train_sampler,
         num_workers=0,
         drop_last=True)
