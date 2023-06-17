@@ -61,7 +61,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         if index == 0:
             try:
                 print("Try to load a batch")
-                batch_no, batch = next(iter(train_loader))
+                batch = next(iter(train_loader))
                 print("Loaded a batch successfully")
             except Exception as e:
                 print("Failed to load a batch. Error: ", e)
@@ -116,26 +116,6 @@ if __name__ == '__main__':
 
     gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
     dataset = MMdataset.MMImageSet(gcs_path, aug=False)
-    
-    train_sampler = torch.utils.data.distributed.DistributedSampler(
-        dataset,
-        num_replicas=xm.xrt_world_size(),
-        rank=xm.get_ordinal(),
-        shuffle=True)
-
-    train_loader = torch.utils.data.DataLoader(
-        dataset,
-        batch_size=64,
-        sampler=train_sampler,
-        num_workers=0,
-        drop_last=True)
-    
-    try:
-        print("Try to load a batch in main")
-        batch = next(iter(train_loader))
-        print("Loaded a batch successfully in main")
-    except Exception as e:
-        print("Failed to load a batch in main. Error: ", e)
 
     n_iter = 20
     if args.it:
