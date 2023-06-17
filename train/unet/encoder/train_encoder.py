@@ -62,9 +62,8 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         print('para_train_loader finished...')
         start = time.time()
-        for batch in para_train_loader:
-            print('loaded one batch')
         for batch_no, batch in enumerate(para_train_loader): # noqa
+            print('loaded one batch')
             if index == 0:
                 print(f'enter batch {batch_no}...')
             images = batch
@@ -87,7 +86,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 break
         if index == 0:
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-            it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+            it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
     if index == 0:
         MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
