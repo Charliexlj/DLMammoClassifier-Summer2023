@@ -33,6 +33,7 @@ class MMImageSet(Dataset):
         with self.fs.open(path, 'rb') as f:
             try:
                 image = imageio.imread(f)
+                print(self.process_image(image).size())
                 return self.process_image(image)
             except Exception as e:
                 print(e)
