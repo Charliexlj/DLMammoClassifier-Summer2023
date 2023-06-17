@@ -39,7 +39,6 @@ class MMImageSet(Dataset):
                 return None
 
     def __getitem__(self, idx):
-        print('enter get_item...')
         image = self.read_image(self.filenames[idx])
         if self.stage != 'finetune':
             return image

@@ -62,6 +62,8 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             print('para_train_loader finished...')
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
+            if index == 0:
+                print(f'enter batch {batch_no}...')
             images = batch
             image0 = images[0].unsqueeze(0).repeat(batch_size, 1, 1, 1)
             if index==0 and batch_no==0:
