@@ -60,7 +60,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         try:
             print("Try to load a batch")
-            batch_no, batch = next(iter(para_train_loader))
+            batch_no, batch = next(iter(train_loader))
             print("Loaded a batch successfully")
         except Exception as e:
             print("Failed to load a batch. Error: ", e)
