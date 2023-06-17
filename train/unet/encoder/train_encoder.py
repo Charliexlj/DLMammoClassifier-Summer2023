@@ -71,17 +71,17 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             if index==0:
                 print('images shape: ', images.shape)
                 print('image0 shape: ', image0.shape)
-            # images = torch.cat([image0, images], dim=0)
-            # images = torch.stack([MMdataset.mutations(image) for image in images])
-            # if index==0:
-            #     print('combined images shape: ', images.shape)
+            images = torch.cat([image0, images], dim=0)
+            images = torch.stack([MMdataset.mutations(image) for image in images])
+            if index==0:
+                print('combined images shape: ', images.shape)
             
-            # logits = model(images)
-            # train_loss = criterion(logits, labels)
-            # optimizer.zero_grad()
-            # train_loss.backward()
-            # xm.optimizer_step(optimizer)
-            # loss = train_loss.cpu()
+            logits = model(images)
+            train_loss = criterion(logits, labels)
+            optimizer.zero_grad()
+            train_loss.backward()
+            xm.optimizer_step(optimizer)
+            loss = train_loss.cpu()
             # if test_flag:
             #     break
         if index == 0:
