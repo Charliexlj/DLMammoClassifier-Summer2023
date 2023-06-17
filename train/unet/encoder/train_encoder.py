@@ -25,6 +25,8 @@ args = parser.parse_args()
 
 def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                   batch_size=16, current_dir='/home', test_flag=False):
+    if index == 0:
+        print('start main training function...')
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
         dataset,
@@ -52,8 +54,12 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     labels = torch.cat([torch.tensor([0]*(batch_size+1)), torch.arange(1, batch_size)], dim=0)
     
     loss = 100
+    if index == 0:
+        print('start main training loop...')
     for it in range(pre_iter+1, pre_iter+niters+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+        if index == 0:
+            print('para_train_loader finished...')
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images = batch
