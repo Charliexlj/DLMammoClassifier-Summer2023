@@ -34,13 +34,13 @@ class MMImageSet(Dataset):
                 image = imageio.imread(f)
                 return self.process_image(image)
             except Exception as e:
-                print(e)
+                print(f"Error reading image from path {path}: {e}")
                 return None
 
     def __getitem__(self, idx):
         image = self.read_image(self.filenames[idx])
-        if self.stage != 'finetune':
-            return image
-        else:
-            roi = self.read_image(self.labels[idx])
-            return image, roi
+        # if self.stage != 'finetune':
+        return image
+        # else:
+        #     roi = self.read_image(self.labels[idx])
+        #     return image, roi
