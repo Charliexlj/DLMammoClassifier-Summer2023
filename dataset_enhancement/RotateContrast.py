@@ -4,7 +4,7 @@ import os
 import cv2
 
 # Path to the folder containing the images
-folder_path = "/Users/lun/Desktop/images/JPG"
+folder_path = /path/to/folder/
 
 # Function to apply CLAHE to an image
 def apply_clahe(image_path):
@@ -37,7 +37,17 @@ for filename in os.listdir(folder_path):
         # Convert the image to RGB mode (remove alpha channel)
         image = image.convert("RGB")
         name, extension = os.path.splitext(filename)
+
+        # Apply CLAHE to the image
+        cont_image = apply_clahe(image_path)
         
+        # Construct the output path for the contrast-enhanced image
+        cont_filename = f"{name}_contrast.jpg"
+        cont_image_path = os.path.join(folder_path, cont_filename)
+        
+        # Save the contrast-enhanced image
+        cv2.imwrite(cont_image_path, cont_image)
+
         # Rotate the image 11 times and save each rotated copy
         for i in range(11):
             # Rotate the image by 30 degrees
