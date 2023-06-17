@@ -40,7 +40,12 @@ class MMImageSet(Dataset):
     def __getitem__(self, idx):
         image = self.read_image(self.filenames[idx])
         # if self.stage != 'finetune':
-        return image
+        if image is None:
+            print(f"Image at index {idx} is None. Returning a zero tensor instead.")
+            # Replace with the correct shape for your images.
+            return torch.zeros(1, 256, 256)
+        else:
+            return image
         # else:
         #     roi = self.read_image(self.labels[idx])
         #     return image, roi
