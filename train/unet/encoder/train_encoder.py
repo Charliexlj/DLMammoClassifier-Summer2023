@@ -109,8 +109,8 @@ if __name__ == '__main__':
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
         print(f'Now start to train from iter {pre_iter}...')
 
-    # gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
-    gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
+    gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
+    # gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path, aug=False)
 
     n_iter = 20
