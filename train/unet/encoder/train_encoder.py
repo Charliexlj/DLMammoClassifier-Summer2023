@@ -39,7 +39,8 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         batch_size=batch_size,
         sampler=train_sampler,
         num_workers=8,
-        drop_last=True)
+        drop_last=True,
+        timeout=10)
 
     device = xm.xla_device()
 
