@@ -58,44 +58,34 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     loss = 100
     if index == 0:
         print('start main training loop...')
-    for it in range(pre_iter+1, pre_iter+niters+1):
-        para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-        print('para_train_loader finished...')
-        
-        if index == 0:
-            try:
-                print("Try to load a batch")
-                batch = next(iter(para_train_loader))
-                print("Loaded a batch successfully")
-            except Exception as e:
-                print("Failed to load a batch. Error: ", e)
-        '''
-        start = time.time()
-        for batch_no, batch in enumerate(para_train_loader): # noqa
+        for it in range(pre_iter+1, pre_iter+niters+1):
+            para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+            print('para_train_loader finished...')
+            start = time.time()
+            for batch_no, batch in enumerate(para_train_loader): # noqa
+                if index == 0:
+                    print(f'enter batch {batch_no}...')
+                images = batch
+                image0 = images[0].unsqueeze(0).repeat(batch_size, 1, 1, 1)
+                if index==0 and batch_no==0:
+                    print('images shape: ', images.shape)
+                    print('image0 shape: ', image0.shape)
+                images = torch.cat([image0, images], dim=0)
+                images = torch.stack([MMdataset.mutations(image) for image in images])
+                if index==0 and batch_no==0:
+                    print('combined images shape: ', images.shape)
+                
+                logits = model(images)
+                train_loss = criterion(logits, labels)
+                optimizer.zero_grad()
+                train_loss.backward()
+                xm.optimizer_step(optimizer)
+                loss = train_loss.cpu()
+                if test_flag:
+                    break
             if index == 0:
-                print(f'enter batch {batch_no}...')
-            images = batch
-            image0 = images[0].unsqueeze(0).repeat(batch_size, 1, 1, 1)
-            if index==0 and batch_no==0:
-                print('images shape: ', images.shape)
-                print('image0 shape: ', image0.shape)
-            images = torch.cat([image0, images], dim=0)
-            images = torch.stack([MMdataset.mutations(image) for image in images])
-            if index==0 and batch_no==0:
-                print('combined images shape: ', images.shape)
-            
-            logits = model(images)
-            train_loss = criterion(logits, labels)
-            optimizer.zero_grad()
-            train_loss.backward()
-            xm.optimizer_step(optimizer)
-            loss = train_loss.cpu()
-            if test_flag:
-                break
-        if index == 0:
-            print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-            it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
-        '''
+                print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
+                it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
     if index == 0:
         MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
