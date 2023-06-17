@@ -60,6 +60,8 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     if index == 0:
         print('start main training loop...')
     for it in range(pre_iter+1, pre_iter+niters+1):
+        para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+        print('para_train_loader finished...')
         if index == 0:
             try:
                 print("Try to load a batch")
@@ -67,8 +69,6 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 print("Loaded a batch successfully")
             except Exception as e:
                 print("Failed to load a batch. Error: ", e)
-            para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-            print('para_train_loader finished...')
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
             if index == 0:
