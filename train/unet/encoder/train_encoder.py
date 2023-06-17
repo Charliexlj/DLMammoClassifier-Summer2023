@@ -62,18 +62,18 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         print('para_train_loader finished...')
         start = time.time()
-        for batch_no, batch in enumerate(para_train_loader): # noqa
+        for batch in para_train_loader: # noqa
             print('loaded one batch')
             if index == 0:
                 print(f'enter batch {batch_no}...')
             images = batch
             image0 = images[0].unsqueeze(0).repeat(batch_size, 1, 1, 1)
-            if index==0 and batch_no==0:
+            if index==0:
                 print('images shape: ', images.shape)
                 print('image0 shape: ', image0.shape)
             images = torch.cat([image0, images], dim=0)
             images = torch.stack([MMdataset.mutations(image) for image in images])
-            if index==0 and batch_no==0:
+            if index==0:
                 print('combined images shape: ', images.shape)
             
             logits = model(images)
