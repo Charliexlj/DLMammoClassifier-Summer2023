@@ -132,7 +132,7 @@ if __name__ == '__main__':
     
     try:
         print("Try to load a batch in main")
-        batch_no, batch = next(iter(train_loader))
+        batch = next(iter(train_loader))
         print("Loaded a batch successfully in main")
     except Exception as e:
         print("Failed to load a batch in main. Error: ", e)
