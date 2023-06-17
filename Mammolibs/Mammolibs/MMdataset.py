@@ -19,7 +19,7 @@ class MMImageSet(Dataset):
         self.stage = stage
         if self.stage == 'finetune':
             self.labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace('CBIS', 'CBIS_ROI') for filename in self.filenames] # noqa
-            
+        self.counter = 0    
         print(f'The dataset contain {len(self.filenames)} images...')
 
     def __len__(self):
@@ -40,8 +40,9 @@ class MMImageSet(Dataset):
 
     def __getitem__(self, idx):
         image = self.read_image(self.filenames[idx])
-        print(image.size())
         if self.stage != 'finetune':
+            print(self.counter)
+            self.counter += 1
             return image
         else:
             roi = self.read_image(self.labels[idx])
