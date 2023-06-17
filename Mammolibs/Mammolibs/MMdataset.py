@@ -33,7 +33,6 @@ class MMImageSet(Dataset):
         with self.fs.open(path, 'rb') as f:
             try:
                 image = imageio.imread(f)
-                print(self.process_image(image).size())
                 return self.process_image(image)
             except Exception as e:
                 print(e)
@@ -41,6 +40,7 @@ class MMImageSet(Dataset):
 
     def __getitem__(self, idx):
         image = self.read_image(self.filenames[idx])
+        print(image.size())
         if self.stage != 'finetune':
             return image
         else:
