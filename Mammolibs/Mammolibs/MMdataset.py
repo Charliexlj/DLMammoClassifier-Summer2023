@@ -26,8 +26,9 @@ class MMImageSet(Dataset):
         return len(self.filenames)
     
     def process_image(self, image):
+        image = T.ToTensor()(image)
         image = image if image.shape[0] != 3 else image.mean(dim=0, keepdim=True)
-        return T.ToTensor()(image)
+        return image
     
     def read_image(self, path):
         with self.fs.open(path, 'rb') as f:
