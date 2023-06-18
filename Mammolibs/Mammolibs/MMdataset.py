@@ -50,7 +50,7 @@ class MMImageSet(Dataset):
         if self.stage != 'finetune':
             return image
         else:
-            roi = self.read_image(self.labels[idx])
+            roi = self.read_image(self.labels[idx]).squeeze(1)
             return image, roi
 '''
 
