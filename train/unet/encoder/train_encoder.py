@@ -57,25 +57,14 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     labels = torch.cat([torch.tensor([0]*(batch_size+1)), torch.arange(1, batch_size)], dim=0)
     
     loss = 100
-    if index == 0:
-        print('start main training loop...')
     for it in range(pre_iter+1, pre_iter+niters+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-        if index == 0:
-            print('para_train_loader finished...')
         start = time.time()
-        for batch_no, batch in enumerate(para_train_loader): # noqa
-            if index == 0:
-                print(f'enter batch {batch_no}')
+        for batch in para_train_loader: # noqa
             images = batch
             image0 = images[0].unsqueeze(0).repeat(batch_size, 1, 1, 1)
-            if index==0:
-                print('images shape: ', images.shape)
-                print('image0 shape: ', image0.shape)
             images = torch.cat([image0, images], dim=0)
             images = torch.stack([MMdataset.mutations(image) for image in images])
-            if index==0:
-                print('combined images shape: ', images.shape)
             
             logits = model(images)
             train_loss = criterion(logits, labels)
@@ -83,7 +72,7 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
-            if test_flag:
+            if test_flag and index==0:
                 print('Testing, finish after one batch...')
                 print('Exiting...')
                 sys.exit()

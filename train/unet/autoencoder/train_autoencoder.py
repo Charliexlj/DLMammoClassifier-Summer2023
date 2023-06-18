@@ -58,7 +58,7 @@ def train_autoencoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10
             loss = train_loss.cpu()
         if index == 0:
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-            it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+            it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
 
     if index == 0:
         MMutils.save_model(model.cpu(), save_path, niters+pre_iter)
@@ -81,7 +81,8 @@ if __name__ == '__main__':
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
 
-    gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
+    gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
+    # gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path, stage='autoencoder', aug=False)
 
     n_iter = 20
