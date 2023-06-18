@@ -60,29 +60,19 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             print(f'Before batch...')
         for batch_no, batch in enumerate(para_train_loader): # noqa
             if index==0:
-                print(f'Enter batch {batch_no}...')
                 batch_start = time.time()
                 images, labels = batch
-                '''
-                print(f'images: {images.shape}')
-                print(f'labels: {labels.shape}')
                 image_labels = torch.stack((images, labels), dim=1)
-                print(f'image_labels: {image_labels.shape}')
                 # image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels])
                 images = image_labels[:, 0, :, :, :]
                 labels = image_labels[:, 1, :, :, :]
-                print(f'images_: {images.shape}')
-                print(f'labels_: {labels.shape}')
-                '''
                 logits = model(images)
                 print(f'logits: {logits.shape}')
-                '''
                 train_loss = criterion(logits, labels)
                 optimizer.zero_grad()
                 train_loss.backward()
                 xm.optimizer_step(optimizer)
                 loss = train_loss.cpu()
-                '''
             if index==0:
                 print("Batch{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
                 batch_no, it, loss, MMutils.convert_seconds_to_time(time.time()-batch_start))) # noqa
