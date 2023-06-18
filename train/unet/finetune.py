@@ -57,28 +57,23 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
-            if index==0:
-                print(f'start batch {batch_no}...')
-            images, labels = batch
-            if index==0:
-                print('images shape: ', images.shape)
-                print('labels shape: ', labels.shape)
-                image_labels = torch.stack((images, labels), dim=1)
-                print('image_labels shape: ', image_labels.shape)
-                print('image_label shape: ', image_labels[0].shape)
-            '''
-            images = torch.stack([MMdataset.mutations(image_label) for image_label in zip(images,labels)])
-            
+            batch_start = time.time()
+            image_labels = torch.stack((images, labels), dim=1)
+            image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels])
+            images = image_labels[:, 0, :, :, :]
+            labels = image_labels[:, 1, :, :, :]
             logits = model(images)
             train_loss = criterion(logits, labels)
             optimizer.zero_grad()
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
+            if index==0:
+                print("Batch{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
+                batch_no, it, loss, MMutils.convert_seconds_to_time(time.time()-batch_start))) # noqa
         if index == 0:
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
             it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
-        '''
     if index == 0:
         MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
 
