@@ -75,6 +75,7 @@ if __name__ == '__main__':
     if args.pretrain == 'no':
         pre_iter = 0
         state_dict = torch.load(f'{current_dir}/../encoder/model_iter_{int(args.encoder)}.pth') # noqa
+        print(f'Find model weights at {current_dir}/../encoder/model_iter_{int(args.encoder)}.pth, loading...') # noqa
     else:
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
@@ -99,7 +100,7 @@ if __name__ == '__main__':
     lr = 3e-3
     if args.lr:
         lr = args.lr
-
+    '''
     xmp.spawn(train_autoencoder, args=(
         state_dict,     # model
         dataset,        # dataset
@@ -109,3 +110,4 @@ if __name__ == '__main__':
         64,            # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
+'''
