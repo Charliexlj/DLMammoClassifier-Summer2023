@@ -42,7 +42,10 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     model = MMmodels.UNet()
     if state_dict:
-        model.load_state_dict(state_dict, strict=False)
+        unet_state_dict = model.state_dict()
+        partial_state_dict = {k: v for k, v in state_dict.items() if k in unet_state_dict and v.size() == unet_state_dict[k].size()}
+        unet_state_dict.update(partial_state_dict)
+        model.load_state_dict(unet_state_dict)
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -81,11 +84,10 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 if __name__ == '__main__':
     print('Finetuning...')
 
-    model = MMmodels.UNet()
-    print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters() if p.requires_grad)}') # noqa
-    '''
+    # model = MMmodels.UNet()
+    # print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters() if p.requires_grad)}') # noqa
     print(f'Total trainable parameters = {7738742}') # noqa
-    '''
+    
     current_dir = os.path.dirname(os.path.realpath(__file__))
     if args.pretrain == 'no':
         pre_iter = 0
@@ -95,14 +97,6 @@ if __name__ == '__main__':
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
-        
-    print("Autoencoder parameters:")
-    for k, v in state_dict.items():
-        print("Key: {}, Shape: {}".format(k, v.shape))
-
-    print("UNet parameters:")
-    for k, v in model.state_dict().items():
-        print("Key: {}, Shape: {}".format(k, v.shape))
 
     gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
     dataset = MMdataset.MMImageSet(gcs_path, stage=finetune, aug=True)
@@ -114,7 +108,7 @@ if __name__ == '__main__':
     lr = 3e-3
     if args.lr:
         lr = args.lr
-    '''
+    
     xmp.spawn(finetune, args=(
         state_dict,     # model
         dataset,        # dataset
@@ -124,4 +118,4 @@ if __name__ == '__main__':
         64,             # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
-    '''
+    
