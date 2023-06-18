@@ -63,7 +63,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             if index==0:
                 print('images shape: ', images.shape)
                 print('labels shape: ', labels.shape)
-                image_labels = torch.stack((tensor1, tensor2), dim=1).unsqueeze(2)
+                image_labels = torch.stack((images, labels), dim=1).unsqueeze(2)
                 print('image_labels shape: ', image_labels.shape)
                 print('image_label shape: ', image_labels[0].shape)
             '''
