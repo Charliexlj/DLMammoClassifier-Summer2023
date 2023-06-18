@@ -36,7 +36,8 @@ if __name__ == '__main__':
     model.load_state_dict(state_dict)
     print(f'Find model weights at {current_dir}/model_iter_{niter}.pth, loading...') # noqa
 
-    gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
+    gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
+    # gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path, stage='autoencoder')
 
     eval(model)

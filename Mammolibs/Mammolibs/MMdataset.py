@@ -18,7 +18,7 @@ class MMImageSet(Dataset):
         else: self.filenames = [s for s in  self.fs.ls(gcs_path) if s.count('_') == 1 and s.endswith(('.png', '.jpg', '.jpeg'))]
         self.stage = stage
         if self.stage == 'finetune':
-            self.labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace('CBIS', 'CBIS_ROI') for filename in self.filenames] # noqa
+            self.labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace("_", "_ROI_", 1) for filename in self.filenames] # noqa
         print(f'The dataset contain {len(self.filenames)} images...')
 
     def __len__(self):
@@ -39,16 +39,14 @@ class MMImageSet(Dataset):
 
     def __getitem__(self, idx):
         image = self.read_image(self.filenames[idx])
-        # if self.stage != 'finetune':
         if image is None:
             print(f"Image at index {idx} is None. Returning a zero tensor instead.")
-            # Replace with the correct shape for your images.
             return torch.zeros(1, 256, 256)
-        else:
+        if self.stage != 'finetune':
             return image
-        # else:
-        #     roi = self.read_image(self.labels[idx])
-        #     return image, roi
+        else:
+            roi = self.read_image(self.labels[idx])
+            return image, roi
 '''
 
 def rgb_to_grayscale(img):
