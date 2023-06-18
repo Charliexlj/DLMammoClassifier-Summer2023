@@ -63,6 +63,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 batch_start = time.time()
                 images, labels = batch
                 print(f'label values: {torch.unique(images)}')
+                print(f'labels: {labels.shape}')
                 '''
                 image_labels = torch.stack((images, labels), dim=1)
                 image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels])
@@ -70,11 +71,14 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 labels = image_labels[:, 1, :, :, :]
                 '''
                 logits = model(images)
+                print(f'logits: {logits.shape}')
                 train_loss = criterion(logits, labels)
+                '''
                 optimizer.zero_grad()
                 train_loss.backward()
                 xm.optimizer_step(optimizer)
                 loss = train_loss.cpu()
+                '''
             if index==0:
                 print("Batch{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
                 batch_no, it, loss, MMutils.convert_seconds_to_time(time.time()-batch_start))) # noqa
