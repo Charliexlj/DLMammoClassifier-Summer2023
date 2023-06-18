@@ -80,12 +80,12 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
 if __name__ == '__main__':
     print('Finetuning...')
-    '''
+
     model = MMmodels.UNet()
     print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters() if p.requires_grad)}') # noqa
     '''
     print(f'Total trainable parameters = {7738742}') # noqa
-
+    '''
     current_dir = os.path.dirname(os.path.realpath(__file__))
     if args.pretrain == 'no':
         pre_iter = 0
