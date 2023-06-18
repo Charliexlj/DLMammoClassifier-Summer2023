@@ -39,22 +39,27 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     device = xm.xla_device()
 
-    model = MMmodels.Pretrain_Encoder()
+    model = MMmodels.UNet()
     if state_dict:
-        model.load_state_dict(state_dict)
+        model.load_state_dict(state_dict, strict=False)
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
     criterion = nn.CrossEntropyLoss()
-    
-    labels = torch.cat([torch.tensor([0]*batch_size+1), torch.arange(1, batch_size)], dim=0)
     
     loss = 100
     for it in range(pre_iter+1, pre_iter+niters+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
+            print(f'start batch {batch_no}...')
             images, labels = batch
+            if index==0:
+                print('images shape: ', images.shape)
+                print('labels shape: ', labels.shape)
+                print('zipped shape: ', zip(images, labels).shape())
+                print('zipped one shape: ', T.ToTensor()(zip(images, labels)[0]).shape())
+            '''
             images = torch.stack([MMdataset.mutations(image_label) for image_label in zip(images,labels)])
             
             logits = model(images)
@@ -63,6 +68,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
+        '''
         if index == 0:
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
             it, loss.item(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
@@ -72,25 +78,24 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
 
 if __name__ == '__main__':
-    print('Training Encoder...')
-    '''
-    model = MMmodels.Pretrain_Encoder()
+    print('Finetuning...')
+    
+    model = MMmodels.UNet()
     print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters() if p.requires_grad)}') # noqa
     '''
     print(f'Total trainable parameters = {279447648}') # noqa
-
+    '''
     current_dir = os.path.dirname(os.path.realpath(__file__))
-
-    pre_iter = 0
-    state_dict = None
-    if args.pretrain != 'no':
+    if args.pretrain == 'no':
+        pre_iter = 0
+        state_dict = torch.load(f'{current_dir}/autoencoder/model_iter_{int(args.encoder)}.pth') # noqa
+    else:
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
-        print(f'Now start to train from iter {pre_iter}...')
 
     gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
-    dataset = MMdataset.MMImageSet(gcs_path, aug=False)
+    dataset = MMdataset.MMImageSet(gcs_path, stage=finetune, aug=True)
 
     n_iter = 20
     if args.it:
