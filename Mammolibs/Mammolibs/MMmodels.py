@@ -97,7 +97,7 @@ class Autoencoder(nn.Module):
 class UNet(nn.Module):
     def __init__(self, in_channel=1, out_channel=2, num_filter=32):
         super(UNet, self).__init__()
-        self.encoder = Encoder(in_channel=in_channel, n=32)
+        self.encoder = Encoder(in_channel=in_channel, base_channel=32)
         self.decoder = Decoder(in_channel=512, out_channel=out_channel, mode="UNet") # noqa
 
     def forward(self, x):
