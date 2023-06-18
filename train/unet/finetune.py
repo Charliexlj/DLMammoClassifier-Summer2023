@@ -70,11 +70,13 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 '''
                 logits = model(images)
                 print(f'logits: {logits.shape}')
+                '''
                 train_loss = criterion(logits, labels)
                 optimizer.zero_grad()
                 train_loss.backward()
                 xm.optimizer_step(optimizer)
                 loss = train_loss.cpu()
+                '''
             if index==0:
                 print("Batch{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
                 batch_no, it, loss, MMutils.convert_seconds_to_time(time.time()-batch_start))) # noqa
