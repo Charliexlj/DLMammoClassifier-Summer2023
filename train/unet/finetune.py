@@ -100,7 +100,7 @@ if __name__ == '__main__':
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
 
-    gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
+    gcs_path = 'gs://combined-dataset/labelled-dataset/CombinedBreastMammography/'
     dataset = MMdataset.MMImageSet(gcs_path, stage='finetune', aug=True)
 
     n_iter = 20
