@@ -1,5 +1,6 @@
 import gcsfs
 import imageio
+import torch
 from torch.utils.data import Dataset
 import torchvision.transforms as T
 
@@ -40,6 +41,7 @@ class MMImageSet(Dataset):
     def __getitem__(self, idx):
         image = self.read_image(self.filenames[idx])
         if image is None or not (image[0, :, :] == 1).all():
+            print(image[0, :, :])
             print(f"Image at index {idx} is None. Returning a zero tensor instead.")
             return torch.zeros(1, 256, 256)
         if self.stage != 'finetune':
