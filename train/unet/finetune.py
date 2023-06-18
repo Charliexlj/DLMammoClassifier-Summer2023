@@ -90,10 +90,19 @@ if __name__ == '__main__':
     if args.pretrain == 'no':
         pre_iter = 0
         state_dict = torch.load(f'{current_dir}/autoencoder/model_iter_{int(args.autoencoder)}.pth') # noqa
+        print(f'Find model weights at {current_dir}/autoencoder/model_iter_{int(args.autoencoder)}.pth, loading...') # noqa
     else:
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
+        
+    print("Autoencoder parameters:")
+    for k, v in state_dict.items():
+        print("Key: {}, Shape: {}".format(k, v.shape))
+
+    print("UNet parameters:")
+    for k, v in model.state_dict().items():
+        print("Key: {}, Shape: {}".format(k, v.shape))
 
     gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
     dataset = MMdataset.MMImageSet(gcs_path, stage=finetune, aug=True)
@@ -105,7 +114,7 @@ if __name__ == '__main__':
     lr = 3e-3
     if args.lr:
         lr = args.lr
-
+    '''
     xmp.spawn(finetune, args=(
         state_dict,     # model
         dataset,        # dataset
@@ -115,3 +124,4 @@ if __name__ == '__main__':
         64,             # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
+    '''

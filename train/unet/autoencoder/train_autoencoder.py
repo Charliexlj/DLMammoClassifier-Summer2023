@@ -66,28 +66,20 @@ def train_autoencoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10
 
 if __name__ == '__main__':
     print('Training Autoencoder...')
+    '''
     model = MMmodels.Autoencoder()
     print(f'Total trainable parameters = {sum(p.numel() for p in model.parameters() if p.requires_grad)}') # noqa
     '''
     print(f'Total trainable parameters = {6963697}') # noqa
-    '''
+
     current_dir = os.path.dirname(os.path.realpath(__file__))
     if args.pretrain == 'no':
         pre_iter = 0
         state_dict = torch.load(f'{current_dir}/../encoder/model_iter_{int(args.encoder)}.pth') # noqa
-        print(f'Find model weights at {current_dir}/../encoder/model_iter_{int(args.encoder)}.pth, loading...') # noqa
     else:
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
-        
-    print("Autoencoder parameters:")
-    for k, v in state_dict.items():
-        print("Key: {}, Shape: {}".format(k, v.shape))
-
-    print("UNet parameters:")
-    for k, v in model.state_dict().items():
-        print("Key: {}, Shape: {}".format(k, v.shape))
 
     gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
     # gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
@@ -100,7 +92,7 @@ if __name__ == '__main__':
     lr = 3e-3
     if args.lr:
         lr = args.lr
-    '''
+
     xmp.spawn(train_autoencoder, args=(
         state_dict,     # model
         dataset,        # dataset
@@ -110,4 +102,3 @@ if __name__ == '__main__':
         64,            # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
-'''
