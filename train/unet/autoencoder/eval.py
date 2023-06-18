@@ -16,8 +16,9 @@ def eval(model):
     model.eval()
     criterion = nn.MSELoss()
     with torch.no_grad():
-        test_dataloader = DataLoader(dataset, batch_size=128, shuffle=True)
+        test_dataloader = DataLoader(dataset, batch_size=64, shuffle=True)
         images = next(iter(test_dataloader))
+        print('Got images from dataloader...')
         logits = model(images)
         test_loss = criterion(logits, images)
 
