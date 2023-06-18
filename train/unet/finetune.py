@@ -60,9 +60,10 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             print(f'Before batch...')
         for batch_no, batch in enumerate(para_train_loader): # noqa
             if index==0:
-                print(f'Enter batch...')
+                print(f'Enter batch {batch_no}...')
                 batch_start = time.time()
                 images, labels = batch
+                '''
                 print(f'images: {images.shape}')
                 print(f'labels: {labels.shape}')
                 image_labels = torch.stack((images, labels), dim=1)
@@ -72,6 +73,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 labels = image_labels[:, 1, :, :, :]
                 print(f'images_: {images.shape}')
                 print(f'labels_: {labels.shape}')
+                '''
                 logits = model(images)
                 print(f'logits: {logits.shape}')
                 '''
@@ -125,7 +127,7 @@ if __name__ == '__main__':
         lr,             # lr
         pre_iter,       # pre_iter
         n_iter,         # niters
-        128,             # batch_size
+        64,             # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
     
