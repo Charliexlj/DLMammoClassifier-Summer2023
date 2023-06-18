@@ -40,7 +40,7 @@ class MMImageSet(Dataset):
 
     def __getitem__(self, idx):
         image = self.read_image(self.filenames[idx])
-        if image is None or not image.shape[0]:
+        if image is None or not image.shape[0]==1:
             print(image.shape)
             print(f"Image at index {idx} is None. Returning a zero tensor instead.")
             return torch.zeros(1, 256, 256)
