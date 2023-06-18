@@ -18,6 +18,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--pretrain', type=str, required=True)
 parser.add_argument('--it', type=int, required=False)
 parser.add_argument('--lr', type=float, required=False)
+parser.add_argument('--autoencoder', type=str, required=False)
 args = parser.parse_args()
 
 
@@ -88,7 +89,7 @@ if __name__ == '__main__':
     current_dir = os.path.dirname(os.path.realpath(__file__))
     if args.pretrain == 'no':
         pre_iter = 0
-        state_dict = torch.load(f'{current_dir}/autoencoder/model_iter_{int(args.encoder)}.pth') # noqa
+        state_dict = torch.load(f'{current_dir}/autoencoder/model_iter_{int(args.autoencoder)}.pth') # noqa
     else:
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
