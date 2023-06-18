@@ -63,8 +63,9 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             if index==0:
                 print('images shape: ', images.shape)
                 print('labels shape: ', labels.shape)
-                print('zipped shape: ', zip(images, labels).shape())
-                print('zipped one shape: ', T.ToTensor()(zip(images, labels)[0]).shape())
+                image_labels = torch.stack((tensor1, tensor2), dim=1).unsqueeze(2)
+                print('image_labels shape: ', image_labels.shape)
+                print('image_label shape: ', image_labels[0].shape)
             '''
             images = torch.stack([MMdataset.mutations(image_label) for image_label in zip(images,labels)])
             
