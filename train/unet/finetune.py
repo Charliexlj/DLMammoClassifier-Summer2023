@@ -62,7 +62,10 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             if index==0:
                 batch_start = time.time()
                 images, labels = batch
-                print(f'label values: {torch.unique(images)}')
+                labels = labels.squeeze(1)
+                unique_values, counts = torch.unique(images, return_counts=True)
+                print(f'label values: {unique_values}')
+                print(f'value counts: {counts}')
                 print(f'labels: {labels.shape}')
                 '''
                 image_labels = torch.stack((images, labels), dim=1)
