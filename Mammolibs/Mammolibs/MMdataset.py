@@ -21,6 +21,8 @@ class MMImageSet(Dataset):
         if self.stage == 'finetune':
             self.labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace("_", "_ROI_", 1) for filename in self.filenames] # noqa
         print(f'The dataset contain {len(self.filenames)} images...')
+        print(f'filename: {self.filenames[:3]}')
+        print(f'labels: {self.labels[:3]}')
 
     def __len__(self):
         return len(self.filenames)
