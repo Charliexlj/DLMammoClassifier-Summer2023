@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import argparse
 
@@ -82,8 +83,10 @@ def train_encoder(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
-            # if test_flag:
-            #     break
+            if test_flag:
+                print('Testing, finish after one batch...')
+                print('Exiting...')
+                sys.exit()
         if index == 0:
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
             it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
@@ -110,8 +113,8 @@ if __name__ == '__main__':
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
         print(f'Now start to train from iter {pre_iter}...')
 
-    # gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
-    gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
+    gcs_path = 'gs://combined-dataset/unlabelled-dataset/CombinedBreastMammography/'
+    # gcs_path = 'gs://unlabelled-dataset/BreastMammography256/'
     dataset = MMdataset.MMImageSet(gcs_path, aug=False)
 
     n_iter = 20
