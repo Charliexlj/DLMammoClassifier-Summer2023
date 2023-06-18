@@ -64,9 +64,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 images, labels = batch
                 labels = labels.squeeze(1)
                 unique_values, counts = torch.unique(images, return_counts=True)
-                print(f'label values: {unique_values}')
-                print(f'value counts: {counts}')
-                print(f'labels: {labels.shape}')
+                print(images[0])
                 '''
                 image_labels = torch.stack((images, labels), dim=1)
                 image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels])
