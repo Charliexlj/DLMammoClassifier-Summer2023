@@ -9,7 +9,7 @@ def mutations(image):
     image = T.RandomAutocontrast()(image)
     image = T.RandomPerspective()(image)
     return image
-'''
+
 class MMImageSet(Dataset):
     def __init__(self, gcs_path, stage='encoder', aug=True):
         super(MMImageSet, self).__init__()
@@ -77,3 +77,4 @@ class MMImageSet(Dataset):
             image = rgb_to_grayscale(image)
         image = T.ToTensor()(image)
         return image
+'''
