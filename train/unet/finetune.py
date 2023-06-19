@@ -58,6 +58,9 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         start = time.time()
         
         images, labels = next(iter(para_train_loader))
+        labels = labels.squeeze(1)
+        print(f'labels shape: {labels.shape}')
+        print(f'label values: {torch.unique(labels)}')
         
     #     for batch_no, batch in enumerate(para_train_loader): # noqa
     #         if index==0:
