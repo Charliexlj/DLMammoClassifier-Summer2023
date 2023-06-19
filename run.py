@@ -74,7 +74,7 @@ if __name__ == '__main__':
         axs[0, i].axis('off')
         
         # plot roi
-        axs[1, i].imshow(roi_np[i], cmap='gray')
+        axs[1, i].imshow(roi_np[i][0], cmap='gray')
         axs[1, i].set_title(f'Label {i+1}')
         axs[1, i].axis('off')
         
