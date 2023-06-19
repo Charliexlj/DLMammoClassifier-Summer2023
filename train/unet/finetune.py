@@ -42,11 +42,11 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     device = xm.xla_device()
 
     model = MMmodels.UNet()
-    # if state_dict:
-    #     unet_state_dict = model.state_dict()
-    #     partial_state_dict = {k: v for k, v in state_dict.items() if k in unet_state_dict and v.size() == unet_state_dict[k].size()}
-    #     unet_state_dict.update(partial_state_dict)
-    #     model.load_state_dict(unet_state_dict)
+    if state_dict:
+        unet_state_dict = model.state_dict()
+        partial_state_dict = {k: v for k, v in state_dict.items() if k in unet_state_dict and v.size() == unet_state_dict[k].size()}
+        unet_state_dict.update(partial_state_dict)
+        model.load_state_dict(unet_state_dict)
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -57,7 +57,6 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
-            batch_start = time.time()
             images, labels = batch
             labels = labels.squeeze(1)
             '''
