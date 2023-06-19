@@ -37,9 +37,9 @@ if __name__ == '__main__':
     model = MMmodels.Autoencoder()
     iter = input("Model iter: ")
     current_dir = os.path.dirname(os.path.realpath(__file__))
-    state_dict = torch.load(f'{current_dir}/train/unet/model_iter_{iter}.pth') # noqa
+    state_dict = torch.load(f'{current_dir}/train/unet/autoencoder/model_iter_{iter}.pth') # noqa
     model.load_state_dict(state_dict)
-    print(f'Find model weights at {current_dir}/train/unet/model_iter_{iter}.pth, loading...') # noqa
+    print(f'Find model weights at {current_dir}/train/unet/autoencoder/model_iter_{iter}.pth, loading...') # noqa
 
     gcs_path = 'gs://combined-dataset/labelled-dataset/CombinedBreastMammography/' # noqa
     fs = gcsfs.GCSFileSystem()
