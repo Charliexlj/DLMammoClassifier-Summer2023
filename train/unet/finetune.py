@@ -59,7 +59,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             images, labels = batch
             labels = labels.squeeze(1).long()
             labels = nn.functional.one_hot(labels)
-            labels = labels.permute(0, 3, 1, 2)
+            labels = labels.permute(0, 3, 1, 2).float()
             '''
             image_labels = torch.stack((images, labels), dim=1)
             image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels]) # noqa
