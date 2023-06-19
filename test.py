@@ -54,7 +54,7 @@ if __name__ == '__main__':
     logits = model(image)
 
     image_np = image.numpy()
-    logits_np = logits.numpy()
+    logits_np = logits.detach().numpy()
     
     fig, axs = plt.subplots(2, 4, figsize=(12, 6))
 
