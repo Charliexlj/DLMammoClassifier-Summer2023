@@ -26,6 +26,7 @@ print(f'The dataset contain {len(filenames)} images...')
 labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace("_", "_ROI_", 1) for filename in filenames] # noqa
 
 idx = input("Enter your idx: ")
+idx = int(idx)
 
 print(f'filename: {filenames[idx]}')
 print(f'labels: {labels[idx]}')
