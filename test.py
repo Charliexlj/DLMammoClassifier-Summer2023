@@ -34,12 +34,12 @@ print(f'labels: {labels[idx]}')
 image = read_image(filenames[idx])
 roi = read_image(labels[idx])
 
-np_roi = np.array(roi)
+np_roi = np.array(roi).reshape((256, 256))
 np_roi = (np_roi * 255).astype(np.uint8)
 
 imageio.imwrite("original.png", np_roi)
 
-np_roi = np.array(tensor)
+np_roi = np.array(roi).reshape((256, 256))
 np_roi = np.where(np_roi >= 0.5, 1, 0)
 np_roi = (np_roi * 255).astype(np.uint8)
 
