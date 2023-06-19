@@ -30,7 +30,7 @@ def read_image(path):
 
 
 def read_images(paths):
-    return [read_image(path) for path in paths]
+    return torch.stack([read_image(path) for path in paths])
 
 
 if __name__ == '__main__':
