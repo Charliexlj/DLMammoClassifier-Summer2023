@@ -3,6 +3,7 @@ import imageio
 import torch
 from torch.utils.data import Dataset
 import torchvision.transforms as T
+import numpy as np
 
 
 def process_image(image):
