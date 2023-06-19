@@ -44,12 +44,12 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     model = MMmodels.UNet()
     if state_dict:
         unet_state_dict = model.state_dict()
-        partial_state_dict = {k: v for k, v in state_dict.items() if k in unet_state_dict and v.size() == unet_state_dict[k].size()}
+        partial_state_dict = {k: v for k, v in state_dict.items() if k in unet_state_dict and v.size() == unet_state_dict[k].size()} # noqa
         model.load_state_dict(partial_state_dict, strict=False)
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.BCEWithLogitsLoss()
     
     loss = 100
     for it in range(pre_iter+1, pre_iter+niters+1):
@@ -58,10 +58,10 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         for batch_no, batch in enumerate(para_train_loader): # noqa
             batch_start = time.time()
             images, labels = batch
-            labels = labels.squeeze(1)
+            # labels = labels.squeeze(1)
             '''
             image_labels = torch.stack((images, labels), dim=1)
-            image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels])
+            image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels]) # noqa
             images = image_labels[:, 0, :, :, :]
             labels = image_labels[:, 1, :, :, :]
             '''
@@ -71,7 +71,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
-            if index==0 and batch_no%50==0:
+            if index == 0 and batch_no % 50 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
                 batch_no, it, loss, MMutils.convert_seconds_to_time(time.time()-batch_start))) # noqa
         if index == 0:

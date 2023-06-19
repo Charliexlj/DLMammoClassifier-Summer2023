@@ -29,8 +29,8 @@ def read_image(path):
             return None
 
 
-def read_images(paths):
-    return torch.stack([read_image(path) for path in paths])
+def read_images(paths, indices):
+    return torch.stack([read_image(paths[i]) for i in indices])
 
 
 if __name__ == '__main__':
@@ -51,9 +51,10 @@ if __name__ == '__main__':
 
     print(f'filename: {filenames[idx:idx+4]}')
     print(f'labels: {labels[idx:idx+4]}')
-    
-    image = read_images(filenames[idx:idx+4])
-    roi = read_images(labels[idx:idx+4])
+    idx = [random.randint(0, len(labels)) for _ in range(4)]
+
+    image = read_images(filenames, idx)
+    roi = read_images(labels, idx)
 
     logits = model(image)
 
