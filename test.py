@@ -5,12 +5,12 @@ from torch.utils.data import Dataset
 import torchvision.transforms as T
 
 
-def process_image(self, image):
+def process_image(image):
     image = T.ToTensor()(image)
     image = image if image.shape[0] != 3 else image.mean(dim=0, keepdim=True)
     return image
 
-def read_image(self, path):
+def read_image(path):
     with fs.open(path, 'rb') as f:
         try:
             image = imageio.imread(f)
