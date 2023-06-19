@@ -23,8 +23,8 @@ gcs_path = 'gs://combined-dataset/labelled-dataset/CombinedBreastMammography/'
 fs = gcsfs.GCSFileSystem()
 filenames = [s for s in fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))]
 print(f'The dataset contain {len(filenames)} images...')
+print(f'filename: {self.filenames[:10]}')
 labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace("_", "_ROI_", 1) for filename in filenames] # noqa
-
 idx = input("Enter your idx: ")
 idx = int(idx)
 
