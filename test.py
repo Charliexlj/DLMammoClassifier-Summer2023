@@ -19,6 +19,7 @@ def read_image(self, path):
             print(f"Error reading image from path {path}: {e}")
             return None
 
+gcs_path = 'gs://combined-dataset/labelled-dataset/CombinedBreastMammography/'
 fs = gcsfs.GCSFileSystem()
 filenames = [s for s in fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))]
 print(f'The dataset contain {len(filenames)} images...')
