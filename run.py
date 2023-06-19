@@ -69,7 +69,7 @@ if __name__ == '__main__':
 
     for i in range(4):
         # plot image
-        axs[0, i].imshow(image_np[i], cmap='gray')
+        axs[0, i].imshow(image_np[i][0], cmap='gray')
         axs[0, i].set_title(f'Image {i+1}')
         axs[0, i].axis('off')
         
