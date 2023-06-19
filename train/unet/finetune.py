@@ -67,6 +67,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             labels = image_labels[:, 1, :, :, :]
             '''
             logits = model(images)
+            train_loss = criterion(logits, labels)
             optimizer.zero_grad()
             train_loss.backward()
             xm.optimizer_step(optimizer)
