@@ -100,7 +100,7 @@ if __name__ == '__main__':
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
 
     gcs_path = 'gs://combined-dataset/labelled-dataset/CombinedBreastMammography/'
-    dataset = MMdataset.MMImageSet(gcs_path, stage='finetune', aug=False)
+    dataset = MMdataset.MMImageSet(gcs_path, stage='finetune', aug=True)
 
     n_iter = 20
     if args.it:
