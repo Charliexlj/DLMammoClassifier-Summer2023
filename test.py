@@ -29,8 +29,8 @@ def read_image(path):
             return None
 
 
-def read_images(paths):
-    return torch.stack([read_image(path) for path in paths])
+def read_images(paths, indices):
+    return torch.stack([read_image(paths[i]) for i in indices])
 
 
 if __name__ == '__main__':
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace("_", "_ROI_", 1) for filename in filenames] # noqa
     idx = [random.randint(0, len(labels)) for _ in range(4)]
 
-    image = read_images(filenames[idx])
+    image = read_images(filenames, idx)
 
     logits = model(image)
 

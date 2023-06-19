@@ -12,18 +12,17 @@ def mutations(image):
     image = T.RandomPerspective()(image)
     return image
 
+
 class MMImageSet(Dataset):
     def __init__(self, gcs_path, stage='encoder', aug=True):
         super(MMImageSet, self).__init__()
         self.fs = gcsfs.GCSFileSystem()
         if aug: self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))]
-        else: self.filenames = [s for s in  self.fs.ls(gcs_path) if s.count('_') == 1 and s.endswith(('.png', '.jpg', '.jpeg'))]
-        print(f'filename: {self.filenames[:3]}')
+        else: self.filenames = [s for s in self.fs.ls(gcs_path) if s.count('_') == 1 and s.endswith(('.png', '.jpg', '.jpeg'))]
         print(f'The dataset contain {len(self.filenames)} images...')
         self.stage = stage
         if self.stage == 'finetune':
             self.labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace("_", "_ROI_", 1) for filename in self.filenames] # noqa
-            print(f'labels: {self.labels[:3]}')
 
     def __len__(self):
         return len(self.filenames)
