@@ -29,6 +29,10 @@ def read_image(path):
             return None
 
 
+def read_images(paths):
+    return [read_image(path) for path in paths]
+
+
 if __name__ == '__main__':
     model = MMmodels.UNet()
     iter = input("Model iter: ")
@@ -47,8 +51,9 @@ if __name__ == '__main__':
 
     print(f'filename: {filenames[idx:idx+4]}')
     print(f'labels: {labels[idx:idx+4]}')
-    image = read_image(filenames[idx:idx+4])
-    roi = read_image(labels[idx:idx+4])
+    
+    image = read_images(filenames[idx:idx+4])
+    roi = read_images(labels[idx:idx+4])
 
     logits = model(image)
 
