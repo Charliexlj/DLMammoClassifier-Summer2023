@@ -128,7 +128,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
             
-            if index == 0 and batch_no == 0 and it % 5 == 0:
+            if index == 0 and batch_no == 0 and it % 1 == 0:
                 np_roi = labels.cpu().numpy()[:4]  # [:4].numpy().reshape((4, 2, 256, 256))
                 print("np_roi: ", np_roi.shape)
                 
