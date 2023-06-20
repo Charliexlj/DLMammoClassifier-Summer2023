@@ -130,11 +130,11 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             
             if index == 0 and batch_no == 0:
                 print('enter batch 0')
-                np_roi = labels.cpu()  # [:4].numpy().reshape((4, 2, 256, 256))
-                print("roi unique: ", torch.unique(np_roi))
+                np_roi = labels.cpu().numpy()  # [:4].numpy().reshape((4, 2, 256, 256))
+                print("np_roi: ", np_roi.shape())
                 
-                logits_np = logits.cpu().detach().numpy()[:4]
-                print("logits shape: ", logits_np.shape())
+                # logits_np = logits.cpu().detach().numpy()  # [:4]
+                # print("logits shape: ", logits_np.shape())
                 '''
                 image_np = images.cpu().numpy()[:4].reshape((4, 256, 256))
                 roi_np = labels.cpu().numpy()[:4].reshape((4, 2, 256, 256))
