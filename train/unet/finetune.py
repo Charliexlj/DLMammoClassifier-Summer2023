@@ -130,7 +130,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             
             if index == 0 and batch_no == 0:
                 print('enter batch 0')
-                np_roi = labels.cpu()  # .numpy()  # [:4].numpy().reshape((4, 2, 256, 256))
+                np_roi = labels.cpu().numpy()  # [:4].numpy().reshape((4, 2, 256, 256))
                 print("np_roi: ", np_roi.shape)
                 
                 # logits_np = logits.cpu().detach().numpy()  # [:4]
