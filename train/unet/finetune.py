@@ -52,36 +52,55 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     criterion = nn.BCEWithLogitsLoss()
     
     loss = 100
-    for it in range(pre_iter+1, pre_iter+niters+1):
-        para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-        start = time.time()
-        for batch_no, batch in enumerate(para_train_loader): # noqa
-            images, labels = batch
-            labels = labels.squeeze(1).long()
-            labels = nn.functional.one_hot(labels)
-            labels = labels.permute(0, 3, 1, 2).float()
-            '''
-            image_labels = torch.stack((images, labels), dim=1)
-            image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels]) # noqa
-            images = image_labels[:, 0, :, :, :]
-            labels = image_labels[:, 1, :, :, :]
-            '''
-            logits = model(images)
-            train_loss = criterion(logits, labels)
-            optimizer.zero_grad()
-            train_loss.backward()
-            xm.optimizer_step(optimizer)
-            loss = train_loss.cpu()
-            if index == 0 and batch_no % 10 == 0:
-                print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
-                batch_no, it, loss)) # noqa
-        if index == 0:
-            print("=======================================================================") # noqa
-            print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-            it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
-            print("=======================================================================") # noqa
-    if index == 0:
-        MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
+    
+    images, labels = dataset[0]
+    images = torch.stack([images]*128)
+    labels = labels.squeeze(1).long()
+    labels = nn.functional.one_hot(labels)
+    labels = labels.permute(0, 3, 1, 2).float()
+    labels = torch.stack([labels]*128)
+    
+    for it in range(10000):
+        logits = model(images)
+        train_loss = criterion(logits, labels)
+        optimizer.zero_grad()
+        train_loss.backward()
+        xm.optimizer_step(optimizer)
+        loss = train_loss.cpu()
+        if index == 0 and it % 50 == 0:
+            print("Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
+            it, loss)) # noqa
+    
+    # for it in range(pre_iter+1, pre_iter+niters+1):
+    #     para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+    #     start = time.time()
+    #     for batch_no, batch in enumerate(para_train_loader): # noqa
+    #         images, labels = batch
+    #         labels = labels.squeeze(1).long()
+    #         labels = nn.functional.one_hot(labels)
+    #         labels = labels.permute(0, 3, 1, 2).float()
+    #         '''
+    #         image_labels = torch.stack((images, labels), dim=1)
+    #         image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels]) # noqa
+    #         images = image_labels[:, 0, :, :, :]
+    #         labels = image_labels[:, 1, :, :, :]
+    #         '''
+    #         logits = model(images)
+    #         train_loss = criterion(logits, labels)
+    #         optimizer.zero_grad()
+    #         train_loss.backward()
+    #         xm.optimizer_step(optimizer)
+    #         loss = train_loss.cpu()
+    #         if index == 0 and batch_no % 10 == 0:
+    #             print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
+    #             batch_no, it, loss)) # noqa
+    #     if index == 0:
+    #         print("=======================================================================") # noqa
+    #         print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
+    #         it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+    #         print("=======================================================================") # noqa
+    # if index == 0:
+    #     MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
 
 
 if __name__ == '__main__':
