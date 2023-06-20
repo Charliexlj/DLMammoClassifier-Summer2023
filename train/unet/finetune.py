@@ -60,19 +60,6 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     #     return thresholded 
 
-    train_sampler = torch.utils.data.distributed.DistributedSampler(
-        dataset,
-        num_replicas=xm.xrt_world_size(),
-        rank=xm.get_ordinal(),
-        shuffle=True)
-
-    train_loader = torch.utils.data.DataLoader(
-        dataset,
-        batch_size=batch_size,
-        sampler=train_sampler,
-        num_workers=8,
-        drop_last=True)
-
     device = xm.xla_device()
 
     model = MMmodels.UNet()
@@ -108,8 +95,20 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     #         print("Iter:{:4d}  |  Tr_loss: {:.4f}".format(it, loss))
     
     for it in range(pre_iter+1, pre_iter+niters+1):
-        para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
+        train_sampler = torch.utils.data.distributed.DistributedSampler(
+            dataset,
+            num_replicas=xm.xrt_world_size(),
+            rank=xm.get_ordinal(),
+            shuffle=True)
+
+        train_loader = torch.utils.data.DataLoader(
+            dataset,
+            batch_size=batch_size,
+            sampler=train_sampler,
+            num_workers=8,
+            drop_last=True)
+        para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images, labels = batch
             labels = labels.squeeze(1).long()
@@ -128,8 +127,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
             
-            if index == 0 and batch_no == 0 and it == 10:
-                print('enter batch 0')
+            if index == 0 and batch_no == 0 and it % 5 == 0:
                 np_roi = labels.cpu().numpy()[:4]  # [:4].numpy().reshape((4, 2, 256, 256))
                 print("np_roi: ", np_roi.shape)
                 
@@ -163,8 +161,8 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                     axs[4, i].axis('off')
 
                 plt.tight_layout()
-                plt.savefig('plot.png')
-                print('saved plot.png')
+                plt.savefig(f'plot_{it}.png')
+                print(f'saved plot{it}.png')
             
             if index == 0 and batch_no % 10 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
