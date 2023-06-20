@@ -128,6 +128,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
+            '''
             if index == 0 and batch_no == 0:
                 print('enter batch 0')
                 np_roi = np.array(labels[:4]).reshape((4, 2, 256, 256))
@@ -165,6 +166,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
                 plt.tight_layout()
                 plt.savefig('plot.png')
+            '''
             if index == 0 and batch_no % 10 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
