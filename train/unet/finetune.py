@@ -24,8 +24,53 @@ parser.add_argument('--autoencoder', type=str, required=False)
 args = parser.parse_args()
 
 
+class mIoULoss(nn.Module):
+    def __init__(self, weight=None, size_average=True, n_classes=2):
+        super(mIoULoss, self).__init__()
+        self.classes = n_classes
+
+    def forward(self, inputs, target_oneHot):
+        # inputs => N x Classes x H x W
+        # target_oneHot => N x Classes x H x W
+
+        N = inputs.size()[0]
+
+        # predicted probabilities for each pixel along channel
+        inputs = F.softmax(inputs,dim=1)
+
+        # Numerator Product
+        inter = inputs * target_oneHot
+        ## Sum over all pixels N x C x H x W => N x C
+        inter = inter.view(N,self.classes,-1).sum(2)
+
+        #Denominator 
+        union= inputs + target_oneHot - (inputs*target_oneHot)
+        ## Sum over all pixels N x C x H x W => N x C
+        union = union.view(N,self.classes,-1).sum(2)
+
+        loss = inter/union
+
+        ## Return average loss over classes and batch
+        return -loss.mean()
+
+
 def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
              batch_size=16, current_dir='/home'):
+    
+    # def iou_pytorch(outputs: torch.Tensor, labels: torch.Tensor):
+    #     # You can comment out this line if you are passing tensors of equal shape
+    #     # But if you are passing output from UNet or something it will most probably
+    #     # be with the BATCH x 1 x H x W shape
+    #     outputs = outputs.squeeze(1)  # BATCH x 1 x H x W => BATCH x H x W
+        
+    #     intersection = (outputs & labels).float().sum((1, 2))  # Will be zero if Truth=0 or Prediction=0
+    #     union = (outputs | labels).float().sum((1, 2))         # Will be zzero if both are 0
+        
+    #     iou = (intersection + 1e-6) / (union + 1e-6)  # We smooth our devision to avoid 0/0
+        
+    #     thresholded = torch.clamp(20 * (iou - 0.5), 0, 10).ceil() / 10  # This is equal to comparing with thresolds
+
+    #     return thresholded 
 
     train_sampler = torch.utils.data.distributed.DistributedSampler(
         dataset,
@@ -42,7 +87,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     device = xm.xla_device()
 
-    model = MMmodels.UNet_J()
+    model = MMmodels.UNet()
     if state_dict:
         unet_state_dict = model.state_dict()
         partial_state_dict = {k: v for k, v in state_dict.items() if k in unet_state_dict and v.size() == unet_state_dict[k].size()} # noqa
@@ -51,7 +96,8 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
     # criterion = nn.BCEWithLogitsLoss()
-    jaccard = JaccardIndex(num_classes=2, task='binary')
+    # jaccard = JaccardIndex(num_classes=2, task='binary')
+    criterion = mIoULoss()
     
     loss = 100
     
@@ -78,9 +124,9 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images, labels = batch
-            # labels = labels.squeeze(1).long()
-            # labels = nn.functional.one_hot(labels)
-            # labels = labels.permute(0, 3, 1, 2).float()
+            labels = labels.squeeze(1).long()
+            labels = nn.functional.one_hot(labels)
+            labels = labels.permute(0, 3, 1, 2).float()
             '''
             image_labels = torch.stack((images, labels), dim=1)
             image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels]) # noqa
@@ -88,7 +134,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             labels = image_labels[:, 1, :, :, :]
             '''
             logits = model(images)
-            train_loss = jaccard(logits, labels)
+            train_loss = criterion(logits, labels)
             optimizer.zero_grad()
             train_loss.backward()
             xm.optimizer_step(optimizer)
