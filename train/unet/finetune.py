@@ -56,12 +56,12 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
     
     batch = next(iter(para_train_loader))
-    images, labels = batch[0]
-    images = torch.stack([images]*128)
+    images, labels = batch
+    images = torch.stack([images[0]]*128)
     labels = labels.squeeze(1).long()
     labels = nn.functional.one_hot(labels)
     labels = labels.permute(0, 3, 1, 2).float()
-    labels = torch.stack([labels]*128)
+    labels = torch.stack([labels[0]]*128)
     
     for it in range(10000):
         logits = model(images)
