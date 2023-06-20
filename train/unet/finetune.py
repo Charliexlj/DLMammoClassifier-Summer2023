@@ -51,7 +51,7 @@ class mIoULoss(nn.Module):
         loss = inter/union
 
         ## Return average loss over classes and batch
-        return -loss.mean()
+        return 1-loss.mean()
 
 
 def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
