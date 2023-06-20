@@ -60,9 +60,10 @@ if __name__ == '__main__':
     
     roi_test = T.ToTensor()(np_roi)
     print("roi unique: ", torch.unique(roi_test))
-    print("logits unique: ", torch.unique(logits))
 
     logits_np = torch.argmax(logits, dim=1).detach().numpy()
+    logits_test = T.ToTensor()(logits_np)
+    print("logits unique: ", torch.unique(logits_test))
 
     image_np = image.numpy()
     roi_np = roi.numpy()
