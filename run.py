@@ -58,8 +58,8 @@ if __name__ == '__main__':
     np_roi = np.array(roi).reshape((4, 256, 256))
     np_roi = np.where(np_roi >= 0.5, 1, 0)
     
-    roi = T.ToTensor()(np_roi)
-    print("roi unique: ", torch.unique(roi))
+    roi_test = T.ToTensor()(np_roi)
+    print("roi unique: ", torch.unique(roi_test))
     print("logits unique: ", torch.unique(logits))
 
     logits_np = torch.argmax(logits, dim=1).detach().numpy()
