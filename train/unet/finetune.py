@@ -130,19 +130,19 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             
             if index == 0 and batch_no == 0:
                 print('enter batch 0')
-                np_roi = labels.cpu().numpy()  # [:4].numpy().reshape((4, 2, 256, 256))
+                np_roi = labels.cpu().numpy()[:4]  # [:4].numpy().reshape((4, 2, 256, 256))
                 print("np_roi: ", np_roi.shape)
                 
-                logits_np = logits.cpu().detach().numpy()  # [:4]
+                logits_np = logits.cpu().detach().numpy()[:4]  # [:4]
                 print("logits shape: ", logits_np.shape)
-                '''
+                
                 image_np = images.cpu().numpy()[:4].reshape((4, 256, 256))
                 roi_np = labels.cpu().numpy()[:4].reshape((4, 2, 256, 256))
 
                 fig, axs = plt.subplots(5, 4, figsize=(12, 15))
                 for i in range(4):
                     # plot image
-                    axs[0, i].imshow(image_np[i][0], cmap='gray')
+                    axs[0, i].imshow(image_np[i], cmap='gray')
                     axs[0, i].set_title(f'Image {i+1}')
                     axs[0, i].axis('off')
                     
@@ -164,7 +164,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
                 plt.tight_layout()
                 plt.savefig('plot.png')
-            '''
+            
             if index == 0 and batch_no % 10 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
