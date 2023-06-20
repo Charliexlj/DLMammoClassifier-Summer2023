@@ -32,25 +32,13 @@ class mIoULoss(nn.Module):
     def forward(self, inputs, target_oneHot):
         # inputs => N x Classes x H x W
         # target_oneHot => N x Classes x H x W
-
         N = inputs.size()[0]
-
-        # predicted probabilities for each pixel along channel
-        inputs = nn.functional.softmax(inputs,dim=1)
-
-        # Numerator Product
+        inputs = nn.functional.softmax(inputs, dim=1)
         inter = inputs * target_oneHot
-        ## Sum over all pixels N x C x H x W => N x C
-        inter = inter.view(N,self.classes,-1).sum(2)
-
-        #Denominator 
-        union= inputs + target_oneHot - (inputs*target_oneHot)
-        ## Sum over all pixels N x C x H x W => N x C
-        union = union.view(N,self.classes,-1).sum(2)
-
+        inter = inter.view(N, self.classes, -1).sum(2)
+        union = inputs + target_oneHot - (inputs*target_oneHot)
+        union = union.view(N, self.classes, -1).sum(2)
         loss = inter/union
-
-        ## Return average loss over classes and batch
         return 1-loss.mean()
 
 
@@ -139,6 +127,42 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
+            if index == 0 and batch_no == 0:
+                np_roi = np.array(labels[:4]).reshape((4, 2, 256, 256))
+                roi_test = T.ToTensor()(np_roi)
+                print("roi unique: ", torch.unique(roi_test))
+
+                logits_np = logits[:4].detach().numpy()
+
+                image_np = images[:4].numpy().reshape((4, 256, 256))
+                roi_np = labels[:4].numpy().reshape((4, 2, 256, 256))
+
+                fig, axs = plt.subplots(5, 4, figsize=(12, 15))
+
+                for i in range(4):
+                    # plot image
+                    axs[0, i].imshow(image_np[i][0], cmap='gray')
+                    axs[0, i].set_title(f'Image {i+1}')
+                    axs[0, i].axis('off')
+                    
+                    axs[1, i].imshow(roi_np[i][0], cmap='gray')
+                    axs[1, i].set_title(f'Label[0] {i+1}')
+                    axs[1, i].axis('off')
+                    
+                    axs[2, i].imshow(roi_np[i][1], cmap='gray')
+                    axs[2, i].set_title(f'Label[1] {i+1}')
+                    axs[2, i].axis('off')
+                    
+                    axs[3, i].imshow(logits_np[i][0], cmap='gray')
+                    axs[3, i].set_title(f'Logit[0] {i+1}')
+                    axs[3, i].axis('off')
+                    
+                    axs[4, i].imshow(logits_np[i][1], cmap='gray')
+                    axs[4, i].set_title(f'Logit[1] {i+1}')
+                    axs[4, i].axis('off')
+
+                plt.tight_layout()
+                plt.savefig('plot.png')
             if index == 0 and batch_no % 10 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
