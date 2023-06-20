@@ -125,7 +125,7 @@ class UNet(nn.Module):
     
 class UNet_J(nn.Module):
     def __init__(self, in_channel=1, out_channel=1, num_filter=32):
-        super(UNet, self).__init__()
+        super(UNet_J, self).__init__()
         self.encoder = Encoder(in_channel=in_channel, base_channel=32)
         self.decoder = Decoder(in_channel=512, out_channel=out_channel, mode="UNet") # noqa
 
