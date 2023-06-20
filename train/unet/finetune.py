@@ -36,7 +36,7 @@ class mIoULoss(nn.Module):
         N = inputs.size()[0]
 
         # predicted probabilities for each pixel along channel
-        inputs = F.softmax(inputs,dim=1)
+        inputs = nn.functional.softmax(inputs,dim=1)
 
         # Numerator Product
         inter = inputs * target_oneHot
