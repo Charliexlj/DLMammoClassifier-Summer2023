@@ -130,9 +130,9 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             
             if index == 0 and batch_no == 0:
                 print('enter batch 0')
-                np_roi = labels.cpu()[:4].numpy().reshape((4, 2, 256, 256))
-                roi_test = T.ToTensor()(np_roi)
-                print("roi unique: ", torch.unique(roi_test))
+                np_roi = labels.cpu()  # [:4].numpy().reshape((4, 2, 256, 256))
+                # roi_test = T.ToTensor()(np_roi)
+                print("roi unique: ", torch.unique(np_roi))
                 '''
                 logits_np = logits[:4].detach().numpy()
 
