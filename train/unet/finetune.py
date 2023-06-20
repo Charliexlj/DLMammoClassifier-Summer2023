@@ -93,7 +93,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     #     loss = train_loss.cpu()
     #     if index == 0 and it % 10 == 0:
     #         print("Iter:{:4d}  |  Tr_loss: {:.4f}".format(it, loss))
-    
+
     for it in range(pre_iter+1, pre_iter+niters+1):
         start = time.time()
         train_sampler = torch.utils.data.distributed.DistributedSampler(
