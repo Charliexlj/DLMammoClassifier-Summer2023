@@ -128,9 +128,10 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
-            '''
+            
             if index == 0 and batch_no == 0:
                 print('enter batch 0')
+                '''
                 np_roi = np.array(labels[:4]).reshape((4, 2, 256, 256))
                 roi_test = T.ToTensor()(np_roi)
                 print("roi unique: ", torch.unique(roi_test))
