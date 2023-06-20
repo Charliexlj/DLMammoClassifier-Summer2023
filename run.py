@@ -45,12 +45,9 @@ if __name__ == '__main__':
     fs = gcsfs.GCSFileSystem()
     filenames = [s for s in fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
     print(f'The dataset contain {len(filenames)} images...')
-    print(f'filename: {filenames[:10]}')
     labels = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace("_", "_ROI_", 1) for filename in filenames] # noqa
     idx = random.randint(0, len(labels)-4)
 
-    print(f'filename: {filenames[idx:idx+4]}')
-    print(f'labels: {labels[idx:idx+4]}')
     idx = [random.randint(0, len(labels)) for _ in range(4)]
 
     image = read_images(filenames, idx)
@@ -60,6 +57,10 @@ if __name__ == '__main__':
 
     np_roi = np.array(roi).reshape((4, 256, 256))
     np_roi = np.where(np_roi >= 0.5, 1, 0)
+    
+    roi = T.ToTensor()(np_roi)
+    print("roi unique: ", torch.unique(roi))
+    print("logits unique: ", torch.unique(logits))
 
     logits_np = torch.argmax(logits, dim=1).detach().numpy()
 
