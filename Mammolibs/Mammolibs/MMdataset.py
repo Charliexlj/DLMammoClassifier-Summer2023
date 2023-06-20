@@ -1,6 +1,7 @@
 import gcsfs
 import imageio
 import torch
+import random
 import numpy as np
 from torch.utils.data import Dataset
 import torchvision.transforms as T
@@ -55,6 +56,12 @@ class MMImageSet(Dataset):
             roi = np.where(roi >= 0.5, 1, 0)
             roi = T.ToTensor()(roi)
             return image, roi
+        
+    def shuffle(self):
+        indices = list(range(len(self.filenames)))
+        random.shuffle(indices)
+        self.filenames = [self.filenames[i] for i in indices]
+        self.labels = [self.labels[i] for i in indices]
 '''
 
 def rgb_to_grayscale(img):
