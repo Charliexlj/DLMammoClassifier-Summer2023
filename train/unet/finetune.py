@@ -51,7 +51,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
     # criterion = nn.BCEWithLogitsLoss()
-    jaccard = JaccardIndex(num_classes=2, task='seg')
+    jaccard = JaccardIndex(num_classes=2, task='binary')
     
     loss = 100
     
