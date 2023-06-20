@@ -110,6 +110,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     for it in range(pre_iter+1, pre_iter+niters+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
+        print('finished paraloader')
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images, labels = batch
             labels = labels.squeeze(1).long()
