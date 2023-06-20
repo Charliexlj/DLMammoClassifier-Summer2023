@@ -53,7 +53,9 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     
     loss = 100
     
-    images, labels = dataset[0]
+    para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+    
+    images, labels = next(iter(para_train_loader))[0]
     images = torch.stack([images]*128)
     labels = labels.squeeze(1).long()
     labels = nn.functional.one_hot(labels)
