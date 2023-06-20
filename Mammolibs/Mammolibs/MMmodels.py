@@ -121,6 +121,35 @@ class UNet(nn.Module):
         dec1 = torch.cat((dec1, enc1), dim=1)
         dec1 = self.decoder.conv1(dec1)
         return torch.sigmoid(self.decoder.conv(dec1))
+    
+    
+class UNet_J(nn.Module):
+    def __init__(self, in_channel=1, out_channel=1, num_filter=32):
+        super(UNet, self).__init__()
+        self.encoder = Encoder(in_channel=in_channel, base_channel=32)
+        self.decoder = Decoder(in_channel=512, out_channel=out_channel, mode="UNet") # noqa
+
+    def forward(self, x):
+        enc1 = self.encoder.conv1(x)
+        enc2 = self.encoder.conv2(self.encoder.pool1(enc1))
+        enc3 = self.encoder.conv3(self.encoder.pool2(enc2))
+        enc4 = self.encoder.conv4(self.encoder.pool3(enc3))
+
+        bottleneck = self.encoder.conv5(self.encoder.pool4(enc4))
+
+        dec4 = self.decoder.upconv4(bottleneck)
+        dec4 = torch.cat((dec4, enc4), dim=1)
+        dec4 = self.decoder.conv4(dec4)
+        dec3 = self.decoder.upconv3(dec4)
+        dec3 = torch.cat((dec3, enc3), dim=1)
+        dec3 = self.decoder.conv3(dec3)
+        dec2 = self.decoder.upconv2(dec3)
+        dec2 = torch.cat((dec2, enc2), dim=1)
+        dec2 = self.decoder.conv2(dec2)
+        dec1 = self.decoder.upconv1(dec2)
+        dec1 = torch.cat((dec1, enc1), dim=1)
+        dec1 = self.decoder.conv1(dec1)
+        return torch.sigmoid(self.decoder.conv(dec1))
 
 
 class Pretrain_Encoder(nn.Module):

@@ -42,7 +42,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     device = xm.xla_device()
 
-    model = MMmodels.UNet()
+    model = MMmodels.UNet_J()
     if state_dict:
         unet_state_dict = model.state_dict()
         partial_state_dict = {k: v for k, v in state_dict.items() if k in unet_state_dict and v.size() == unet_state_dict[k].size()} # noqa
@@ -78,7 +78,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images, labels = batch
-            labels = labels.squeeze(1).long()
+            # labels = labels.squeeze(1).long()
             # labels = nn.functional.one_hot(labels)
             # labels = labels.permute(0, 3, 1, 2).float()
             '''
