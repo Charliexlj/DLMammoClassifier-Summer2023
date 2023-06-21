@@ -111,7 +111,8 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         #     num_workers=8,
         #     drop_last=True)
         # para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-        for batch_no, batch in enumerate(para_train_loader): # noqa
+        # for batch_no, batch in enumerate(para_train_loader): # noqa
+        for batch_no in range(1001):
             # images, labels = batch
             # labels = labels.squeeze(1).long()
             # labels = nn.functional.one_hot(labels)
@@ -166,7 +167,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 plt.savefig(f'plot_{it}.png')
                 print(f'saved plot_{it}.png')
             
-            if index == 0 and batch_no % 10 == 0:
+            if index == 0 and batch_no % 100 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
         if index == 0:
