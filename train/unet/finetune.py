@@ -76,45 +76,46 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     
     loss = 100
     
-    # para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-    
-    # batch = next(para_train_loader)
-    # images, labels = batch
-    # labels = labels.squeeze(1).long()
-    # labels = nn.functional.one_hot(labels)
-    # labels = labels.permute(0, 3, 1, 2).float()
+    train_sampler = torch.utils.data.distributed.DistributedSampler(
+        dataset,
+        num_replicas=xm.xrt_world_size(),
+        rank=xm.get_ordinal(),
+        shuffle=True)
 
-    # for it in range(1000):
-    #     logits = model(images)
-    #     train_loss = criterion(logits, labels)
-    #     optimizer.zero_grad()
-    #     train_loss.backward()
-    #     xm.optimizer_step(optimizer)
-    #     loss = train_loss.cpu()
-    #     if index == 0 and it % 10 == 0:
-    #         print("Iter:{:4d}  |  Tr_loss: {:.4f}".format(it, loss))
+    train_loader = torch.utils.data.DataLoader(
+        dataset,
+        batch_size=batch_size,
+        sampler=train_sampler,
+        num_workers=8,
+        drop_last=True)
+    para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+    batch = next(iter(para_train_loader))
+    images, labels = batch
+    labels = labels.squeeze(1).long()
+    labels = nn.functional.one_hot(labels)
+    labels = labels.permute(0, 3, 1, 2).float()
 
     for it in range(pre_iter+1, pre_iter+niters+1):
         start = time.time()
-        dataset.shuffle()
-        train_sampler = torch.utils.data.distributed.DistributedSampler(
-            dataset,
-            num_replicas=xm.xrt_world_size(),
-            rank=xm.get_ordinal(),
-            shuffle=True)
+        # dataset.shuffle()
+        # train_sampler = torch.utils.data.distributed.DistributedSampler(
+        #     dataset,
+        #     num_replicas=xm.xrt_world_size(),
+        #     rank=xm.get_ordinal(),
+        #     shuffle=True)
 
-        train_loader = torch.utils.data.DataLoader(
-            dataset,
-            batch_size=batch_size,
-            sampler=train_sampler,
-            num_workers=8,
-            drop_last=True)
-        para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+        # train_loader = torch.utils.data.DataLoader(
+        #     dataset,
+        #     batch_size=batch_size,
+        #     sampler=train_sampler,
+        #     num_workers=8,
+        #     drop_last=True)
+        # para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         for batch_no, batch in enumerate(para_train_loader): # noqa
-            images, labels = batch
-            labels = labels.squeeze(1).long()
-            labels = nn.functional.one_hot(labels)
-            labels = labels.permute(0, 3, 1, 2).float()
+            # images, labels = batch
+            # labels = labels.squeeze(1).long()
+            # labels = nn.functional.one_hot(labels)
+            # labels = labels.permute(0, 3, 1, 2).float()
             '''
             image_labels = torch.stack((images, labels), dim=1)
             image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels]) # noqa
