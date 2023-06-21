@@ -95,6 +95,10 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     labels = labels.squeeze(1).long()
     labels = nn.functional.one_hot(labels)
     labels = labels.permute(0, 3, 1, 2).float()
+    
+    image_test, label_test = images.cpu().numpy(), labels.cpu().numpy()
+    print(image_test.shape)
+    print(label_test.shape)
 
     for it in range(pre_iter+1, pre_iter+niters+1):
         start = time.time()
@@ -130,7 +134,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
             
-            if index == 0 and batch_no == 0 and it % 10 == 0:
+            if index == 0 and batch_no == 0:
                 np_roi = labels.cpu().numpy()[:4]  # [:4].numpy().reshape((4, 2, 256, 256))
                 print("np_roi: ", np_roi.shape)
                 
@@ -177,6 +181,27 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             print("=======================================================================") # noqa
     if index == 0:
         MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
+        
+        logits_np = logits.cpu().detach().numpy()
+        print("logits shape: ", logits_np.shape)
+        fig, axs = plt.subplots(5, 4, figsize=(12, 15))
+        for i in range(4):
+            # plot image
+            axs[0, i].imshow(image_test[i][0], cmap='gray')
+            axs[0, i].set_title(f'Image {i+1}')
+            axs[0, i].axis('off')
+            
+            axs[1, i].imshow(label_test[i][0], cmap='gray')
+            axs[1, i].set_title(f'Label[0] {i+1}')
+            axs[1, i].axis('off')
+            
+            axs[3, i].imshow(logits_np[i][0], cmap='gray')
+            axs[3, i].set_title(f'Logit[0] {i+1}')
+            axs[3, i].axis('off')
+
+        plt.tight_layout()
+        plt.savefig(f'plot_test_{it}.png')
+        print(f'saved plot_test_{it}.png')
 
 
 if __name__ == '__main__':
