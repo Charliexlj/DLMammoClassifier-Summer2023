@@ -89,8 +89,9 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         num_workers=8,
         drop_last=True)
     para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-    batch = next(iter(train_loader)).to(device)
-    images, labels = batch
+    first_batch = next(iter(train_loader))
+    images, labels = first_batch
+    images, labels = images.to(device), labels.to(device)
     labels = labels.squeeze(1).long()
     labels = nn.functional.one_hot(labels)
     labels = labels.permute(0, 3, 1, 2).float()
