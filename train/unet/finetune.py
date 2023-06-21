@@ -167,7 +167,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 plt.savefig(f'plot_{it}.png')
                 print(f'saved plot_{it}.png')
             
-            if index == 0 and batch_no % 100 == 0:
+            if index == 0 and batch_no % 1 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
         if index == 0:
