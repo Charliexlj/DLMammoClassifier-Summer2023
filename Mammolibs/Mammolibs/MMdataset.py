@@ -18,8 +18,8 @@ class MMImageSet(Dataset):
     def __init__(self, gcs_path, stage='encoder', aug=True):
         super(MMImageSet, self).__init__()
         self.fs = gcsfs.GCSFileSystem()
-        if aug: self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))]
-        else: self.filenames = [s for s in self.fs.ls(gcs_path) if s.count('_') == 1 and s.endswith(('.png', '.jpg', '.jpeg'))]
+        if aug: self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
+        else: self.filenames = [s for s in self.fs.ls(gcs_path) if s.count('_') == 1 and s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
         print(f'The dataset contain {len(self.filenames)} images...')
         self.stage = stage
         if self.stage == 'finetune':

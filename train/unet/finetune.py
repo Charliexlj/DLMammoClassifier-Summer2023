@@ -184,7 +184,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         
         logits_np = logits.cpu().detach().numpy()
         print("logits shape: ", logits_np.shape)
-        fig, axs = plt.subplots(5, 4, figsize=(12, 15))
+        fig, axs = plt.subplots(3, 4, figsize=(12, 16))
         for i in range(4):
             # plot image
             axs[0, i].imshow(image_test[i][0], cmap='gray')
@@ -195,9 +195,9 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             axs[1, i].set_title(f'Label[0] {i+1}')
             axs[1, i].axis('off')
             
-            axs[3, i].imshow(logits_np[i][0], cmap='gray')
-            axs[3, i].set_title(f'Logit[0] {i+1}')
-            axs[3, i].axis('off')
+            axs[2, i].imshow(logits_np[i][0], cmap='gray')
+            axs[2, i].set_title(f'Logit[0] {i+1}')
+            axs[2, i].axis('off')
 
         plt.tight_layout()
         plt.savefig(f'plot_test_{it}.png')
