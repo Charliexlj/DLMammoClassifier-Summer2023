@@ -21,7 +21,7 @@ class MMImageSet(Dataset):
         # if aug: self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
         # else: self.filenames = [s for s in self.fs.ls(gcs_path) if s.count('_') == 1 and s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
         '''https://storage.cloud.google.com/last_dataset/labelled-dataset/BreastMammography/Benign/MDB_MAMMO_104_0_0.jpg'''
-        gcs_path2 = gcs_path.replace('Benign', 'Maligant')
+        gcs_path2 = gcs_path.replace('Benign', 'Malignant')
         self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] + \
         [s for s in self.fs.ls(gcs_path2) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
         print(f'The dataset contain {len(self.filenames)} images...')
