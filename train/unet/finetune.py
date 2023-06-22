@@ -75,52 +75,28 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     criterion = mIoULoss()
     
     loss = 100
-    
-    train_sampler = torch.utils.data.distributed.DistributedSampler(
-        dataset,
-        num_replicas=xm.xrt_world_size(),
-        rank=xm.get_ordinal(),
-        shuffle=True)
-
-    train_loader = torch.utils.data.DataLoader(
-        dataset,
-        batch_size=batch_size,
-        sampler=train_sampler,
-        num_workers=8,
-        drop_last=True)
-    para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-    first_batch = next(iter(train_loader))
-    images, labels = first_batch
-    images, labels = images.to(device), labels.to(device)
-    labels = labels.squeeze(1).long()
-    labels = nn.functional.one_hot(labels)
-    labels = labels.permute(0, 3, 1, 2).float()
-    
-    image_test, label_test = images.cpu().numpy(), labels.cpu().numpy()
-    print(image_test.shape)
-    print(label_test.shape)
 
     for it in range(pre_iter+1, pre_iter+niters+1):
         start = time.time()
-        # dataset.shuffle()
-        # train_sampler = torch.utils.data.distributed.DistributedSampler(
-        #     dataset,
-        #     num_replicas=xm.xrt_world_size(),
-        #     rank=xm.get_ordinal(),
-        #     shuffle=True)
+        dataset.shuffle()
+        train_sampler = torch.utils.data.distributed.DistributedSampler(
+            dataset,
+            num_replicas=xm.xrt_world_size(),
+            rank=xm.get_ordinal(),
+            shuffle=True)
 
-        # train_loader = torch.utils.data.DataLoader(
-        #     dataset,
-        #     batch_size=batch_size,
-        #     sampler=train_sampler,
-        #     num_workers=8,
-        #     drop_last=True)
-        # para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+        train_loader = torch.utils.data.DataLoader(
+            dataset,
+            batch_size=batch_size,
+            sampler=train_sampler,
+            num_workers=8,
+            drop_last=True)
+        para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         for batch_no, batch in enumerate(para_train_loader): # noqa
-            # images, labels = batch
-            # labels = labels.squeeze(1).long()
-            # labels = nn.functional.one_hot(labels)
-            # labels = labels.permute(0, 3, 1, 2).float()
+            images, labels = batch
+            labels = labels.squeeze(1).long()
+            labels = nn.functional.one_hot(labels)
+            labels = labels.permute(0, 3, 1, 2).float()
             '''
             image_labels = torch.stack((images, labels), dim=1)
             image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels]) # noqa
@@ -134,7 +110,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
             
-            if index == 0 and batch_no == 0:
+            if index == 0 and batch_no == 0 and it % 3 == 1:
                 np_roi = labels.cpu().numpy()[:4]  # [:4].numpy().reshape((4, 2, 256, 256))
                 print("np_roi: ", np_roi.shape)
                 
@@ -171,7 +147,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 plt.savefig(f'plot_{it}.png')
                 print(f'saved plot_{it}.png')
             
-            if index == 0 and batch_no % 100 == 0:
+            if index == 0 and batch_no % 50 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
         if index == 0:
@@ -181,7 +157,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             print("=======================================================================") # noqa
     if index == 0:
         MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
-        
+        image_test, label_test = images.cpu().numpy(), labels.cpu().numpy()
         logits_np = logits.cpu().detach().numpy()
         print("logits shape: ", logits_np.shape)
         fig, axs = plt.subplots(3, 4, figsize=(12, 16))
@@ -221,7 +197,7 @@ if __name__ == '__main__':
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
         print(f'Find model weights at {current_dir}/model_iter_{pre_iter}.pth, loading...') # noqa
 
-    gcs_path = 'gs://combined-dataset/labelled-dataset/CombinedBreastMammography/'
+    gcs_path = 'gs://last_dataset/labelled-dataset/BreastMammography/Benign/'
     dataset = MMdataset.MMImageSet(gcs_path, stage='finetune', aug=True)
 
     n_iter = 20
@@ -238,7 +214,7 @@ if __name__ == '__main__':
         lr,             # lr
         pre_iter,       # pre_iter
         n_iter,         # niters
-        4,             # batch_size
+        128,             # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
     
