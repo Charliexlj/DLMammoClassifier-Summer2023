@@ -73,7 +73,6 @@ def process_images(images, labels, size):
     patches = []
 
     for img, lbl in zip(images, labels):
-        lbl = lbl.squeeze(0)
         # The center of the label '1'
         y, x = (lbl == 1).nonzero().float().mean(0)
         
@@ -152,10 +151,10 @@ if __name__ == '__main__':
     roi = T.ToTensor()(roi)
 
     logits = model(image.unsqueeze(0))
-    logits = torch.argmax(logits, dim=1).detach().unsqueeze(0)
+    logits = torch.argmax(logits, dim=1).detach().squeeze(0)
     
     patches = process_images(image.unsqueeze(0), logits, size=56)
-    
+    print(patches.shape)
     feature = get_features(patches[0])
     print(feature.shape)
     
