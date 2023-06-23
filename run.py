@@ -108,7 +108,7 @@ if os.path.exists(load_model):
 
 
 def get_features(patch):
-    patch = patch.numpy()
+    img_arr = patch.numpy()
     net = MyModel()
     img_arr = cv2.resize(img_arr, (224,224))
     img_arr = torch.tensor(img_arr)
