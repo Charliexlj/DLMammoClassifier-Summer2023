@@ -75,6 +75,7 @@ for i in range(36):
     overlay_color = (0, 80, 0)  # Green color
     overlay = np.zeros_like(original_image_rgb, dtype=np.uint8)
     overlay[np.where(binary_mask > 0)] = overlay_color
+    overlay = overlay.astype(original_image_rgb.dtype)
 
     # Combine the overlay with the original image
     highlighted_image = cv2.addWeighted(original_image_rgb, 1, overlay, 1, 0)
