@@ -17,7 +17,7 @@ import torchvision
 import torch.nn as nn
 
 import sys
-sys.path.insert(0, '/home/DLMammoClassifier-Summer2023/resnet')
+sys.path.append('/home/DLMammoClassifier-Summer2023')
 
 import resnet.classification.svm_clf as clf
 
