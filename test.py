@@ -56,7 +56,7 @@ idx = [random.randint(0, len(labels_names)-1) for _ in range(36)]
 images = read_images(filenames, idx)
 labels = read_images(labels_names, idx)
 
-images_np = images.numpy().reshape(36, 256, 256)
+images_np = images.numpy().reshape(36, 256, 256)*255
 labels_np = labels.numpy().reshape(36, 256, 256)
 
 # Create a blank array to hold the highlighted images
@@ -72,7 +72,7 @@ for i in range(36):
     _, binary_mask = cv2.threshold(labels_np[i], 0, 255, cv2.THRESH_BINARY)
     
     # Convert the binary mask to a colored overlay (e.g., green)
-    overlay_color = (0, 255, 0)  # Green color
+    overlay_color = (0, 100, 0)  # Green color
     overlay = np.zeros_like(original_image_rgb)
     overlay[np.where(binary_mask > 0)] = overlay_color
     
