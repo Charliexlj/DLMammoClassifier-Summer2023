@@ -1,5 +1,6 @@
 import os
 
+import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -41,56 +42,56 @@ if __name__ == '__main__':
     # model.load_state_dict(state_dict)
     # print(f'Find model weights at {current_dir}/train/unet/autoencoder/model_iter_{iter}.pth, loading...') # noqa
 
-    gcs_path = 'gs://combined-dataset/labelled-dataset/CombinedBreastMammography/' # noqa
+    gcs_path = 'gs://last_dataset/labelled-dataset/BreastMammography/Benign/' # noqa
+    gcs_path2 = gcs_path.replace('Benign', 'Malignant')
     fs = gcsfs.GCSFileSystem()
-    filenames = [s for s in fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
+
+    filenames = [s for s in fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] + \
+    [s for s in self.fs.ls(gcs_path2) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
+    labels_names = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in self.filenames] # noqa
     print(f'The dataset contain {len(filenames)} images...')
 
-    labels_names = [filename.replace('CombinedBreastMammography', 'CombinedROIMask').replace("_", "_ROI_", 1) for filename in filenames] # noqa
-    idx = [random.randint(0, len(labels_names)) for _ in range(18)]
+idx = [random.randint(0, len(labels_names)-1) for _ in range(36)]
 
-    images = read_images(filenames, idx)
-    labels = read_images(labels_names, idx)
+images = read_images(filenames, idx)
+labels = read_images(labels_names, idx)
 
-    # logits = model(image)
+images_np = images.numpy().reshape(36, 256, 256)
+labels_np = labels.numpy().reshape(36, 256, 256)
 
-    images_np = images.numpy()
-    labels_np = labels.numpy()
-    # logits_np = logits.detach().numpy()
+# Create a blank array to hold the highlighted images
+highlighted_images = np.zeros((36, 256, 256, 3), dtype=np.uint8)
+
+for i in range(36):
+    original_image_gray = images_np[i]  # Grayscale original image
     
-    fig, axs = plt.subplots(6, 6, figsize=(24, 24))
+    # Convert the original grayscale image to three channels
+    original_image_rgb = cv2.cvtColor(original_image_gray, cv2.COLOR_GRAY2RGB)
+    
+    # Create a mask by thresholding the segmentation image
+    _, binary_mask = cv2.threshold(labels_np[i], 0, 255, cv2.THRESH_BINARY)
+    
+    # Convert the binary mask to a colored overlay (e.g., green)
+    overlay_color = (0, 255, 0)  # Green color
+    overlay = np.zeros_like(original_image_rgb)
+    overlay[np.where(binary_mask > 0)] = overlay_color
+    
+    # Combine the overlay with the original image
+    highlighted_image = cv2.addWeighted(original_image_rgb, 1, overlay, 0.5, 0)
+    
+    # Store the highlighted image in the array
+    highlighted_images[i] = highlighted_image
 
-    for i in range(6):
-        # plot image
-        axs[0, i].imshow(images_np[i][0], cmap='gray')
-        axs[0, i].set_title(f'Image {i+1}')
-        axs[0, i].axis('off')
-        
-        # plot roi
-        axs[1, i].imshow(labels_np[i][0], cmap='gray')
-        axs[1, i].set_title(f'Label {i+1}')
-        axs[1, i].axis('off')
-        
-        # plot image
-        axs[2, i].imshow(images_np[i+6][0], cmap='gray')
-        axs[2, i].set_title(f'Image {i+7}')
-        axs[2, i].axis('off')
-        
-        # plot roi
-        axs[3, i].imshow(labels_np[i+6][0], cmap='gray')
-        axs[3, i].set_title(f'Label {i+7}')
-        axs[3, i].axis('off')
-        
-        # plot image
-        axs[4, i].imshow(images_np[i+12][0], cmap='gray')
-        axs[4, i].set_title(f'Image {i+13}')
-        axs[4, i].axis('off')
-        
-        # plot roi
-        axs[5, i].imshow(labels_np[i+12][0], cmap='gray')
-        axs[5, i].set_title(f'Label {i+13}')
-        axs[5, i].axis('off')
+fig, axs = plt.subplots(6, 6, figsize=(24, 24))
 
-    plt.tight_layout()
-    plt.savefig('plot.png')
-    print('saved plot.png')
+for i in range(6):
+    for j in range(6):
+        axs[i, j].imshow(highlighted_images[i*6+j])
+        axs[i, j].set_title(f'Image {i*6+j+1}')
+        axs[i, j].axis('off')
+
+plt.tight_layout()
+plt.savefig('plot.png')
+plt.show()
+
+print('Saved plot.png')
