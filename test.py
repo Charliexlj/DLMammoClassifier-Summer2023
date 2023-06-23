@@ -105,7 +105,7 @@ if __name__ == '__main__':
     for i in range(3):
         for j in range(4):
             axs[i, j].imshow(highlighted_images[i*3+j])
-            axs[i, j].set_title(f'Image {i*3+j+1}')
+            axs[i, j].set_title(filenames[idx[i*3+j+1]])
             axs[i, j].axis('off')
 
     plt.tight_layout()
