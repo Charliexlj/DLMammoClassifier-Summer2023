@@ -94,8 +94,8 @@ if __name__ == '__main__':
         overlay_p = overlay_p.astype(original_image_rgb.dtype)
 
         # Combine the overlay with the original image
-        highlighted_image = cv2.addWeighted(original_image_rgb, 0.8, overlay_t, 0.1, 0)
-        highlighted_image_2 = cv2.addWeighted(highlighted_image, 0.8, overlay_p, 0.1, 0)
+        highlighted_image = cv2.addWeighted(overlay_t, 1, overlay_p, 1, 0)
+        highlighted_image_2 = cv2.addWeighted(original_image_rgb, 0.8, highlighted_image, 0.2, 0)
         
         # Store the highlighted image in the array
         highlighted_images[i] = highlighted_image_2
