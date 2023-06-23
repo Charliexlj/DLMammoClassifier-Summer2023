@@ -1,4 +1,5 @@
 import gcsfs
+import cv2
 import imageio
 import torch
 import random
@@ -12,6 +13,84 @@ def mutations(image):
     image = T.RandomAutocontrast()(image)
     image = T.RandomPerspective()(image)
     return image
+
+def crop_center(img, cx, cy, size):
+    """
+    Crop out a square patch from an image.
+    cx, cy are the center of the patch.
+    """
+    start_x = max(cx - size // 2, 0)
+    if start_x + size > img.size(-1):
+        start_x = img.size(-1) - size
+
+    start_y = max(cy - size // 2, 0)
+    if start_y + size > img.size(-2):
+        start_y = img.size(-2) - size
+
+    return img[..., start_y:start_y+size, start_x:start_x+size]
+
+
+def get_negative_patch_center(x, y, image_shape, patch_size):
+    h, w = image_shape
+    patch_half = patch_size // 2
+
+    # Define the boundaries of four quadrants centered at (x, y)
+    left_boundary = max(0, x - patch_half)
+    right_boundary = min(w, x + patch_half)
+    top_boundary = max(0, y - patch_half)
+    bottom_boundary = min(h, y + patch_half)
+
+    # Randomly choose a quadrant for the negative patch
+    quadrant = np.random.choice(['top_left', 'top_right', 'bottom_left', 'bottom_right'])
+
+    if quadrant == 'top_left':
+        x_range = (0, left_boundary - patch_half)
+        y_range = (0, top_boundary - patch_half)
+    elif quadrant == 'top_right':
+        x_range = (right_boundary + patch_half, w - patch_half)
+        y_range = (0, top_boundary - patch_half)
+    elif quadrant == 'bottom_left':
+        x_range = (0, left_boundary - patch_half)
+        y_range = (bottom_boundary + patch_half, h - patch_half)
+    else:  # quadrant == 'bottom_right'
+        x_range = (right_boundary + patch_half, w - patch_half)
+        y_range = (bottom_boundary + patch_half, h - patch_half)
+
+    # Randomly select the center coordinate of the negative patch within the selected quadrant
+    x_negative = np.random.randint(*x_range)
+    y_negative = np.random.randint(*y_range)
+
+    return x_negative, y_negative
+
+
+def process_images_patch(images, labels, size):
+    patches = []
+
+    for img, lbl in zip(images, labels):
+        # The center of the label '1'
+        label = 0
+        nonzero_coords = (lbl == 1).nonzero()
+        if nonzero_coords.nelement() == 0:  # If no elements found, continue to next iteration
+            x, y = 128,128
+            label = 0
+        else:
+            y, x = nonzero_coords.float().mean(0)
+            x = round(x.item())
+            y = round(y.item())
+            label = 1
+            if random.random() > 0.5:
+                x, y = get_negative_patch_center(x,y,(256,256),56)
+                label = 0
+
+        # Crop a patch from the image
+        patch = crop_center(img, x, y, size)
+
+        patches.append(patch)
+
+    # Convert list of tensors into a 4D tensor
+    patches = torch.stack(patches)
+
+    return patches, label
 
 
 class MMImageSet(Dataset):
@@ -54,7 +133,19 @@ class MMImageSet(Dataset):
             print(f"Image at index {idx} is None. Returning a zero tensor instead.")
             return torch.zeros(1, 256, 256)
         if self.stage != 'finetune':
-            return image
+            if self.stage == 'local':
+                roi = self.read_image(self.filenames[idx].replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1))
+                roi = np.array(roi).reshape((256, 256))
+                roi = np.where(roi >= 0.5, 1, 0)
+                roi = T.ToTensor()(roi)
+                patch, label = process_images_patch(image.unsqueeze(0), roi, size=56)
+                img_arr = patch.permute(1, 2, 0).numpy()
+                img_arr = cv2.resize(img_arr, (224,224))
+                img_arr = torch.tensor(img_arr).unsqueeze(0)
+                img_arr = img_arr.repeat(3, 1, 1)
+                return img, label
+            else:
+                return image
         else:
             roi = self.read_image(self.filenames[idx].replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1))
             roi = np.array(roi).reshape((256, 256))
