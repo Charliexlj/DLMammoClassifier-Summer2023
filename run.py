@@ -71,6 +71,7 @@ def crop_center(img, cx, cy, size):
 
 def process_images(images, labels, size):
     patches = []
+    print(f'image shape: {images.shape}, labels shape: {labels.shape}')
 
     for img, lbl in zip(images, labels):
         # The center of the label '1'
