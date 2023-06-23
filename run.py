@@ -77,11 +77,11 @@ def process_images(images, labels, size):
         # The center of the label '1'
         nonzero_coords = (lbl == 1).nonzero()
         if nonzero_coords.nelement() == 0:  # If no elements found, continue to next iteration
-            continue
-
-        y, x = nonzero_coords.float().mean(0)
-        x = round(x.item())
-        y = round(y.item())
+            x, y = 128,128
+        else:
+            y, x = nonzero_coords.float().mean(0)
+            x = round(x.item())
+            y = round(y.item())
 
         # Crop a patch from the image
         patch = crop_center(img, x, y, size)
