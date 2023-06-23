@@ -124,11 +124,11 @@ if __name__ == '__main__':
     model.load_state_dict(state_dict)
     print(f'Find model weights at {current_dir}/train/unet/model_iter_{iter}.pth, loading...') # noqa
 
-    # gcs_path = 'gs://last_dataset/labelled-dataset/BreastMammography/Benign/' # noqa
-    # gcs_path2 = gcs_path.replace('Benign', 'Malignant')
+    gcs_path = 'gs://last_dataset/labelled-dataset/BreastMammography/Benign/' # noqa
+    gcs_path2 = gcs_path.replace('Benign', 'Malignant')
     fs = gcsfs.GCSFileSystem()
 
-    # filenames = [s for s in fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] + \
+    filenames = [s for s in fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] + \
     # [s for s in fs.ls(gcs_path2) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
     # labels_names = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in filenames] # noqa
     # print(f'The dataset contain {len(filenames)} images...')
@@ -137,11 +137,12 @@ if __name__ == '__main__':
 
     # images = read_images(filenames, idx)
     # roi = read_images(labels_names, idx)
-    
-    img_path = 'gs://' + input('Image path:')
-    roi_path = img_path.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1)
-    image = read_image(img_path)
-    roi = read_image(roi_path)
+    labels_names = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in filenames] # noqa
+
+    idx = random.randint(0, len(labels_names)-1)
+    print(filenames[idx])
+    image = read_image(filenames[idx])
+    roi = read_image(labels_names[idx])
     
     roi = np.array(roi).reshape((256, 256))
     roi = np.where(roi >= 0.5, 1, 0)
