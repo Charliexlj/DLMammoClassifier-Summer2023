@@ -127,11 +127,12 @@ def get_features(patch):
 
 if __name__ == '__main__':
     model = MMmodels.UNet()
-    iter = input("Model iter: ")
+    # iter = input("Model iter: ")
+    iter = 60
     current_dir = os.path.dirname(os.path.realpath(__file__))
     state_dict = torch.load(f'{current_dir}/train/unet/model_iter_{iter}.pth') # noqa
     model.load_state_dict(state_dict)
-    print(f'Find model weights at {current_dir}/train/unet/model_iter_{iter}.pth, loading...') # noqa
+    # print(f'Find model weights at {current_dir}/train/unet/model_iter_{iter}.pth, loading...') # noqa
 
     gcs_path = 'gs://last_dataset/labelled-dataset/BreastMammography/Benign/' # noqa
     gcs_path2 = gcs_path.replace('Benign', 'Malignant')
@@ -147,24 +148,28 @@ if __name__ == '__main__':
     # images = read_images(filenames, idx)
     # roi = read_images(labels_names, idx)
     labels_names = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in filenames] # noqa
+    while(1):
+        next = input('next?')
+        idx = random.randint(0, len(labels_names)-1)
+        if 'Benign' in filenames[idx]:
+            print('label: Benign')
+        else:
+            print('label: Malignant')
+        image = read_image(filenames[idx])
+        roi = read_image(labels_names[idx])
+        
+        roi = np.array(roi).reshape((256, 256))
+        roi = np.where(roi >= 0.5, 1, 0)
+        roi = T.ToTensor()(roi)
 
-    idx = random.randint(0, len(labels_names)-1)
-    print(filenames[idx])
-    image = read_image(filenames[idx])
-    roi = read_image(labels_names[idx])
-    
-    roi = np.array(roi).reshape((256, 256))
-    roi = np.where(roi >= 0.5, 1, 0)
-    roi = T.ToTensor()(roi)
-
-    logits = model(image.unsqueeze(0))
-    logits = torch.argmax(logits, dim=1).detach()
-    
-    patches = process_images(image.unsqueeze(0), logits, size=56)
-    feature = get_features(patches[0])
-    
-    pred = MMutils.predict(feature)
-    print(pred)
+        logits = model(image.unsqueeze(0))
+        logits = torch.argmax(logits, dim=1).detach()
+        
+        patches = process_images(image.unsqueeze(0), logits, size=56)
+        feature = get_features(patches[0])
+        
+        pred = MMutils.predict(feature)
+        print(f'Predict: {pred}')
 
     # np_roi = np.array(roi).reshape((4, 256, 256))
     # np_roi = np.where(np_roi >= 0.5, 1, 0)
