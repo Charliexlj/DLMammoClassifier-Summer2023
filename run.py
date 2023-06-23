@@ -16,7 +16,8 @@ import cv2
 import torchvision
 import torch.nn as nn
 
-
+import warnings
+warnings.filterwarnings("ignore")
 
 class MyModel(nn.Module):
     def __init__(self):
@@ -164,9 +165,7 @@ if __name__ == '__main__':
     logits = torch.argmax(logits, dim=1).detach()
     
     patches = process_images(image.unsqueeze(0), logits, size=56)
-    print(f'patches shape: {patches.shape}')
     feature = get_features(patches[0])
-    print(f'feature shape: {feature.shape}')
     
     pred = MMutils.predict(feature)
     print(pred)
