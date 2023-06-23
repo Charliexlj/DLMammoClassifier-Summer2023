@@ -66,8 +66,8 @@ if __name__ == '__main__':
     logits = model(images)
 
     images_np = images.numpy().reshape(12, 256, 256)*255
-    labels_np = labels.numpy().reshape(12, 256, 256)
-    logits_np = torch.argmax(logits, dim=1).detach().numpy().reshape(12, 256, 256)
+    labels_np = labels.numpy().reshape(12, 256, 256).astype(np.uint8)
+    logits_np = torch.argmax(logits, dim=1).detach().numpy().reshape(12, 256, 256).astype(np.uint8)
 
     # Create a blank array to hold the highlighted images
     highlighted_images = np.zeros((36, 256, 256, 3), dtype=np.uint8)
