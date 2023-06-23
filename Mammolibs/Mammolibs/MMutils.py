@@ -3,7 +3,7 @@ import os
 
 import pickle as pkl
 
-clf_model = 'resnet/svm_clf.pkl'
+clf_model = 'train/resnet/svm_clf.pkl'
 file_ = open(clf_model, 'rb')
 clf_svm = pkl.load(file_)
 file_.close()
