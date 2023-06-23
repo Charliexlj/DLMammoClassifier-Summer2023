@@ -111,7 +111,7 @@ if os.path.exists(load_model):
 
 
 def get_features(patch):
-    img_arr = patch.numpy()
+    img_arr = patch.permute(2, 0, 1).numpy()
     net = MyModel()
     img_arr = cv2.resize(img_arr, (224,224))
     print(img_arr.shape)
