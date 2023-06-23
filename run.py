@@ -140,67 +140,67 @@ if __name__ == '__main__':
 
     filenames = [s for s in fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] + \
     [s for s in fs.ls(gcs_path2) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
-    # labels_names = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in filenames] # noqa
-    # print(f'The dataset contain {len(filenames)} images...')
-    
-    # idx = [random.randint(0, len(labels_names)-1) for _ in range(12)]
-
-    # images = read_images(filenames, idx)
-    # roi = read_images(labels_names, idx)
     labels_names = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in filenames] # noqa
-    while(1):
-        next = input('next?')
-        idx = random.randint(0, len(labels_names)-1)
-        if 'Benign' in filenames[idx]:
-            print('label: Benign')
-        else:
-            print('label: Malignant')
-        image = read_image(filenames[idx])
-        roi = read_image(labels_names[idx])
-        
-        roi = np.array(roi).reshape((256, 256))
-        roi = np.where(roi >= 0.5, 1, 0)
-        roi = T.ToTensor()(roi)
-
-        logits = model(image.unsqueeze(0))
-        logits = torch.argmax(logits, dim=1).detach()
-        
-        patches = process_images(image.unsqueeze(0), logits, size=56)
-        feature = get_features(patches[0])
-        
-        pred = MMutils.predict(feature)
-        print(f'Predict: {pred}')
-
-    # np_roi = np.array(roi).reshape((4, 256, 256))
-    # np_roi = np.where(np_roi >= 0.5, 1, 0)
+    print(f'The dataset contain {len(filenames)} images...')
     
-    # roi_test = T.ToTensor()(np_roi)
-    # print("roi unique: ", torch.unique(roi_test))
+    idx = [random.randint(0, len(labels_names)-1) for _ in range(12)]
 
-    # logits_np = torch.argmax(logits, dim=1).detach().numpy()
-    # logits_test = T.ToTensor()(logits_np)
-    # print("logits unique: ", torch.unique(logits_test))
-
-    # image_np = image.numpy()
-    # roi_np = roi.numpy()
-
-    # fig, axs = plt.subplots(3, 4, figsize=(12, 9))
-
-    # for i in range(4):
-    #     # plot image
-    #     axs[0, i].imshow(image_np[i][0], cmap='gray')
-    #     axs[0, i].set_title(f'Image {i+1}')
-    #     axs[0, i].axis('off')
+    images = read_images(filenames, idx)
+    roi = read_images(labels_names, idx)
+    # labels_names = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in filenames] # noqa
+    # while(1):
+    #     next = input('next?')
+    #     idx = random.randint(0, len(labels_names)-1)
+    #     if 'Benign' in filenames[idx]:
+    #         print('label: Benign')
+    #     else:
+    #         print('label: Malignant')
+    #     image = read_image(filenames[idx])
+    #     roi = read_image(labels_names[idx])
         
-    #     # plot roi
-    #     axs[1, i].imshow(roi_np[i][0], cmap='gray')
-    #     axs[1, i].set_title(f'Label {i+1}')
-    #     axs[1, i].axis('off')
-        
-    #     # plot logits
-    #     axs[2, i].imshow(logits_np[i], cmap='gray')
-    #     axs[2, i].set_title(f'Logit {i+1}')
-    #     axs[2, i].axis('off')
+    roi = np.array(roi).reshape((256, 256))
+    roi = np.where(roi >= 0.5, 1, 0)
+    roi = T.ToTensor()(roi)
 
-    # plt.tight_layout()
-    # plt.savefig('plot.png')
+    logits = model(images.unsqueeze(0))
+    logits = torch.argmax(logits, dim=1).detach()
+        
+    #     patches = process_images(image.unsqueeze(0), logits, size=56)
+    #     feature = get_features(patches[0])
+        
+    #     pred = MMutils.predict(feature)
+    #     print(f'Predict: {pred}')
+
+    np_roi = np.array(roi).reshape((4, 256, 256))
+    np_roi = np.where(np_roi >= 0.5, 1, 0)
+    
+    roi_test = T.ToTensor()(np_roi)
+    print("roi unique: ", torch.unique(roi_test))
+
+    logits_np = torch.argmax(logits, dim=1).detach().numpy()
+    logits_test = T.ToTensor()(logits_np)
+    print("logits unique: ", torch.unique(logits_test))
+
+    image_np = images.numpy()
+    roi_np = roi.numpy()
+
+    fig, axs = plt.subplots(3, 4, figsize=(12, 9))
+
+    for i in range(4):
+        # plot image
+        axs[0, i].imshow(image_np[i][0], cmap='gray')
+        axs[0, i].set_title(f'Image {i+1}')
+        axs[0, i].axis('off')
+        
+        # plot roi
+        axs[1, i].imshow(roi_np[i][0], cmap='gray')
+        axs[1, i].set_title(f'Label {i+1}')
+        axs[1, i].axis('off')
+        
+        # plot logits
+        axs[2, i].imshow(logits_np[i], cmap='gray')
+        axs[2, i].set_title(f'Logit {i+1}')
+        axs[2, i].axis('off')
+
+    plt.tight_layout()
+    plt.savefig('plot.png')
