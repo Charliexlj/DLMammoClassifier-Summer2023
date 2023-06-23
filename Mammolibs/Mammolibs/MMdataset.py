@@ -56,7 +56,7 @@ class MMImageSet(Dataset):
         if self.stage != 'finetune':
             return image
         else:
-            roi = self.read_image(self.labels[idx])
+            roi = self.read_image(self.filenames[idx].replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1))
             roi = np.array(roi).reshape((256, 256))
             roi = np.where(roi >= 0.5, 1, 0)
             roi = T.ToTensor()(roi)
