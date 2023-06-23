@@ -143,7 +143,7 @@ class MMImageSet(Dataset):
                 img_arr = cv2.resize(img_arr, (224,224))
                 img_arr = torch.tensor(img_arr).unsqueeze(0)
                 img_arr = img_arr.repeat(3, 1, 1)
-                return img, label
+                return img_arr, label
             else:
                 return image
         else:
