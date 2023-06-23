@@ -10,16 +10,12 @@ import gcsfs
 import imageio
 import torchvision.transforms as T
 
-from Mammolibs import MMmodels
+from Mammolibs import MMmodels, MMutils
 
 import cv2
 import torchvision
 import torch.nn as nn
 
-import sys
-sys.path.append('/home/DLMammoClassifier-Summer2023')
-
-import resnet.classification.svm_clf as clf
 
 
 class MyModel(nn.Module):
@@ -159,7 +155,7 @@ if __name__ == '__main__':
     feature = get_features(patches[0])
     print(feature.shape)
     
-    pred = clf.predict(feature)
+    pred = MMutils.svm_clf.predict(feature)
     print(pred)
 
     # np_roi = np.array(roi).reshape((4, 256, 256))
