@@ -44,21 +44,6 @@ class mIoULoss(nn.Module):
 
 def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
              batch_size=16, current_dir='/home'):
-    
-    # def iou_pytorch(outputs: torch.Tensor, labels: torch.Tensor):
-    #     # You can comment out this line if you are passing tensors of equal shape
-    #     # But if you are passing output from UNet or something it will most probably
-    #     # be with the BATCH x 1 x H x W shape
-    #     outputs = outputs.squeeze(1)  # BATCH x 1 x H x W => BATCH x H x W
-        
-    #     intersection = (outputs & labels).float().sum((1, 2))  # Will be zero if Truth=0 or Prediction=0
-    #     union = (outputs | labels).float().sum((1, 2))         # Will be zzero if both are 0
-        
-    #     iou = (intersection + 1e-6) / (union + 1e-6)  # We smooth our devision to avoid 0/0
-        
-    #     thresholded = torch.clamp(20 * (iou - 0.5), 0, 10).ceil() / 10  # This is equal to comparing with thresolds
-
-    #     return thresholded 
 
     device = xm.xla_device()
 
@@ -147,7 +132,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 plt.savefig(f'plot_{it}.png')
                 print(f'saved plot_{it}.png')
             
-            if index == 0 and batch_no % 5 == 0:
+            if index == 0 and batch_no % 50 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
         if index == 0:
@@ -214,7 +199,7 @@ if __name__ == '__main__':
         lr,             # lr
         pre_iter,       # pre_iter
         n_iter,         # niters
-        32,             # batch_size
+        128,            # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
     
