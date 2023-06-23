@@ -79,7 +79,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         for batch_no, batch in enumerate(para_train_loader): # noqa
             images, labels = batch
-            labels = labels.float()
+            labels = torch.zeros(128, 2, 256, 256, device=labels.device).scatter_(1, labels, 1).float()
             '''
             image_labels = torch.stack((images, labels), dim=1)
             image_labels = torch.stack([MMdataset.mutations(image_label) for image_label in image_labels]) # noqa
@@ -87,7 +87,7 @@ def finetune(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             labels = image_labels[:, 1, :, :, :]
             '''
             logits = model(images)
-            train_loss = criterion(logits, labels)
+            train_loss = criterion(logits, one_hot)
             optimizer.zero_grad()
             train_loss.backward()
             xm.optimizer_step(optimizer)
