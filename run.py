@@ -158,7 +158,7 @@ if __name__ == '__main__':
     #     image = read_image(filenames[idx])
     #     roi = read_image(labels_names[idx])
         
-    roi = np.array(roi).reshape((256, 256))
+    roi = np.array(roi).reshape((12, 256, 256))
     roi = np.where(roi >= 0.5, 1, 0)
     roi = T.ToTensor()(roi)
 

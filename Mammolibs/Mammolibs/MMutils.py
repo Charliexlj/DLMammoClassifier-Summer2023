@@ -1,21 +1,21 @@
 import torch
 import os
 
-import pickle as pkl
+# import pickle as pkl
 
-clf_model = 'train/resnet/svm_clf.pkl'
-file_ = open(clf_model, 'rb')
-clf_svm = pkl.load(file_)
-file_.close()
+# clf_model = 'train/resnet/svm_clf.pkl'
+# file_ = open(clf_model, 'rb')
+# clf_svm = pkl.load(file_)
+# file_.close()
 
 
-def predict(feature):
-    pred = clf_svm.predict(feature)
+# def predict(feature):
+#     pred = clf_svm.predict(feature)
 
-    if pred == 1:
-        return 'Malignant'
-    else:
-        return 'Benign'
+#     if pred == 1:
+#         return 'Malignant'
+#     else:
+#         return 'Benign'
 
 
 def convert_seconds_to_time(seconds):
