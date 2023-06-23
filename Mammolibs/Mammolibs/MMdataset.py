@@ -24,8 +24,7 @@ class MMImageSet(Dataset):
             gcs_path2 = gcs_path.replace('Benign', 'Malignant')
             self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] + \
             [s for s in self.fs.ls(gcs_path2) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
-            print(f'The dataset contain {len(self.filenames)} images...')
-            self.labels = [filename.replace('BreastMammography', 'ROIMask').replace("_MAMMO_", "_ROI_", 1) for filename in self.filenames] # noqa
+            self.labels = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in self.filenames] # noqa
         else:
             if aug: self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
             else: self.filenames = [s for s in self.fs.ls(gcs_path) if s.count('_') == 1 and s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
