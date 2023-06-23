@@ -1,0 +1,30 @@
+Training Autoencoder...
+Total trainable parameters = 6963697
+Find model weights at /home/DLMammoClassifier-Summer2023/train/unet/autoencoder/model_iter_60.pth, loading...
+The dataset contain 5612 images...
+Master Process  |  Iter:  61  |  Tr_loss: 0.0055  |  Time: 19m58s
+Master Process  |  Iter:  62  |  Tr_loss: 0.0048  |  Time: 21m0s
+Master Process  |  Iter:  63  |  Tr_loss: 0.0027  |  Time: 21m17s
+Master Process  |  Iter:  64  |  Tr_loss: 0.0027  |  Time: 21m30s
+Master Process  |  Iter:  65  |  Tr_loss: 0.0021  |  Time: 21m52s
+Master Process  |  Iter:  66  |  Tr_loss: 0.0022  |  Time: 21m58s
+Master Process  |  Iter:  67  |  Tr_loss: 0.0022  |  Time: 21m54s
+Master Process  |  Iter:  68  |  Tr_loss: 0.0018  |  Time: 22m6s
+Master Process  |  Iter:  69  |  Tr_loss: 0.0016  |  Time: 22m23s
+Master Process  |  Iter:  70  |  Tr_loss: 0.0016  |  Time: 22m33s
+Master Process  |  Iter:  71  |  Tr_loss: 0.0017  |  Time: 22m8s
+Master Process  |  Iter:  72  |  Tr_loss: 0.0017  |  Time: 21m51s
+Master Process  |  Iter:  73  |  Tr_loss: 0.0019  |  Time: 22m20s
+Master Process  |  Iter:  74  |  Tr_loss: 0.0019  |  Time: 21m35s
+Master Process  |  Iter:  75  |  Tr_loss: 0.0016  |  Time: 22m24s
+Master Process  |  Iter:  76  |  Tr_loss: 0.0017  |  Time: 21m45s
+Master Process  |  Iter:  77  |  Tr_loss: 0.0015  |  Time: 22m30s
+Master Process  |  Iter:  78  |  Tr_loss: 0.0015  |  Time: 22m13s
+Master Process  |  Iter:  79  |  Tr_loss: 0.0014  |  Time: 22m41s
+Master Process  |  Iter:  80  |  Tr_loss: 0.0015  |  Time: 22m19s
+Master Process  |  Iter:  81  |  Tr_loss: 0.0015  |  Time: 21m46s
+Master Process  |  Iter:  82  |  Tr_loss: 0.0013  |  Time: 22m19s
+Master Process  |  Iter:  83  |  Tr_loss: 0.0012  |  Time: 22m25s
+Master Process  |  Iter:  84  |  Tr_loss: 0.0013  |  Time: 22m36s
+Master Process  |  Iter:  85  |  Tr_loss: 0.0012  |  Time: 22m4s
+/home/DLMammoClassifier-Summer2023/train/unet/autoencoder/model_iter_85.pth saved successfully

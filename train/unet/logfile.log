@@ -1,0 +1,729 @@
+Finetuning...
+Total trainable parameters = 7738742
+Find model weights at /home/DLMammoClassifier-Summer2023/train/unet/autoencoder/model_iter_85.pth, loading...
+The dataset contain 81288 images...
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_1.png
+Batch:   0  |  Iter:   1  |  Tr_loss: 0.7249
+Batch:  10  |  Iter:   1  |  Tr_loss: 0.7196
+Batch:  20  |  Iter:   1  |  Tr_loss: 0.7146
+Batch:  30  |  Iter:   1  |  Tr_loss: 0.7122
+Batch:  40  |  Iter:   1  |  Tr_loss: 0.7078
+Batch:  50  |  Iter:   1  |  Tr_loss: 0.7039
+Batch:  60  |  Iter:   1  |  Tr_loss: 0.6988
+Batch:  70  |  Iter:   1  |  Tr_loss: 0.6945
+=======================================================================
+Master Process  |  Iter:   1  |  Tr_loss: 0.6913  |  Time: 4m13s
+=======================================================================
+Batch:   0  |  Iter:   2  |  Tr_loss: 0.6909
+Batch:  10  |  Iter:   2  |  Tr_loss: 0.6854
+Batch:  20  |  Iter:   2  |  Tr_loss: 0.6819
+Batch:  30  |  Iter:   2  |  Tr_loss: 0.6782
+Batch:  40  |  Iter:   2  |  Tr_loss: 0.6751
+Batch:  50  |  Iter:   2  |  Tr_loss: 0.6716
+Batch:  60  |  Iter:   2  |  Tr_loss: 0.6687
+Batch:  70  |  Iter:   2  |  Tr_loss: 0.6658
+=======================================================================
+Master Process  |  Iter:   2  |  Tr_loss: 0.6637  |  Time: 2m38s
+=======================================================================
+Batch:   0  |  Iter:   3  |  Tr_loss: 0.6635
+Batch:  10  |  Iter:   3  |  Tr_loss: 0.6616
+Batch:  20  |  Iter:   3  |  Tr_loss: 0.6588
+Batch:  30  |  Iter:   3  |  Tr_loss: 0.6527
+Batch:  40  |  Iter:   3  |  Tr_loss: 0.6506
+Batch:  50  |  Iter:   3  |  Tr_loss: 0.6484
+Batch:  60  |  Iter:   3  |  Tr_loss: 0.6468
+Batch:  70  |  Iter:   3  |  Tr_loss: 0.6457
+=======================================================================
+Master Process  |  Iter:   3  |  Tr_loss: 0.6449  |  Time: 2m43s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_4.png
+Batch:   0  |  Iter:   4  |  Tr_loss: 0.6446
+Batch:  10  |  Iter:   4  |  Tr_loss: 0.6435
+Batch:  20  |  Iter:   4  |  Tr_loss: 0.6425
+Batch:  30  |  Iter:   4  |  Tr_loss: 0.6417
+Batch:  40  |  Iter:   4  |  Tr_loss: 0.6406
+Batch:  50  |  Iter:   4  |  Tr_loss: 0.6400
+Batch:  60  |  Iter:   4  |  Tr_loss: 0.6394
+Batch:  70  |  Iter:   4  |  Tr_loss: 0.6388
+=======================================================================
+Master Process  |  Iter:   4  |  Tr_loss: 0.6385  |  Time: 2m43s
+=======================================================================
+Batch:   0  |  Iter:   5  |  Tr_loss: 0.6385
+Batch:  10  |  Iter:   5  |  Tr_loss: 0.6382
+Batch:  20  |  Iter:   5  |  Tr_loss: 0.6374
+Batch:  30  |  Iter:   5  |  Tr_loss: 0.6374
+Batch:  40  |  Iter:   5  |  Tr_loss: 0.6373
+Batch:  50  |  Iter:   5  |  Tr_loss: 0.6377
+Batch:  60  |  Iter:   5  |  Tr_loss: 0.6386
+Batch:  70  |  Iter:   5  |  Tr_loss: 0.6366
+=======================================================================
+Master Process  |  Iter:   5  |  Tr_loss: 0.6366  |  Time: 2m41s
+=======================================================================
+Batch:   0  |  Iter:   6  |  Tr_loss: 0.6365
+Batch:  10  |  Iter:   6  |  Tr_loss: 0.6359
+Batch:  20  |  Iter:   6  |  Tr_loss: 0.6355
+Batch:  30  |  Iter:   6  |  Tr_loss: 0.6355
+Batch:  40  |  Iter:   6  |  Tr_loss: 0.6355
+Batch:  50  |  Iter:   6  |  Tr_loss: 0.6351
+Batch:  60  |  Iter:   6  |  Tr_loss: 0.6349
+Batch:  70  |  Iter:   6  |  Tr_loss: 0.6345
+=======================================================================
+Master Process  |  Iter:   6  |  Tr_loss: 0.6351  |  Time: 2m37s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_7.png
+Batch:   0  |  Iter:   7  |  Tr_loss: 0.6345
+Batch:  10  |  Iter:   7  |  Tr_loss: 0.6348
+Batch:  20  |  Iter:   7  |  Tr_loss: 0.6344
+Batch:  30  |  Iter:   7  |  Tr_loss: 0.6341
+Batch:  40  |  Iter:   7  |  Tr_loss: 0.6344
+Batch:  50  |  Iter:   7  |  Tr_loss: 0.6343
+Batch:  60  |  Iter:   7  |  Tr_loss: 0.6340
+Batch:  70  |  Iter:   7  |  Tr_loss: 0.6341
+=======================================================================
+Master Process  |  Iter:   7  |  Tr_loss: 0.6345  |  Time: 2m44s
+=======================================================================
+Batch:   0  |  Iter:   8  |  Tr_loss: 0.6340
+Batch:  10  |  Iter:   8  |  Tr_loss: 0.6340
+Batch:  20  |  Iter:   8  |  Tr_loss: 0.6340
+Batch:  30  |  Iter:   8  |  Tr_loss: 0.6339
+Batch:  40  |  Iter:   8  |  Tr_loss: 0.6339
+Batch:  50  |  Iter:   8  |  Tr_loss: 0.6338
+Batch:  60  |  Iter:   8  |  Tr_loss: 0.6339
+Batch:  70  |  Iter:   8  |  Tr_loss: 0.6338
+=======================================================================
+Master Process  |  Iter:   8  |  Tr_loss: 0.6336  |  Time: 2m37s
+=======================================================================
+Batch:   0  |  Iter:   9  |  Tr_loss: 0.6338
+Batch:  10  |  Iter:   9  |  Tr_loss: 0.6335
+Batch:  20  |  Iter:   9  |  Tr_loss: 0.6339
+Batch:  30  |  Iter:   9  |  Tr_loss: 0.6340
+Batch:  40  |  Iter:   9  |  Tr_loss: 0.6337
+Batch:  50  |  Iter:   9  |  Tr_loss: 0.6338
+Batch:  60  |  Iter:   9  |  Tr_loss: 0.6332
+Batch:  70  |  Iter:   9  |  Tr_loss: 0.6333
+=======================================================================
+Master Process  |  Iter:   9  |  Tr_loss: 0.6338  |  Time: 2m31s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_10.png
+Batch:   0  |  Iter:  10  |  Tr_loss: 0.6329
+Batch:  10  |  Iter:  10  |  Tr_loss: 0.6335
+Batch:  20  |  Iter:  10  |  Tr_loss: 0.6336
+Batch:  30  |  Iter:  10  |  Tr_loss: 0.6334
+Batch:  40  |  Iter:  10  |  Tr_loss: 0.6335
+Batch:  50  |  Iter:  10  |  Tr_loss: 0.6334
+Batch:  60  |  Iter:  10  |  Tr_loss: 0.6334
+Batch:  70  |  Iter:  10  |  Tr_loss: 0.6334
+=======================================================================
+Master Process  |  Iter:  10  |  Tr_loss: 0.6331  |  Time: 2m32s
+=======================================================================
+Batch:   0  |  Iter:  11  |  Tr_loss: 0.6334
+Batch:  10  |  Iter:  11  |  Tr_loss: 0.6334
+Batch:  20  |  Iter:  11  |  Tr_loss: 0.6333
+Batch:  30  |  Iter:  11  |  Tr_loss: 0.6336
+Batch:  40  |  Iter:  11  |  Tr_loss: 0.6330
+Batch:  50  |  Iter:  11  |  Tr_loss: 0.6332
+Batch:  60  |  Iter:  11  |  Tr_loss: 0.6334
+Batch:  70  |  Iter:  11  |  Tr_loss: 0.6331
+=======================================================================
+Master Process  |  Iter:  11  |  Tr_loss: 0.6329  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  12  |  Tr_loss: 0.6333
+Batch:  10  |  Iter:  12  |  Tr_loss: 0.6335
+Batch:  20  |  Iter:  12  |  Tr_loss: 0.6331
+Batch:  30  |  Iter:  12  |  Tr_loss: 0.6333
+Batch:  40  |  Iter:  12  |  Tr_loss: 0.6335
+Batch:  50  |  Iter:  12  |  Tr_loss: 0.6326
+Batch:  60  |  Iter:  12  |  Tr_loss: 0.6327
+Batch:  70  |  Iter:  12  |  Tr_loss: 0.6332
+=======================================================================
+Master Process  |  Iter:  12  |  Tr_loss: 0.6333  |  Time: 2m32s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_13.png
+Batch:   0  |  Iter:  13  |  Tr_loss: 0.6332
+Batch:  10  |  Iter:  13  |  Tr_loss: 0.6332
+Batch:  20  |  Iter:  13  |  Tr_loss: 0.6332
+Batch:  30  |  Iter:  13  |  Tr_loss: 0.6334
+Batch:  40  |  Iter:  13  |  Tr_loss: 0.6331
+Batch:  50  |  Iter:  13  |  Tr_loss: 0.6332
+Batch:  60  |  Iter:  13  |  Tr_loss: 0.6329
+Batch:  70  |  Iter:  13  |  Tr_loss: 0.6332
+=======================================================================
+Master Process  |  Iter:  13  |  Tr_loss: 0.6328  |  Time: 2m40s
+=======================================================================
+Batch:   0  |  Iter:  14  |  Tr_loss: 0.6329
+Batch:  10  |  Iter:  14  |  Tr_loss: 0.6329
+Batch:  20  |  Iter:  14  |  Tr_loss: 0.6330
+Batch:  30  |  Iter:  14  |  Tr_loss: 0.6331
+Batch:  40  |  Iter:  14  |  Tr_loss: 0.6327
+Batch:  50  |  Iter:  14  |  Tr_loss: 0.6330
+Batch:  60  |  Iter:  14  |  Tr_loss: 0.6334
+Batch:  70  |  Iter:  14  |  Tr_loss: 0.6332
+=======================================================================
+Master Process  |  Iter:  14  |  Tr_loss: 0.6329  |  Time: 2m29s
+=======================================================================
+Batch:   0  |  Iter:  15  |  Tr_loss: 0.6331
+Batch:  10  |  Iter:  15  |  Tr_loss: 0.6330
+Batch:  20  |  Iter:  15  |  Tr_loss: 0.6330
+Batch:  30  |  Iter:  15  |  Tr_loss: 0.6328
+Batch:  40  |  Iter:  15  |  Tr_loss: 0.6332
+Batch:  50  |  Iter:  15  |  Tr_loss: 0.6329
+Batch:  60  |  Iter:  15  |  Tr_loss: 0.6329
+Batch:  70  |  Iter:  15  |  Tr_loss: 0.6329
+=======================================================================
+Master Process  |  Iter:  15  |  Tr_loss: 0.6330  |  Time: 2m30s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_16.png
+Batch:   0  |  Iter:  16  |  Tr_loss: 0.6327
+Batch:  10  |  Iter:  16  |  Tr_loss: 0.6331
+Batch:  20  |  Iter:  16  |  Tr_loss: 0.6326
+Batch:  30  |  Iter:  16  |  Tr_loss: 0.6330
+Batch:  40  |  Iter:  16  |  Tr_loss: 0.6328
+Batch:  50  |  Iter:  16  |  Tr_loss: 0.6331
+Batch:  60  |  Iter:  16  |  Tr_loss: 0.6327
+Batch:  70  |  Iter:  16  |  Tr_loss: 0.6330
+=======================================================================
+Master Process  |  Iter:  16  |  Tr_loss: 0.6326  |  Time: 2m30s
+=======================================================================
+Batch:   0  |  Iter:  17  |  Tr_loss: 0.6330
+Batch:  10  |  Iter:  17  |  Tr_loss: 0.6327
+Batch:  20  |  Iter:  17  |  Tr_loss: 0.6333
+Batch:  30  |  Iter:  17  |  Tr_loss: 0.6332
+Batch:  40  |  Iter:  17  |  Tr_loss: 0.6325
+Batch:  50  |  Iter:  17  |  Tr_loss: 0.6333
+Batch:  60  |  Iter:  17  |  Tr_loss: 0.6330
+Batch:  70  |  Iter:  17  |  Tr_loss: 0.6330
+=======================================================================
+Master Process  |  Iter:  17  |  Tr_loss: 0.6330  |  Time: 2m32s
+=======================================================================
+Batch:   0  |  Iter:  18  |  Tr_loss: 0.6331
+Batch:  10  |  Iter:  18  |  Tr_loss: 0.6326
+Batch:  20  |  Iter:  18  |  Tr_loss: 0.6326
+Batch:  30  |  Iter:  18  |  Tr_loss: 0.6331
+Batch:  40  |  Iter:  18  |  Tr_loss: 0.6327
+Batch:  50  |  Iter:  18  |  Tr_loss: 0.6329
+Batch:  60  |  Iter:  18  |  Tr_loss: 0.6325
+Batch:  70  |  Iter:  18  |  Tr_loss: 0.6331
+=======================================================================
+Master Process  |  Iter:  18  |  Tr_loss: 0.6328  |  Time: 2m32s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_19.png
+Batch:   0  |  Iter:  19  |  Tr_loss: 0.6329
+Batch:  10  |  Iter:  19  |  Tr_loss: 0.6328
+Batch:  20  |  Iter:  19  |  Tr_loss: 0.6329
+Batch:  30  |  Iter:  19  |  Tr_loss: 0.6330
+Batch:  40  |  Iter:  19  |  Tr_loss: 0.6329
+Batch:  50  |  Iter:  19  |  Tr_loss: 0.6329
+Batch:  60  |  Iter:  19  |  Tr_loss: 0.6331
+Batch:  70  |  Iter:  19  |  Tr_loss: 0.6328
+=======================================================================
+Master Process  |  Iter:  19  |  Tr_loss: 0.6332  |  Time: 2m30s
+=======================================================================
+Batch:   0  |  Iter:  20  |  Tr_loss: 0.6329
+Batch:  10  |  Iter:  20  |  Tr_loss: 0.6331
+Batch:  20  |  Iter:  20  |  Tr_loss: 0.6328
+Batch:  30  |  Iter:  20  |  Tr_loss: 0.6326
+Batch:  40  |  Iter:  20  |  Tr_loss: 0.6328
+Batch:  50  |  Iter:  20  |  Tr_loss: 0.6327
+Batch:  60  |  Iter:  20  |  Tr_loss: 0.6327
+Batch:  70  |  Iter:  20  |  Tr_loss: 0.6332
+=======================================================================
+Master Process  |  Iter:  20  |  Tr_loss: 0.6333  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  21  |  Tr_loss: 0.6327
+Batch:  10  |  Iter:  21  |  Tr_loss: 0.6332
+Batch:  20  |  Iter:  21  |  Tr_loss: 0.6327
+Batch:  30  |  Iter:  21  |  Tr_loss: 0.6329
+Batch:  40  |  Iter:  21  |  Tr_loss: 0.6328
+Batch:  50  |  Iter:  21  |  Tr_loss: 0.6326
+Batch:  60  |  Iter:  21  |  Tr_loss: 0.6329
+Batch:  70  |  Iter:  21  |  Tr_loss: 0.6327
+=======================================================================
+Master Process  |  Iter:  21  |  Tr_loss: 0.6321  |  Time: 2m31s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_22.png
+Batch:   0  |  Iter:  22  |  Tr_loss: 0.6330
+Batch:  10  |  Iter:  22  |  Tr_loss: 0.6330
+Batch:  20  |  Iter:  22  |  Tr_loss: 0.6323
+Batch:  30  |  Iter:  22  |  Tr_loss: 0.6324
+Batch:  40  |  Iter:  22  |  Tr_loss: 0.6327
+Batch:  50  |  Iter:  22  |  Tr_loss: 0.6327
+Batch:  60  |  Iter:  22  |  Tr_loss: 0.6327
+Batch:  70  |  Iter:  22  |  Tr_loss: 0.6329
+=======================================================================
+Master Process  |  Iter:  22  |  Tr_loss: 0.6325  |  Time: 2m33s
+=======================================================================
+Batch:   0  |  Iter:  23  |  Tr_loss: 0.6332
+Batch:  10  |  Iter:  23  |  Tr_loss: 0.6332
+Batch:  20  |  Iter:  23  |  Tr_loss: 0.6326
+Batch:  30  |  Iter:  23  |  Tr_loss: 0.6329
+Batch:  40  |  Iter:  23  |  Tr_loss: 0.6329
+Batch:  50  |  Iter:  23  |  Tr_loss: 0.6328
+Batch:  60  |  Iter:  23  |  Tr_loss: 0.6326
+Batch:  70  |  Iter:  23  |  Tr_loss: 0.6326
+=======================================================================
+Master Process  |  Iter:  23  |  Tr_loss: 0.6328  |  Time: 2m34s
+=======================================================================
+Batch:   0  |  Iter:  24  |  Tr_loss: 0.6326
+Batch:  10  |  Iter:  24  |  Tr_loss: 0.6331
+Batch:  20  |  Iter:  24  |  Tr_loss: 0.6324
+Batch:  30  |  Iter:  24  |  Tr_loss: 0.6332
+Batch:  40  |  Iter:  24  |  Tr_loss: 0.6325
+Batch:  50  |  Iter:  24  |  Tr_loss: 0.6329
+Batch:  60  |  Iter:  24  |  Tr_loss: 0.6326
+Batch:  70  |  Iter:  24  |  Tr_loss: 0.6330
+=======================================================================
+Master Process  |  Iter:  24  |  Tr_loss: 0.6328  |  Time: 2m32s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_25.png
+Batch:   0  |  Iter:  25  |  Tr_loss: 0.6326
+Batch:  10  |  Iter:  25  |  Tr_loss: 0.6332
+Batch:  20  |  Iter:  25  |  Tr_loss: 0.6327
+Batch:  30  |  Iter:  25  |  Tr_loss: 0.6329
+Batch:  40  |  Iter:  25  |  Tr_loss: 0.6328
+Batch:  50  |  Iter:  25  |  Tr_loss: 0.6326
+Batch:  60  |  Iter:  25  |  Tr_loss: 0.6325
+Batch:  70  |  Iter:  25  |  Tr_loss: 0.6332
+=======================================================================
+Master Process  |  Iter:  25  |  Tr_loss: 0.6325  |  Time: 2m35s
+=======================================================================
+Batch:   0  |  Iter:  26  |  Tr_loss: 0.6332
+Batch:  10  |  Iter:  26  |  Tr_loss: 0.6328
+Batch:  20  |  Iter:  26  |  Tr_loss: 0.6330
+Batch:  30  |  Iter:  26  |  Tr_loss: 0.6329
+Batch:  40  |  Iter:  26  |  Tr_loss: 0.6326
+Batch:  50  |  Iter:  26  |  Tr_loss: 0.6329
+Batch:  60  |  Iter:  26  |  Tr_loss: 0.6326
+Batch:  70  |  Iter:  26  |  Tr_loss: 0.6323
+=======================================================================
+Master Process  |  Iter:  26  |  Tr_loss: 0.6330  |  Time: 2m33s
+=======================================================================
+Batch:   0  |  Iter:  27  |  Tr_loss: 0.6332
+Batch:  10  |  Iter:  27  |  Tr_loss: 0.6326
+Batch:  20  |  Iter:  27  |  Tr_loss: 0.6324
+Batch:  30  |  Iter:  27  |  Tr_loss: 0.6330
+Batch:  40  |  Iter:  27  |  Tr_loss: 0.6328
+Batch:  50  |  Iter:  27  |  Tr_loss: 0.6329
+Batch:  60  |  Iter:  27  |  Tr_loss: 0.6328
+Batch:  70  |  Iter:  27  |  Tr_loss: 0.6327
+=======================================================================
+Master Process  |  Iter:  27  |  Tr_loss: 0.6321  |  Time: 2m35s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_28.png
+Batch:   0  |  Iter:  28  |  Tr_loss: 0.6325
+Batch:  10  |  Iter:  28  |  Tr_loss: 0.6328
+Batch:  20  |  Iter:  28  |  Tr_loss: 0.6326
+Batch:  30  |  Iter:  28  |  Tr_loss: 0.6328
+Batch:  40  |  Iter:  28  |  Tr_loss: 0.6331
+Batch:  50  |  Iter:  28  |  Tr_loss: 0.6327
+Batch:  60  |  Iter:  28  |  Tr_loss: 0.6323
+Batch:  70  |  Iter:  28  |  Tr_loss: 0.6330
+=======================================================================
+Master Process  |  Iter:  28  |  Tr_loss: 0.6330  |  Time: 2m32s
+=======================================================================
+Batch:   0  |  Iter:  29  |  Tr_loss: 0.6330
+Batch:  10  |  Iter:  29  |  Tr_loss: 0.6328
+Batch:  20  |  Iter:  29  |  Tr_loss: 0.6323
+Batch:  30  |  Iter:  29  |  Tr_loss: 0.6330
+Batch:  40  |  Iter:  29  |  Tr_loss: 0.6331
+Batch:  50  |  Iter:  29  |  Tr_loss: 0.6326
+Batch:  60  |  Iter:  29  |  Tr_loss: 0.6328
+Batch:  70  |  Iter:  29  |  Tr_loss: 0.6330
+=======================================================================
+Master Process  |  Iter:  29  |  Tr_loss: 0.6328  |  Time: 2m37s
+=======================================================================
+Batch:   0  |  Iter:  30  |  Tr_loss: 0.6326
+Batch:  10  |  Iter:  30  |  Tr_loss: 0.6325
+Batch:  20  |  Iter:  30  |  Tr_loss: 0.6329
+Batch:  30  |  Iter:  30  |  Tr_loss: 0.6326
+Batch:  40  |  Iter:  30  |  Tr_loss: 0.6330
+Batch:  50  |  Iter:  30  |  Tr_loss: 0.6325
+Batch:  60  |  Iter:  30  |  Tr_loss: 0.6330
+Batch:  70  |  Iter:  30  |  Tr_loss: 0.6328
+=======================================================================
+Master Process  |  Iter:  30  |  Tr_loss: 0.6327  |  Time: 2m33s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_31.png
+Batch:   0  |  Iter:  31  |  Tr_loss: 0.6328
+Batch:  10  |  Iter:  31  |  Tr_loss: 0.6326
+Batch:  20  |  Iter:  31  |  Tr_loss: 0.6325
+Batch:  30  |  Iter:  31  |  Tr_loss: 0.6323
+Batch:  40  |  Iter:  31  |  Tr_loss: 0.6331
+Batch:  50  |  Iter:  31  |  Tr_loss: 0.6324
+Batch:  60  |  Iter:  31  |  Tr_loss: 0.6329
+Batch:  70  |  Iter:  31  |  Tr_loss: 0.6326
+=======================================================================
+Master Process  |  Iter:  31  |  Tr_loss: 0.6326  |  Time: 2m32s
+=======================================================================
+Batch:   0  |  Iter:  32  |  Tr_loss: 0.6323
+Batch:  10  |  Iter:  32  |  Tr_loss: 0.6324
+Batch:  20  |  Iter:  32  |  Tr_loss: 0.6325
+Batch:  30  |  Iter:  32  |  Tr_loss: 0.6327
+Batch:  40  |  Iter:  32  |  Tr_loss: 0.6325
+Batch:  50  |  Iter:  32  |  Tr_loss: 0.6322
+Batch:  60  |  Iter:  32  |  Tr_loss: 0.6326
+Batch:  70  |  Iter:  32  |  Tr_loss: 0.6327
+=======================================================================
+Master Process  |  Iter:  32  |  Tr_loss: 0.6323  |  Time: 2m28s
+=======================================================================
+Batch:   0  |  Iter:  33  |  Tr_loss: 0.6326
+Batch:  10  |  Iter:  33  |  Tr_loss: 0.6325
+Batch:  20  |  Iter:  33  |  Tr_loss: 0.6325
+Batch:  30  |  Iter:  33  |  Tr_loss: 0.6326
+Batch:  40  |  Iter:  33  |  Tr_loss: 0.6325
+Batch:  50  |  Iter:  33  |  Tr_loss: 0.6323
+Batch:  60  |  Iter:  33  |  Tr_loss: 0.6325
+Batch:  70  |  Iter:  33  |  Tr_loss: 0.6326
+=======================================================================
+Master Process  |  Iter:  33  |  Tr_loss: 0.6327  |  Time: 2m31s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_34.png
+Batch:   0  |  Iter:  34  |  Tr_loss: 0.6324
+Batch:  10  |  Iter:  34  |  Tr_loss: 0.6329
+Batch:  20  |  Iter:  34  |  Tr_loss: 0.6323
+Batch:  30  |  Iter:  34  |  Tr_loss: 0.6324
+Batch:  40  |  Iter:  34  |  Tr_loss: 0.6324
+Batch:  50  |  Iter:  34  |  Tr_loss: 0.6326
+Batch:  60  |  Iter:  34  |  Tr_loss: 0.6323
+Batch:  70  |  Iter:  34  |  Tr_loss: 0.6320
+=======================================================================
+Master Process  |  Iter:  34  |  Tr_loss: 0.6323  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  35  |  Tr_loss: 0.6328
+Batch:  10  |  Iter:  35  |  Tr_loss: 0.6326
+Batch:  20  |  Iter:  35  |  Tr_loss: 0.6328
+Batch:  30  |  Iter:  35  |  Tr_loss: 0.6325
+Batch:  40  |  Iter:  35  |  Tr_loss: 0.6324
+Batch:  50  |  Iter:  35  |  Tr_loss: 0.6322
+Batch:  60  |  Iter:  35  |  Tr_loss: 0.6325
+Batch:  70  |  Iter:  35  |  Tr_loss: 0.6326
+=======================================================================
+Master Process  |  Iter:  35  |  Tr_loss: 0.6327  |  Time: 2m32s
+=======================================================================
+Batch:   0  |  Iter:  36  |  Tr_loss: 0.6325
+Batch:  10  |  Iter:  36  |  Tr_loss: 0.6320
+Batch:  20  |  Iter:  36  |  Tr_loss: 0.6328
+Batch:  30  |  Iter:  36  |  Tr_loss: 0.6322
+Batch:  40  |  Iter:  36  |  Tr_loss: 0.6324
+Batch:  50  |  Iter:  36  |  Tr_loss: 0.6324
+Batch:  60  |  Iter:  36  |  Tr_loss: 0.6323
+Batch:  70  |  Iter:  36  |  Tr_loss: 0.6323
+=======================================================================
+Master Process  |  Iter:  36  |  Tr_loss: 0.6318  |  Time: 2m34s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_37.png
+Batch:   0  |  Iter:  37  |  Tr_loss: 0.6327
+Batch:  10  |  Iter:  37  |  Tr_loss: 0.6322
+Batch:  20  |  Iter:  37  |  Tr_loss: 0.6319
+Batch:  30  |  Iter:  37  |  Tr_loss: 0.6321
+Batch:  40  |  Iter:  37  |  Tr_loss: 0.6317
+Batch:  50  |  Iter:  37  |  Tr_loss: 0.6312
+Batch:  60  |  Iter:  37  |  Tr_loss: 0.6321
+Batch:  70  |  Iter:  37  |  Tr_loss: 0.6330
+=======================================================================
+Master Process  |  Iter:  37  |  Tr_loss: 0.6324  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  38  |  Tr_loss: 0.6319
+Batch:  10  |  Iter:  38  |  Tr_loss: 0.6323
+Batch:  20  |  Iter:  38  |  Tr_loss: 0.6317
+Batch:  30  |  Iter:  38  |  Tr_loss: 0.6322
+Batch:  40  |  Iter:  38  |  Tr_loss: 0.6318
+Batch:  50  |  Iter:  38  |  Tr_loss: 0.6311
+Batch:  60  |  Iter:  38  |  Tr_loss: 0.6316
+Batch:  70  |  Iter:  38  |  Tr_loss: 0.6316
+=======================================================================
+Master Process  |  Iter:  38  |  Tr_loss: 0.6323  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  39  |  Tr_loss: 0.6318
+Batch:  10  |  Iter:  39  |  Tr_loss: 0.6319
+Batch:  20  |  Iter:  39  |  Tr_loss: 0.6317
+Batch:  30  |  Iter:  39  |  Tr_loss: 0.6311
+Batch:  40  |  Iter:  39  |  Tr_loss: 0.6320
+Batch:  50  |  Iter:  39  |  Tr_loss: 0.6314
+Batch:  60  |  Iter:  39  |  Tr_loss: 0.6311
+Batch:  70  |  Iter:  39  |  Tr_loss: 0.6322
+=======================================================================
+Master Process  |  Iter:  39  |  Tr_loss: 0.6320  |  Time: 2m30s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_40.png
+Batch:   0  |  Iter:  40  |  Tr_loss: 0.6315
+Batch:  10  |  Iter:  40  |  Tr_loss: 0.6323
+Batch:  20  |  Iter:  40  |  Tr_loss: 0.6318
+Batch:  30  |  Iter:  40  |  Tr_loss: 0.6318
+Batch:  40  |  Iter:  40  |  Tr_loss: 0.6325
+Batch:  50  |  Iter:  40  |  Tr_loss: 0.6320
+Batch:  60  |  Iter:  40  |  Tr_loss: 0.6324
+Batch:  70  |  Iter:  40  |  Tr_loss: 0.6319
+=======================================================================
+Master Process  |  Iter:  40  |  Tr_loss: 0.6318  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  41  |  Tr_loss: 0.6320
+Batch:  10  |  Iter:  41  |  Tr_loss: 0.6312
+Batch:  20  |  Iter:  41  |  Tr_loss: 0.6324
+Batch:  30  |  Iter:  41  |  Tr_loss: 0.6320
+Batch:  40  |  Iter:  41  |  Tr_loss: 0.6320
+Batch:  50  |  Iter:  41  |  Tr_loss: 0.6320
+Batch:  60  |  Iter:  41  |  Tr_loss: 0.6322
+Batch:  70  |  Iter:  41  |  Tr_loss: 0.6316
+=======================================================================
+Master Process  |  Iter:  41  |  Tr_loss: 0.6323  |  Time: 2m34s
+=======================================================================
+Batch:   0  |  Iter:  42  |  Tr_loss: 0.6311
+Batch:  10  |  Iter:  42  |  Tr_loss: 0.6321
+Batch:  20  |  Iter:  42  |  Tr_loss: 0.6319
+Batch:  30  |  Iter:  42  |  Tr_loss: 0.6321
+Batch:  40  |  Iter:  42  |  Tr_loss: 0.6321
+Batch:  50  |  Iter:  42  |  Tr_loss: 0.6318
+Batch:  60  |  Iter:  42  |  Tr_loss: 0.6311
+Batch:  70  |  Iter:  42  |  Tr_loss: 0.6321
+=======================================================================
+Master Process  |  Iter:  42  |  Tr_loss: 0.6315  |  Time: 2m33s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_43.png
+Batch:   0  |  Iter:  43  |  Tr_loss: 0.6322
+Batch:  10  |  Iter:  43  |  Tr_loss: 0.6313
+Batch:  20  |  Iter:  43  |  Tr_loss: 0.6324
+Batch:  30  |  Iter:  43  |  Tr_loss: 0.6314
+Batch:  40  |  Iter:  43  |  Tr_loss: 0.6313
+Batch:  50  |  Iter:  43  |  Tr_loss: 0.6317
+Batch:  60  |  Iter:  43  |  Tr_loss: 0.6323
+Batch:  70  |  Iter:  43  |  Tr_loss: 0.6318
+=======================================================================
+Master Process  |  Iter:  43  |  Tr_loss: 0.6312  |  Time: 2m34s
+=======================================================================
+Batch:   0  |  Iter:  44  |  Tr_loss: 0.6315
+Batch:  10  |  Iter:  44  |  Tr_loss: 0.6320
+Batch:  20  |  Iter:  44  |  Tr_loss: 0.6315
+Batch:  30  |  Iter:  44  |  Tr_loss: 0.6314
+Batch:  40  |  Iter:  44  |  Tr_loss: 0.6316
+Batch:  50  |  Iter:  44  |  Tr_loss: 0.6312
+Batch:  60  |  Iter:  44  |  Tr_loss: 0.6316
+Batch:  70  |  Iter:  44  |  Tr_loss: 0.6320
+=======================================================================
+Master Process  |  Iter:  44  |  Tr_loss: 0.6322  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  45  |  Tr_loss: 0.6311
+Batch:  10  |  Iter:  45  |  Tr_loss: 0.6322
+Batch:  20  |  Iter:  45  |  Tr_loss: 0.6313
+Batch:  30  |  Iter:  45  |  Tr_loss: 0.6321
+Batch:  40  |  Iter:  45  |  Tr_loss: 0.6303
+Batch:  50  |  Iter:  45  |  Tr_loss: 0.6308
+Batch:  60  |  Iter:  45  |  Tr_loss: 0.6315
+Batch:  70  |  Iter:  45  |  Tr_loss: 0.6308
+=======================================================================
+Master Process  |  Iter:  45  |  Tr_loss: 0.6324  |  Time: 2m31s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_46.png
+Batch:   0  |  Iter:  46  |  Tr_loss: 0.6310
+Batch:  10  |  Iter:  46  |  Tr_loss: 0.6311
+Batch:  20  |  Iter:  46  |  Tr_loss: 0.6301
+Batch:  30  |  Iter:  46  |  Tr_loss: 0.6312
+Batch:  40  |  Iter:  46  |  Tr_loss: 0.6322
+Batch:  50  |  Iter:  46  |  Tr_loss: 0.6304
+Batch:  60  |  Iter:  46  |  Tr_loss: 0.6312
+Batch:  70  |  Iter:  46  |  Tr_loss: 0.6316
+=======================================================================
+Master Process  |  Iter:  46  |  Tr_loss: 0.6315  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  47  |  Tr_loss: 0.6319
+Batch:  10  |  Iter:  47  |  Tr_loss: 0.6305
+Batch:  20  |  Iter:  47  |  Tr_loss: 0.6311
+Batch:  30  |  Iter:  47  |  Tr_loss: 0.6308
+Batch:  40  |  Iter:  47  |  Tr_loss: 0.6308
+Batch:  50  |  Iter:  47  |  Tr_loss: 0.6307
+Batch:  60  |  Iter:  47  |  Tr_loss: 0.6320
+Batch:  70  |  Iter:  47  |  Tr_loss: 0.6321
+=======================================================================
+Master Process  |  Iter:  47  |  Tr_loss: 0.6321  |  Time: 2m30s
+=======================================================================
+Batch:   0  |  Iter:  48  |  Tr_loss: 0.6311
+Batch:  10  |  Iter:  48  |  Tr_loss: 0.6322
+Batch:  20  |  Iter:  48  |  Tr_loss: 0.6306
+Batch:  30  |  Iter:  48  |  Tr_loss: 0.6314
+Batch:  40  |  Iter:  48  |  Tr_loss: 0.6312
+Batch:  50  |  Iter:  48  |  Tr_loss: 0.6303
+Batch:  60  |  Iter:  48  |  Tr_loss: 0.6307
+Batch:  70  |  Iter:  48  |  Tr_loss: 0.6310
+=======================================================================
+Master Process  |  Iter:  48  |  Tr_loss: 0.6307  |  Time: 2m29s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_49.png
+Batch:   0  |  Iter:  49  |  Tr_loss: 0.6306
+Batch:  10  |  Iter:  49  |  Tr_loss: 0.6305
+Batch:  20  |  Iter:  49  |  Tr_loss: 0.6309
+Batch:  30  |  Iter:  49  |  Tr_loss: 0.6308
+Batch:  40  |  Iter:  49  |  Tr_loss: 0.6308
+Batch:  50  |  Iter:  49  |  Tr_loss: 0.6302
+Batch:  60  |  Iter:  49  |  Tr_loss: 0.6302
+Batch:  70  |  Iter:  49  |  Tr_loss: 0.6298
+=======================================================================
+Master Process  |  Iter:  49  |  Tr_loss: 0.6319  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  50  |  Tr_loss: 0.6310
+Batch:  10  |  Iter:  50  |  Tr_loss: 0.6298
+Batch:  20  |  Iter:  50  |  Tr_loss: 0.6306
+Batch:  30  |  Iter:  50  |  Tr_loss: 0.6307
+Batch:  40  |  Iter:  50  |  Tr_loss: 0.6316
+Batch:  50  |  Iter:  50  |  Tr_loss: 0.6313
+Batch:  60  |  Iter:  50  |  Tr_loss: 0.6301
+Batch:  70  |  Iter:  50  |  Tr_loss: 0.6309
+=======================================================================
+Master Process  |  Iter:  50  |  Tr_loss: 0.6297  |  Time: 2m32s
+=======================================================================
+Batch:   0  |  Iter:  51  |  Tr_loss: 0.6303
+Batch:  10  |  Iter:  51  |  Tr_loss: 0.6298
+Batch:  20  |  Iter:  51  |  Tr_loss: 0.6303
+Batch:  30  |  Iter:  51  |  Tr_loss: 0.6312
+Batch:  40  |  Iter:  51  |  Tr_loss: 0.6308
+Batch:  50  |  Iter:  51  |  Tr_loss: 0.6311
+Batch:  60  |  Iter:  51  |  Tr_loss: 0.6300
+Batch:  70  |  Iter:  51  |  Tr_loss: 0.6300
+=======================================================================
+Master Process  |  Iter:  51  |  Tr_loss: 0.6295  |  Time: 2m32s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_52.png
+Batch:   0  |  Iter:  52  |  Tr_loss: 0.6285
+Batch:  10  |  Iter:  52  |  Tr_loss: 0.6312
+Batch:  20  |  Iter:  52  |  Tr_loss: 0.6300
+Batch:  30  |  Iter:  52  |  Tr_loss: 0.6299
+Batch:  40  |  Iter:  52  |  Tr_loss: 0.6307
+Batch:  50  |  Iter:  52  |  Tr_loss: 0.6297
+Batch:  60  |  Iter:  52  |  Tr_loss: 0.6293
+Batch:  70  |  Iter:  52  |  Tr_loss: 0.6294
+=======================================================================
+Master Process  |  Iter:  52  |  Tr_loss: 0.6288  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  53  |  Tr_loss: 0.6293
+Batch:  10  |  Iter:  53  |  Tr_loss: 0.6303
+Batch:  20  |  Iter:  53  |  Tr_loss: 0.6306
+Batch:  30  |  Iter:  53  |  Tr_loss: 0.6312
+Batch:  40  |  Iter:  53  |  Tr_loss: 0.6314
+Batch:  50  |  Iter:  53  |  Tr_loss: 0.6301
+Batch:  60  |  Iter:  53  |  Tr_loss: 0.6308
+Batch:  70  |  Iter:  53  |  Tr_loss: 0.6312
+=======================================================================
+Master Process  |  Iter:  53  |  Tr_loss: 0.6298  |  Time: 2m33s
+=======================================================================
+Batch:   0  |  Iter:  54  |  Tr_loss: 0.6301
+Batch:  10  |  Iter:  54  |  Tr_loss: 0.6309
+Batch:  20  |  Iter:  54  |  Tr_loss: 0.6318
+Batch:  30  |  Iter:  54  |  Tr_loss: 0.6298
+Batch:  40  |  Iter:  54  |  Tr_loss: 0.6301
+Batch:  50  |  Iter:  54  |  Tr_loss: 0.6310
+Batch:  60  |  Iter:  54  |  Tr_loss: 0.6297
+Batch:  70  |  Iter:  54  |  Tr_loss: 0.6288
+=======================================================================
+Master Process  |  Iter:  54  |  Tr_loss: 0.6315  |  Time: 2m31s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_55.png
+Batch:   0  |  Iter:  55  |  Tr_loss: 0.6298
+Batch:  10  |  Iter:  55  |  Tr_loss: 0.6307
+Batch:  20  |  Iter:  55  |  Tr_loss: 0.6302
+Batch:  30  |  Iter:  55  |  Tr_loss: 0.6299
+Batch:  40  |  Iter:  55  |  Tr_loss: 0.6308
+Batch:  50  |  Iter:  55  |  Tr_loss: 0.6281
+Batch:  60  |  Iter:  55  |  Tr_loss: 0.6304
+Batch:  70  |  Iter:  55  |  Tr_loss: 0.6305
+=======================================================================
+Master Process  |  Iter:  55  |  Tr_loss: 0.6301  |  Time: 2m28s
+=======================================================================
+Batch:   0  |  Iter:  56  |  Tr_loss: 0.6291
+Batch:  10  |  Iter:  56  |  Tr_loss: 0.6300
+Batch:  20  |  Iter:  56  |  Tr_loss: 0.6291
+Batch:  30  |  Iter:  56  |  Tr_loss: 0.6289
+Batch:  40  |  Iter:  56  |  Tr_loss: 0.6286
+Batch:  50  |  Iter:  56  |  Tr_loss: 0.6295
+Batch:  60  |  Iter:  56  |  Tr_loss: 0.6297
+Batch:  70  |  Iter:  56  |  Tr_loss: 0.6276
+=======================================================================
+Master Process  |  Iter:  56  |  Tr_loss: 0.6298  |  Time: 2m29s
+=======================================================================
+Batch:   0  |  Iter:  57  |  Tr_loss: 0.6303
+Batch:  10  |  Iter:  57  |  Tr_loss: 0.6310
+Batch:  20  |  Iter:  57  |  Tr_loss: 0.6290
+Batch:  30  |  Iter:  57  |  Tr_loss: 0.6286
+Batch:  40  |  Iter:  57  |  Tr_loss: 0.6301
+Batch:  50  |  Iter:  57  |  Tr_loss: 0.6284
+Batch:  60  |  Iter:  57  |  Tr_loss: 0.6293
+Batch:  70  |  Iter:  57  |  Tr_loss: 0.6318
+=======================================================================
+Master Process  |  Iter:  57  |  Tr_loss: 0.6299  |  Time: 2m39s
+=======================================================================
+np_roi:  (4, 2, 256, 256)
+logits shape:  (4, 2, 256, 256)
+saved plot_58.png
+Batch:   0  |  Iter:  58  |  Tr_loss: 0.6310
+Batch:  10  |  Iter:  58  |  Tr_loss: 0.6309
+Batch:  20  |  Iter:  58  |  Tr_loss: 0.6292
+Batch:  30  |  Iter:  58  |  Tr_loss: 0.6299
+Batch:  40  |  Iter:  58  |  Tr_loss: 0.6290
+Batch:  50  |  Iter:  58  |  Tr_loss: 0.6292
+Batch:  60  |  Iter:  58  |  Tr_loss: 0.6293
+Batch:  70  |  Iter:  58  |  Tr_loss: 0.6284
+=======================================================================
+Master Process  |  Iter:  58  |  Tr_loss: 0.6288  |  Time: 2m31s
+=======================================================================
+Batch:   0  |  Iter:  59  |  Tr_loss: 0.6277
+Batch:  10  |  Iter:  59  |  Tr_loss: 0.6270
+Batch:  20  |  Iter:  59  |  Tr_loss: 0.6301
+Batch:  30  |  Iter:  59  |  Tr_loss: 0.6301
+Batch:  40  |  Iter:  59  |  Tr_loss: 0.6265
+Batch:  50  |  Iter:  59  |  Tr_loss: 0.6304
+Batch:  60  |  Iter:  59  |  Tr_loss: 0.6301
+Batch:  70  |  Iter:  59  |  Tr_loss: 0.6290
+=======================================================================
+Master Process  |  Iter:  59  |  Tr_loss: 0.6294  |  Time: 2m32s
+=======================================================================
+Batch:   0  |  Iter:  60  |  Tr_loss: 0.6275
+Batch:  10  |  Iter:  60  |  Tr_loss: 0.6294
+Batch:  20  |  Iter:  60  |  Tr_loss: 0.6283
+Batch:  30  |  Iter:  60  |  Tr_loss: 0.6266
+Batch:  40  |  Iter:  60  |  Tr_loss: 0.6312
+Batch:  50  |  Iter:  60  |  Tr_loss: 0.6276
+Batch:  60  |  Iter:  60  |  Tr_loss: 0.6287
+Batch:  70  |  Iter:  60  |  Tr_loss: 0.6291
+=======================================================================
+Master Process  |  Iter:  60  |  Tr_loss: 0.6267  |  Time: 2m29s
+=======================================================================
+/home/DLMammoClassifier-Summer2023/train/unet/model_iter_60.pth saved successfully
+logits shape:  (128, 2, 256, 256)
+saved plot_test_60.png
+/home/DLMammoClassifier-Summer2023/train/unet/finetune.py:146: RuntimeWarning: More than 20 figures have been opened. Figures created through the pyplot interface (`matplotlib.pyplot.figure`) are retained until explicitly closed and may consume too much memory. (To control this warning, see the rcParam `figure.max_open_warning`). Consider using `matplotlib.pyplot.close()`.
+  fig, axs = plt.subplots(3, 4, figsize=(12, 16))
