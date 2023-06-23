@@ -129,7 +129,7 @@ if __name__ == '__main__':
     fs = gcsfs.GCSFileSystem()
 
     filenames = [s for s in fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] + \
-    # [s for s in fs.ls(gcs_path2) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
+    [s for s in fs.ls(gcs_path2) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
     # labels_names = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in filenames] # noqa
     # print(f'The dataset contain {len(filenames)} images...')
     
