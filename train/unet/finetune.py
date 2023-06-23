@@ -175,6 +175,8 @@ if __name__ == '__main__':
         pre_iter = 0
         state_dict = torch.load(f'{current_dir}/autoencoder/model_iter_{int(args.autoencoder)}.pth') # noqa
         print(f'Find model weights at {current_dir}/autoencoder/model_iter_{int(args.autoencoder)}.pth, loading...') # noqa
+    elif args.pretrain == 'test':
+        state_dict = None
     else:
         pre_iter = int(args.pretrain)
         state_dict = torch.load(f'{current_dir}/model_iter_{pre_iter}.pth') # noqa
