@@ -72,7 +72,6 @@ def crop_center(img, cx, cy, size):
 
 def process_images(images, labels, size):
     patches = []
-    print(f'image shape: {images.shape}, labels shape: {labels.shape}')
 
     for img, lbl in zip(images, labels):
         # The center of the label '1'
@@ -112,12 +111,9 @@ if os.path.exists(load_model):
 
 
 def get_features(patch):
-    print(patch.shape)
     img_arr = patch.permute(1, 2, 0).numpy()
-    print(img_arr.shape)
     net = MyModel()
     img_arr = cv2.resize(img_arr, (224,224))
-    print(img_arr.shape)
     img_arr = torch.tensor(img_arr).unsqueeze(0)
     
     
