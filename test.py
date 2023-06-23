@@ -95,12 +95,12 @@ if __name__ == '__main__':
 
         # Combine the overlay with the original image
         highlighted_image = cv2.addWeighted(overlay_t, 1, overlay_p, 1, 0)
-        highlighted_image_2 = cv2.addWeighted(original_image_rgb, 0.8, highlighted_image, 0.2, 0)
+        highlighted_image_2 = cv2.addWeighted(original_image_rgb, 0.7, highlighted_image, 0.3, 0)
         
         # Store the highlighted image in the array
         highlighted_images[i] = highlighted_image_2
 
-    fig, axs = plt.subplots(3, 4, figsize=(18, 24))
+    fig, axs = plt.subplots(3, 4, figsize=(24, 18))
 
     for i in range(3):
         for j in range(4):
