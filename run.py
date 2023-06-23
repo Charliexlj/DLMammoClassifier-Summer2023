@@ -119,9 +119,12 @@ def get_features(patch):
     
     # Repeat single channel to get three channels
     img_arr = img_arr.repeat(1, 1, 3)
+    print(img_arr.shape)
 
     img_arr = img_arr.permute(1, 2, 0)
+    print(img_arr.shape)
     img = img_arr.unsqueeze(0)
+    print(img_arr.shape)
     net = net.cpu()
     X,_ = net(img)
     X = X.cpu().detach()
