@@ -168,7 +168,7 @@ if __name__ == '__main__':
     feature = get_features(patches[0])
     print(f'feature shape: {feature.shape}')
     
-    pred = MMutils.svm_clf.predict(feature)
+    pred = MMutils.predict(feature)
     print(pred)
 
     # np_roi = np.array(roi).reshape((4, 256, 256))
