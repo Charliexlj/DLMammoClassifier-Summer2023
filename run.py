@@ -114,13 +114,17 @@ def get_features(patch):
     img_arr = patch.numpy()
     net = MyModel()
     img_arr = cv2.resize(img_arr, (224,224))
+    print(img_arr.shape)
     img_arr = torch.tensor(img_arr)
     
     # Repeat single channel to get three channels
     img_arr = img_arr.repeat(3, 1, 1)
+    print(img_arr.shape)
 
     img_arr = img_arr.permute(1, 2, 0)
+    print(img_arr.shape)
     img = img_arr.unsqueeze(0)
+    print(img_arr.shape)
     net = net.cpu()
     X,_ = net(img)
     X = X.cpu().detach()
