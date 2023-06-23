@@ -139,6 +139,7 @@ class MMImageSet(Dataset):
                 roi = np.where(roi >= 0.5, 1, 0)
                 roi = T.ToTensor()(roi)
                 patch, label = process_images_patch(image.unsqueeze(0), roi, size=56)
+                print(image.shape, roi.shape, patch.shape)
                 img_arr = patch.permute(1, 2, 0).numpy()
                 img_arr = cv2.resize(img_arr, (224,224))
                 img_arr = torch.tensor(img_arr).unsqueeze(0)
