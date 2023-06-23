@@ -76,6 +76,9 @@ def process_images(images, labels, size):
         lbl = lbl.squeeze(0)
         # The center of the label '1'
         y, x = (lbl == 1).nonzero().float().mean(0)
+        
+        x = round(x.item())
+        y = round(y.item())
 
         # Crop a patch from the image
         patch = crop_center(img, x, y, size)
