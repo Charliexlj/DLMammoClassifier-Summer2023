@@ -16,7 +16,10 @@ import cv2
 import torchvision
 import torch.nn as nn
 
-import utils.classification.svm_clf as clf
+import sys
+sys.path.insert(0, '/home/DLMammoClassifier-Summer2023/resnet')
+
+import resnet.classification.svm_clf as clf
 
 
 class MyModel(nn.Module):
