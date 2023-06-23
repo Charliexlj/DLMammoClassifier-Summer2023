@@ -75,8 +75,11 @@ def process_images(images, labels, size):
 
     for img, lbl in zip(images, labels):
         # The center of the label '1'
-        y, x = (lbl == 1).nonzero().float().mean(0)
-        
+        nonzero_coords = (lbl == 1).nonzero()
+        if nonzero_coords.nelement() == 0:  # If no elements found, continue to next iteration
+            continue
+
+        y, x = nonzero_coords.float().mean(0)
         x = round(x.item())
         y = round(y.item())
 
@@ -152,12 +155,12 @@ if __name__ == '__main__':
     roi = T.ToTensor()(roi)
 
     logits = model(image.unsqueeze(0))
-    logits = torch.argmax(logits, dim=1).detach().squeeze(0)
+    logits = torch.argmax(logits, dim=1).detach()
     
     patches = process_images(image.unsqueeze(0), logits, size=56)
-    print(patches.shape)
+    print(f'patches shape: {patches.shape}')
     feature = get_features(patches[0])
-    print(feature.shape)
+    print(f'feature shape: {feature.shape}')
     
     pred = MMutils.svm_clf.predict(feature)
     print(pred)
