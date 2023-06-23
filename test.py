@@ -100,12 +100,12 @@ if __name__ == '__main__':
         # Store the highlighted image in the array
         highlighted_images[i] = highlighted_image_2
 
-    fig, axs = plt.subplots(3, 4, figsize=(24, 18))
+    fig, axs = plt.subplots(3, 4, figsize=(48, 18))
 
     for i in range(3):
         for j in range(4):
-            axs[i, j].imshow(highlighted_images[i*3+j])
-            axs[i, j].set_title(filenames[idx[i*3+j+1]])
+            axs[i, j].imshow(highlighted_images[i*4+j])
+            axs[i, j].set_title(filenames[idx[i*4+j]])
             axs[i, j].axis('off')
 
     plt.tight_layout()
