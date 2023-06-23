@@ -59,7 +59,9 @@ class MMImageSet(Dataset):
             roi = self.read_image(self.labels[idx])
             roi = np.array(roi).reshape((256, 256))
             roi = np.where(roi >= 0.5, 1, 0)
-            roi = T.ToTensor()(roi)
+            one_hot_encoded = np.zeros((2, 256, 256))
+            one_hot_encoded[roi, np.indices((256, 256))[0], np.indices((256, 256))[1]] = 1
+            roi = T.ToTensor()(one_hot_encoded)
             return image, roi
         
     def shuffle(self):
