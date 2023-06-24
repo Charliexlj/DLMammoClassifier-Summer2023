@@ -19,7 +19,7 @@ parser.add_argument('--it', type=int, required=False)
 parser.add_argument('--lr', type=float, required=False)
 args = parser.parse_args()
 
-load_model = 'utils/model_ResNet18.pt'
+load_model = 'train/resnet/model_ResNet18.pt'
 
 class MyModel(nn.Module):
     def __init__(self, models):
@@ -36,13 +36,6 @@ class MyModel(nn.Module):
         x = self.relu(self.Linear1(x))  # add relu activation function after first fc layer
         x = self.Linear2(x)   # final output layer
         return x
-
-if os.path.exists(load_model):
-    checkpoint=torch.load(load_model,map_location=torch.device('cpu'))
-    net.load_state_dict(checkpoint['model_state'],strict=False)
-    optimizer.load_state_dict(checkpoint['optimizer_state'],strict=False)
-    print("model loaded successfully")
-    print('starting training after epoch: ',checkpoint['epoch'])
 
 def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # noqa
                       batch_size=16, save_path='/home'):
@@ -156,6 +149,6 @@ if __name__ == '__main__':
         lr,             # lr
         0,       # pre_iter
         n_iter,         # niters
-        64,            # batch_size
+        128,            # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
