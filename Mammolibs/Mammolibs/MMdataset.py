@@ -134,6 +134,7 @@ class MMImageSet(Dataset):
             return torch.zeros(1, 256, 256)
         if self.stage != 'finetune':
             if self.stage == 'local':
+                filename = self.filenames[idx]
                 roi = self.read_image(self.filenames[idx].replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1))
                 roi = np.array(roi).reshape((256, 256))
                 roi = np.where(roi >= 0.5, 1, 0)
@@ -143,6 +144,8 @@ class MMImageSet(Dataset):
                 img_arr = cv2.resize(img_arr, (224,224))
                 img_arr = torch.tensor(img_arr).unsqueeze(0)
                 img_arr = img_arr.repeat(3, 1, 1)
+                if 'Benign' in filename:
+                    label = 0
                 return img_arr, label
             else:
                 return image
