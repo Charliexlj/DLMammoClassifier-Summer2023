@@ -19,6 +19,7 @@ def crop_center(img, cx, cy, size):
     Crop out a square patch from an image.
     cx, cy are the center of the patch.
     """
+    # image 1,256,256
     start_x = max(cx - size // 2, 0)
     if start_x + size > img.size(-1):
         start_x = img.size(-1) - size
@@ -64,33 +65,27 @@ def get_negative_patch_center(x, y, image_shape, patch_size):
 
 
 def process_images_patch(images, labels, size):
-    patches = []
-
-    for img, lbl in zip(images, labels):
-        # The center of the label '1'
+    # roi 1,256,256
+    # image 1,256,256
+    lbl = labels.squeeze(0)
+    label = 0
+    nonzero_coords = (lbl == 1).nonzero()
+    if nonzero_coords.nelement() == 0:  # If no elements found, continue to next iteration
+        x, y = 128,128
         label = 0
-        nonzero_coords = (lbl == 1).nonzero()
-        if nonzero_coords.nelement() == 0:  # If no elements found, continue to next iteration
-            x, y = 128,128
+    else:
+        y, x = nonzero_coords.float().mean(0)
+        x = round(x.item())
+        y = round(y.item())
+        label = 1
+        if random.random() > 0.5:
+            x, y = get_negative_patch_center(x,y,(256,256),56)
             label = 0
-        else:
-            y, x = nonzero_coords.float().mean(0)
-            x = round(x.item())
-            y = round(y.item())
-            label = 1
-            if random.random() > 0.5:
-                x, y = get_negative_patch_center(x,y,(256,256),56)
-                label = 0
 
-        # Crop a patch from the image
-        patch = crop_center(img, x, y, size)
+    # Crop a patch from the image
+    patch = crop_center(images, x, y, size)
 
-        patches.append(patch)
-
-    # Convert list of tensors into a 4D tensor
-    patches = torch.stack(patches)
-
-    return patches, label
+    return patch, label
 
 
 class MMImageSet(Dataset):
@@ -99,7 +94,7 @@ class MMImageSet(Dataset):
         self.fs = gcsfs.GCSFileSystem()
         '''https://storage.cloud.google.com/last_dataset/labelled-dataset/BreastMammography/Benign/MDB_MAMMO_104_0_0.jpg'''
         self.stage = stage
-        if self.stage == 'finetune':
+        if self.stage == 'finetune' or self.stage == 'local':
             gcs_path2 = gcs_path.replace('Benign', 'Malignant')
             self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] + \
             [s for s in self.fs.ls(gcs_path2) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
@@ -139,7 +134,10 @@ class MMImageSet(Dataset):
                 roi = np.array(roi).reshape((256, 256))
                 roi = np.where(roi >= 0.5, 1, 0)
                 roi = T.ToTensor()(roi)
-                patch, label = process_images_patch(image.unsqueeze(0), roi.squeeze(0), size=56)
+                # roi 1,256,256
+                # image 1,256,256
+                patch, label = process_images_patch(image, roi, size=56)
+                # patch 1,256,256
                 img_arr = patch.permute(1, 2, 0).numpy()
                 img_arr = cv2.resize(img_arr, (224,224))
                 img_arr = torch.tensor(img_arr).unsqueeze(0)
