@@ -31,39 +31,6 @@ def crop_center(img, cx, cy, size):
     return img[..., start_y:start_y+size, start_x:start_x+size]
 
 
-def get_negative_patch_center(x, y, image_shape, patch_size):
-    h, w = image_shape
-    patch_half = patch_size // 2
-
-    # Define the boundaries of four quadrants centered at (x, y)
-    left_boundary = max(0, x - patch_half)
-    right_boundary = min(w, x + patch_half)
-    top_boundary = max(0, y - patch_half)
-    bottom_boundary = min(h, y + patch_half)
-
-    # Randomly choose a quadrant for the negative patch
-    quadrant = np.random.choice(['top_left', 'top_right', 'bottom_left', 'bottom_right'])
-
-    if quadrant == 'top_left':
-        x_range = (0, left_boundary - patch_half)
-        y_range = (0, top_boundary - patch_half)
-    elif quadrant == 'top_right':
-        x_range = (right_boundary + patch_half, w - patch_half)
-        y_range = (0, top_boundary - patch_half)
-    elif quadrant == 'bottom_left':
-        x_range = (0, left_boundary - patch_half)
-        y_range = (bottom_boundary + patch_half, h - patch_half)
-    else:  # quadrant == 'bottom_right'
-        x_range = (right_boundary + patch_half, w - patch_half)
-        y_range = (bottom_boundary + patch_half, h - patch_half)
-
-    # Randomly select the center coordinate of the negative patch within the selected quadrant
-    x_negative = np.random.randint(*x_range)
-    y_negative = np.random.randint(*y_range)
-
-    return x_negative, y_negative
-
-
 def process_images_patch(images, labels, size):
     # roi 1,256,256
     # image 1,256,256
@@ -72,15 +39,11 @@ def process_images_patch(images, labels, size):
     nonzero_coords = (lbl == 1).nonzero()
     if nonzero_coords.nelement() == 0:  # If no elements found, continue to next iteration
         x, y = 128,128
-        label = 0
+        label = 1
     else:
         y, x = nonzero_coords.float().mean(0)
         x = round(x.item())
         y = round(y.item())
-        label = 1
-        if random.random() > 0.5:
-            x, y = get_negative_patch_center(x,y,(256,256),56)
-            label = 0
 
     # Crop a patch from the image
     patch = crop_center(images, x, y, size)
@@ -136,14 +99,18 @@ class MMImageSet(Dataset):
                 roi = T.ToTensor()(roi)
                 # roi 1,256,256
                 # image 1,256,256
-                patch, label = process_images_patch(image, roi, size=56)
+                patch, no_flag = process_images_patch(image, roi, size=56)
                 # patch 1,256,256
                 img_arr = patch.permute(1, 2, 0).numpy()
                 img_arr = cv2.resize(img_arr, (224,224))
                 img_arr = torch.tensor(img_arr).unsqueeze(0)
                 img_arr = img_arr.repeat(3, 1, 1)
-                if 'Benign' in filename:
+                if no_flag:
                     label = 0
+                elif 'Benign' in filename:
+                    label = 0
+                else:
+                    label = 1
                 return img_arr, label
             else:
                 return image
