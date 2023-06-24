@@ -95,7 +95,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
                 print("logits shape: ", logits_np.shape)
                 
                 label_np = labels.cpu().numpy()[:4]
-                patch_np = patches.cpu().numpy()[:4].reshape((4, 224, 224))
+                patch_np = patches.cpu().numpy()[:4].reshape((4, 3, 224, 224))
                 image_np = images.cpu().numpy()[:4].reshape((4, 256, 256))
                 roi_np = rois.cpu().numpy()[:4].reshape((4, 2, 256, 256))
 
