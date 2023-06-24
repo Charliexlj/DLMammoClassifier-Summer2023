@@ -111,7 +111,7 @@ class MMImageSet(Dataset):
                     label = torch.tensor(0)
                 else:
                     label = torch.tensor(1)
-                return img_arr, label.float()
+                return img_arr, label.float(), image, roi
             else:
                 return image
         else:

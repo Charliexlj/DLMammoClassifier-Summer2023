@@ -10,6 +10,8 @@ import torch_xla.core.xla_model as xm
 import torch_xla.distributed.xla_multiprocessing as xmp
 import torch_xla.distributed.parallel_loader as pl
 
+import matplotlib as plt
+
 from Mammolibs import MMmodels, MMdataset, MMutils
 
 parser = argparse.ArgumentParser()
@@ -76,15 +78,46 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
-            patches, labels = batch
+            patches, labels, images, rois = batch
             labels = labels.unsqueeze(1)
-            #print(labels[0])
+            # print(labels[0])
             logits = model(patches)
             optimizer.zero_grad()
             train_loss = criterion(logits, labels)
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
+            if index == 0 and batch_no == 0:
+                np_roi = rois.cpu().numpy()[:4]  # [:4].numpy().reshape((4, 2, 256, 256))
+                print("np_roi: ", np_roi.shape)
+                
+                logits_np = logits.cpu().detach().numpy()[:4]  # [:4]
+                print("logits shape: ", logits_np.shape)
+                
+                label_np = labels.cpu().numpy()[:4]
+                patch_np = patches.cpu().numpy()[:4].reshape((4, 256, 256))
+                image_np = images.cpu().numpy()[:4].reshape((4, 256, 256))
+                roi_np = rois.cpu().numpy()[:4].reshape((4, 2, 256, 256))
+
+                fig, axs = plt.subplots(3, 4, figsize=(12, 16))
+                
+                for i in range(4):
+                    # plot image
+                    axs[0, i].imshow(image_np[i], cmap='gray')
+                    axs[0, i].set_title(f'Label: {label_np[i]}')
+                    axs[0, i].axis('off')
+                    
+                    axs[1, i].imshow(roi_np[i], cmap='gray')
+                    axs[1, i].set_title(f'ROI {i+1}')
+                    axs[1, i].axis('off')
+                    
+                    axs[2, i].imshow(patch_np[i][1], cmap='gray')
+                    axs[2, i].set_title(f'Patch {i+1}')
+                    axs[2, i].axis('off')
+
+                plt.tight_layout()
+                plt.savefig(f'plot_res_{it}.png')
+                print(f'saved plot_res_{it}.png')
             if index == 0 and batch_no % 50 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
