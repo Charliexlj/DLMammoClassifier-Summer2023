@@ -78,13 +78,16 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
         for batch_no, batch in enumerate(para_train_loader): # noqa
             patches, labels = batch
             labels = labels.unsqueeze(1)
-            print(labels[0])
+            #print(labels[0])
             logits = model(patches)
             optimizer.zero_grad()
             train_loss = criterion(logits, labels)
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
+            if index == 0 and batch_no % 50 == 0:
+                print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
+                batch_no, it, loss)) # noqa
         if index == 0:
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
             it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
