@@ -87,7 +87,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
-            if index == 0 and batch_no == 0:
+            if index == 0 and batch_no == 0 and it%10 == 0:
                 np_roi = rois.cpu().numpy()[:4]  # [:4].numpy().reshape((4, 2, 256, 256))
                 print("np_roi: ", np_roi.shape)
                 
