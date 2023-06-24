@@ -106,11 +106,11 @@ class MMImageSet(Dataset):
                 img_arr = torch.tensor(img_arr).unsqueeze(0)
                 img_arr = img_arr.repeat(3, 1, 1)
                 if no_flag:
-                    label = 0
+                    label = torch.tensor(0)
                 elif 'Benign' in filename:
-                    label = 0
+                    label = torch.tensor(0)
                 else:
-                    label = 1
+                    label = torch.tensor(1)
                 return img_arr, label
             else:
                 return image
