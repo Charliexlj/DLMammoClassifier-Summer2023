@@ -78,6 +78,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
         for batch_no, batch in enumerate(para_train_loader): # noqa
             patches, labels = batch
             labels = labels.unsqueeze(1)
+            print(labels[0])
             logits = model(patches)
             optimizer.zero_grad()
             train_loss = criterion(logits, labels)
