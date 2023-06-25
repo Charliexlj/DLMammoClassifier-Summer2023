@@ -56,10 +56,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             num_workers=8,
             drop_last=True)
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-        batch_loss = [100]
         for batch_no, batch in enumerate(para_train_loader): # noqa
-            if index == 0 and batch_no == 0:
-                batch_loss = []
             patches, labels, images, rois = batch
             logits = model(patches)
             train_loss = criterion(logits, labels)
@@ -69,15 +66,13 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             loss = train_loss.cpu()
             reduced_loss = xm.mesh_reduce('loss_reduce', loss, lambda x: sum(x) / len(x))  # Reduce the loss values from all TPU cores
             loss = reduced_loss.item()  # Convert reduced loss from tensor to Python scalar
-            if index == 0:
-                batch_loss.append(loss)
             if index == 0 and batch_no % 10 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
         if index == 0:
             print("=======================================================================") # noqa
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
-            it, np.array(batch_loss).mean(), MMutils.convert_seconds_to_time(time.time()-start))) # noqa
+            it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
             print("=======================================================================") # noqa
     if index == 0:
         MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
