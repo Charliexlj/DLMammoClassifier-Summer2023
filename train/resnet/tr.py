@@ -39,6 +39,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     nr_filters = model.fc.in_features  #number of input features of last layer
     model.fc = nn.Linear(nr_filters, 1)
+    model.load_state_dict(state_dict)
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -127,7 +128,7 @@ if __name__ == '__main__':
     gcs_path = 'gs://last_dataset/labelled-dataset/BreastMammography/Benign/'
     dataset = MMdataset.MMImageSet(gcs_path, stage='local', aug=True)
     
-    state_dict = torch.load(f'{current_dir}/model_iter_50.pth')
+    state_dict = torch.load(f'{current_dir}/model_iter_5.pth')
 
     n_iter = 20
     if args.it:
