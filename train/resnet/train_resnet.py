@@ -76,13 +76,13 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
     for it in range(pre_iter+1, pre_iter+niters+1):
         para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         start = time.time()
+        initial_state_dict = {k: v.clone() for k, v in model.state_dict().items()}
         for batch_no, batch in enumerate(para_train_loader): # noqa
             patches, labels, images, rois = batch
             # print(labels[0])
             logits = model(patches)
             if index == 0 and batch_no == 0 and it == 1:
                 print(patches.shape, labels.shape, logits.shape, images.shape, rois.shape)
-            initial_state_dict = {k: v.clone() for k, v in model.state_dict().items()}
             train_loss = criterion(logits, labels)
             optimizer.zero_grad()
             train_loss.backward()
@@ -91,13 +91,6 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
             #         if param.requires_grad:
             #             print(name, param.grad)
             xm.optimizer_step(optimizer)
-            final_state_dict = {k: v.clone() for k, v in model.state_dict().items()}
-            if index == 0 and batch_no == 60:
-                for (initial_name, initial_weights), (final_name, final_weights) in zip(initial_state_dict.items(), final_state_dict.items()):
-                    if torch.equal(initial_weights, final_weights):
-                        print(f'{initial_name} weights have not been updated.')
-                    else:
-                        print(f'{initial_name} weights have been updated.')
             loss = train_loss.cpu()
             # if index == 0 and batch_no == 0:
                 
@@ -129,6 +122,13 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
             if index == 0 and batch_no % 50 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
+        final_state_dict = {k: v.clone() for k, v in model.state_dict().items()}
+        if index == 0 and batch_no == 60:
+            for (initial_name, initial_weights), (final_name, final_weights) in zip(initial_state_dict.items(), final_state_dict.items()):
+                if torch.equal(initial_weights, final_weights):
+                    print(f'{initial_name} weights have not been updated.')
+                else:
+                    print(f'{initial_name} weights have been updated.')
         if index == 0:
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
             it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
