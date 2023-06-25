@@ -81,6 +81,8 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
             patches, labels, images, rois = batch
+            if index == 0 and batch_no == 0 and it == 1:
+                print(patches.shape, labels.shape, images.shape, rois.shape)
             labels = labels.unsqueeze(1)
             # print(labels[0])
             logits = model(patches)
