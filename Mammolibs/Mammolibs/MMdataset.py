@@ -62,6 +62,8 @@ class MMImageSet(Dataset):
             self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] + \
             [s for s in self.fs.ls(gcs_path2) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
             self.labels = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in self.filenames] # noqa
+            if self.stage == 'local':
+                self.filenames = self.filenames[:16]*1000
         else:
             if aug: self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
             else: self.filenames = [s for s in self.fs.ls(gcs_path) if s.count('_') == 1 and s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
