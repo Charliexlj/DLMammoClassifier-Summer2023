@@ -140,7 +140,7 @@ if __name__ == '__main__':
     xmp.spawn(train_resnet, args=(
         state_dict,     # model
         dataset,        # dataset
-        1e-6,             # lr
+        3e-5,             # lr
         0,       # pre_iter
         n_iter,         # niters
         128,            # batch_size
