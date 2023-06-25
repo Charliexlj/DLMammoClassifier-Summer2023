@@ -61,7 +61,9 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         for batch_no, batch in enumerate(para_train_loader): # noqa
             patches, labels, images, rois = batch
             logits = model(patches)
-            train_loss = criterion(labels.unsqueeze(1), logits)
+            if index==0:
+                print(torch.unique(logits))
+            train_loss = criterion(labels.floats(), logits.squeeze(1).floats())
             optimizer.zero_grad()
             train_loss.backward()
             xm.optimizer_step(optimizer)
