@@ -56,7 +56,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
 
     device = xm.xla_device()
     
-    model = torchvision.models.vgg19(weights='Default')
+    model = torchvision.models.vgg19(weights='DEFAULT')
     num_features = model.classifier[6].in_features
     model.classifier[6] = nn.Linear(num_features, 1)   
     # models = torchvision.models.resnet18(pretrained=True)
