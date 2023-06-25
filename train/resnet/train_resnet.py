@@ -84,8 +84,8 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
             labels = labels.unsqueeze(1)
             # print(labels[0])
             logits = model(patches)
-            optimizer.zero_grad()
             train_loss = criterion(logits, labels)
+            optimizer.zero_grad()
             train_loss.backward()
             # if index == 0:
             #     for name, param in model.named_parameters():
@@ -93,24 +93,20 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
             #             print(name, param.grad)
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
-            if index == 0 and batch_no == 0 and it%10 == 0:
-                np_roi = rois.cpu().numpy()[:4]  # [:4].numpy().reshape((4, 2, 256, 256))
-                print("np_roi: ", np_roi.shape)
+            if index == 0 and batch_no == 0 and it % 10 == 0:
                 
-                logits_np = logits.cpu().detach().numpy()[:4]  # [:4]
-                print("logits shape: ", logits_np.shape)
-                
-                label_np = labels.cpu().numpy()[:4]
+                label_np = labels.cpu().numpy()[:4].reshape(4)
                 patch_np = patches.cpu().numpy()[:4].reshape((4, 3, 224, 224))
                 image_np = images.cpu().numpy()[:4].reshape((4, 256, 256))
                 roi_np = rois.cpu().numpy()[:4].reshape((4, 256, 256))
+                logits_np = rois.cpu().detech().numpy()[:4].reshape(4)
 
                 fig, axs = plt.subplots(3, 4, figsize=(12, 16))
                 
                 for i in range(4):
                     # plot image
                     axs[0, i].imshow(image_np[i], cmap='gray')
-                    axs[0, i].set_title(f'Label: {label_np[i]}')
+                    axs[0, i].set_title(f'Label: {label_np[i]}, Pred:{logits_np[i]}')
                     axs[0, i].axis('off')
                     
                     axs[1, i].imshow(roi_np[i], cmap='gray')
