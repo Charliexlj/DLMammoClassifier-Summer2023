@@ -41,6 +41,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     loss = 100
 
     for it in range(pre_iter+1, pre_iter+niters+1):
+        model = model.to(device).train()
         start = time.time()
         dataset.shuffle()
         train_sampler = torch.utils.data.distributed.DistributedSampler(
@@ -73,6 +74,8 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
             it, loss, MMutils.convert_seconds_to_time(time.time()-start))) # noqa
             print("=======================================================================") # noqa
+            if it % 10 == 0:
+                MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
     if index == 0:
         MMutils.save_model(model.cpu(), current_dir, pre_iter+niters)
 
