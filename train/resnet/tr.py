@@ -29,8 +29,8 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     device = xm.xla_device()
 
     model = models.vgg16(weights='DEFAULT')
-    num_ftrs = model_ft.fc.in_features
-    model_ft.fc = nn.Linear(num_ftrs, 2)
+    num_ftrs = model.fc.in_features
+    model.fc = nn.Linear(num_ftrs, 2)
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
