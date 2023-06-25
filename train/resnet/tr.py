@@ -30,13 +30,13 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     model = models.vgg16(weights='DEFAULT')
     num_features = model.classifier[6].in_features
-    model.classifier[6] = nn.Linear(num_features, 2)   
+    model.classifier[6] = nn.Linear(num_features, 1)   
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
     # criterion = nn.BCEWithLogitsLoss()
     # jaccard = JaccardIndex(num_classes=2, task='binary')
-    criterion = nn.CrossEntropyLoss()
+    criterion = nn.BCEWithLogitsLoss()
     
     loss = 100
     
