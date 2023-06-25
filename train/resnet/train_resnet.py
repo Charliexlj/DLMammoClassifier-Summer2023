@@ -93,7 +93,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
             #             print(name, param.grad)
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
-            if index == 0 and batch_no == 0 and it % 10 == 0:
+            if index == 0 and batch_no == 0:
                 
                 label_np = labels.cpu().numpy()[:4].reshape(4)
                 patch_np = patches.cpu().numpy()[:4].reshape((4, 3, 224, 224))
