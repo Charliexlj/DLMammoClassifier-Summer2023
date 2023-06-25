@@ -63,10 +63,6 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
         if index == 0:
             print("model loaded successfully")
             print('starting training after epoch: ',checkpoint['epoch'])
-    if index == 0:
-        for name, param in model.named_parameters():
-            if param.requires_grad:
-                print(name, param.grad)
     model = model.to(device).train()
 
     criterion = nn.BCEWithLogitsLoss()
@@ -82,6 +78,10 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
             optimizer.zero_grad()
             train_loss = criterion(logits, labels)
             train_loss.backward()
+            if index == 0:
+                for name, param in model.named_parameters():
+                    if param.requires_grad:
+                        print(name, param.grad)
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
             if index == 0 and batch_no == 0 and it%10 == 0:
