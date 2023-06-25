@@ -104,7 +104,7 @@ if __name__ == '__main__':
         3e-3,             # lr
         0,       # pre_iter
         n_iter,         # niters
-        8,            # batch_size
+        128,            # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
     
