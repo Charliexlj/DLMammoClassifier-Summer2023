@@ -63,7 +63,8 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
         print("model loaded successfully")
         print('starting training after epoch: ',checkpoint['epoch'])
     for name, param in model.named_parameters():
-        print(name, param.requires_grad)
+        if param.requires_grad:
+            print(name, param.grad)
     model = model.to(device).train()
 
     criterion = nn.BCEWithLogitsLoss()
