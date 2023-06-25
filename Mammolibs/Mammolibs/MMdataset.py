@@ -64,7 +64,7 @@ class MMImageSet(Dataset):
             self.labels = [filename.replace('BreastMammography', 'ROIMask').replace("MAMMO", "ROI", 1) for filename in self.filenames] # noqa
             if self.stage == 'local':
                 self.shuffle()
-                self.filenames = self.filenames[:16]*100
+                self.filenames = self.filenames[:16]*1000
         else:
             if aug: self.filenames = [s for s in self.fs.ls(gcs_path) if s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
             else: self.filenames = [s for s in self.fs.ls(gcs_path) if s.count('_') == 1 and s.endswith(('.png', '.jpg', '.jpeg'))] # noqa
@@ -109,11 +109,11 @@ class MMImageSet(Dataset):
                 img_arr = torch.tensor(img_arr).unsqueeze(0)
                 img_arr = img_arr.repeat(3, 1, 1)
                 if no_flag:
-                    label = torch.tensor([0])
+                    label = torch.tensor(0)
                 elif 'Benign' in filename:
-                    label = torch.tensor([0])
+                    label = torch.tensor(0)
                 else:
-                    label = torch.tensor([1])
+                    label = torch.tensor(1)
                 return img_arr, label.float(), image, roi
             else:
                 return image
