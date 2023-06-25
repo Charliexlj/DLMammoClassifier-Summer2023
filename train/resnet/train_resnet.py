@@ -106,7 +106,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
                 for i in range(4):
                     # plot image
                     axs[0, i].imshow(image_np[i], cmap='gray')
-                    axs[0, i].set_title(f'Label: {label_np[i]}, Pred:{logits_np[i]}')
+                    axs[0, i].set_title("Label: {:.3f}, Pred:{:.3f}".format(label_np[i], logits_np[i]))
                     axs[0, i].axis('off')
                     
                     axs[1, i].imshow(roi_np[i], cmap='gray')
