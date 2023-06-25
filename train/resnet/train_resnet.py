@@ -56,12 +56,9 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
 
     device = xm.xla_device()
     
-    model = models.vgg19(weights='DEFAULT')
-
-    # add a new final layer
-    nr_filters = model.fc.in_features  # number of input features of last layer
-    model.fc = nn.Linear(nr_filters, 1)
-    
+    model = torchvision.models.vgg19(weights='Default')
+    num_features = model.classifier[6].in_features
+    model.classifier[6] = nn.Linear(num_features, 1)   
     # models = torchvision.models.resnet18(pretrained=True)
     # model = MyModel(models)
     optimizer = optim.Adam(model.parameters(), lr=3e-3)
