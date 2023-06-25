@@ -123,7 +123,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
         final_state_dict = {k: v.clone() for k, v in model.state_dict().items()}
-        if index == 0 and batch_no == 60:
+        if index == 0:
             for (initial_name, initial_weights), (final_name, final_weights) in zip(initial_state_dict.items(), final_state_dict.items()):
                 if torch.equal(initial_weights, final_weights):
                     print(f'{initial_name} weights have not been updated.')
