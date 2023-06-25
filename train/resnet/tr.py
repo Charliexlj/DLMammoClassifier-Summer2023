@@ -67,6 +67,8 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             train_loss.backward()
             xm.optimizer_step(optimizer)
             loss = train_loss.cpu()
+            reduced_loss = xm.mesh_reduce('loss_reduce', loss, lambda x: sum(x) / len(x))  # Reduce the loss values from all TPU cores
+            loss = reduced_loss.item()  # Convert reduced loss from tensor to Python scalar
             if index == 0:
                 batch_loss.append(loss)
             if index == 0 and batch_no % 10 == 0:
