@@ -4,6 +4,7 @@ import argparse
 
 import torch
 import torchvision
+from torchvision import datasets, models, transforms
 import torch.nn as nn
 import torch.optim as optim
 import torch_xla.core.xla_model as xm
@@ -19,23 +20,23 @@ parser.add_argument('--it', type=int, required=False)
 parser.add_argument('--lr', type=float, required=False)
 args = parser.parse_args()
 
-load_model = 'train/resnet/model_ResNet18.pt'
+# load_model = 'train/resnet/model_ResNet18.pt'
 
-class MyModel(nn.Module):
-    def __init__(self, models):
-        super(MyModel, self).__init__()
-        img_modules = list(models.children())[:-1]
-        self.ModelA = nn.Sequential(*img_modules)
-        self.relu = nn.ReLU()
-        self.Linear1 = nn.Linear(512, 512, bias=True)  # additional fully connected layer
-        self.Linear2 = nn.Linear(512, 1, bias=True)   # final layer for two class output
+# class MyModel(nn.Module):
+#     def __init__(self, models):
+#         super(MyModel, self).__init__()
+#         img_modules = list(models.children())[:-1]
+#         self.ModelA = nn.Sequential(*img_modules)
+#         self.relu = nn.ReLU()
+#         self.Linear1 = nn.Linear(512, 512, bias=True)  # additional fully connected layer
+#         self.Linear2 = nn.Linear(512, 1, bias=True)   # final layer for two class output
 
-    def forward(self, x):
-        x = self.ModelA(x)    # N x 512 x 1 x 1
-        x = torch.flatten(x, 1)
-        x = self.relu(self.Linear1(x))  # add relu activation function after first fc layer
-        x = self.Linear2(x)   # final output layer
-        return x
+#     def forward(self, x):
+#         x = self.ModelA(x)    # N x 512 x 1 x 1
+#         x = torch.flatten(x, 1)
+#         x = self.relu(self.Linear1(x))  # add relu activation function after first fc layer
+#         x = self.Linear2(x)   # final output layer
+#         return x
 
 def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # noqa
                       batch_size=16, save_path='/home'):
@@ -54,8 +55,15 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
         drop_last=True)
 
     device = xm.xla_device()
-    models = torchvision.models.resnet18(pretrained=True)
-    model = MyModel(models)
+    
+    model = models.resnet18(pretrained=True)
+
+    # add a new final layer
+    nr_filters = model.fc.in_features  #number of input features of last layer
+    model.fc = nn.Linear(nr_filters, 1)
+    
+    # models = torchvision.models.resnet18(pretrained=True)
+    # model = MyModel(models)
     optimizer = optim.Adam(model.parameters(), lr=lr)
     # if os.path.exists(load_model):
     #     checkpoint=torch.load(load_model,map_location=torch.device('cpu'))
