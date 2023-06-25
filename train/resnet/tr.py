@@ -72,7 +72,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         #     num_workers=8,
         #     drop_last=True)
         # para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-        for batch_no, batch_ in enumerate(para_train_loader): # noqa
+        for batch_no, _ in enumerate(para_train_loader): # noqa
             patches, labels, images, rois = batch
             logits = model(patches)
             train_loss = criterion(logits, labels)
@@ -119,7 +119,7 @@ if __name__ == '__main__':
         3e-3,             # lr
         0,       # pre_iter
         n_iter,         # niters
-        128,            # batch_size
+        8,            # batch_size
         current_dir     # current_dir
         ), start_method='forkserver')
     
