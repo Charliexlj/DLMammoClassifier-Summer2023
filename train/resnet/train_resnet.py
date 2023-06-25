@@ -60,11 +60,13 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
     if os.path.exists(load_model):
         checkpoint=torch.load(load_model,map_location=torch.device('cpu'))
         model.load_state_dict(checkpoint['model_state'],strict=False)
-        print("model loaded successfully")
-        print('starting training after epoch: ',checkpoint['epoch'])
-    for name, param in model.named_parameters():
-        if param.requires_grad:
-            print(name, param.grad)
+        if index == 0:
+            print("model loaded successfully")
+            print('starting training after epoch: ',checkpoint['epoch'])
+    if index == 0:
+        for name, param in model.named_parameters():
+            if param.requires_grad:
+                print(name, param.grad)
     model = model.to(device).train()
 
     criterion = nn.BCEWithLogitsLoss()
