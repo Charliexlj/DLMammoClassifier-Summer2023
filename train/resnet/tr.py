@@ -39,24 +39,40 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
     criterion = nn.BCEWithLogitsLoss()
     
     loss = 100
+    
+    dataset.shuffle()
+    train_sampler = torch.utils.data.distributed.DistributedSampler(
+        dataset,
+        num_replicas=xm.xrt_world_size(),
+        rank=xm.get_ordinal(),
+        shuffle=True)
+
+    train_loader = torch.utils.data.DataLoader(
+        dataset,
+        batch_size=batch_size,
+        sampler=train_sampler,
+        num_workers=8,
+        drop_last=True)
+    para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+    batch = next(iter(para_train_loader))
 
     for it in range(pre_iter+1, pre_iter+niters+1):
         start = time.time()
-        dataset.shuffle()
-        train_sampler = torch.utils.data.distributed.DistributedSampler(
-            dataset,
-            num_replicas=xm.xrt_world_size(),
-            rank=xm.get_ordinal(),
-            shuffle=True)
+        # dataset.shuffle()
+        # train_sampler = torch.utils.data.distributed.DistributedSampler(
+        #     dataset,
+        #     num_replicas=xm.xrt_world_size(),
+        #     rank=xm.get_ordinal(),
+        #     shuffle=True)
 
-        train_loader = torch.utils.data.DataLoader(
-            dataset,
-            batch_size=batch_size,
-            sampler=train_sampler,
-            num_workers=8,
-            drop_last=True)
-        para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
-        for batch_no, batch in enumerate(para_train_loader): # noqa
+        # train_loader = torch.utils.data.DataLoader(
+        #     dataset,
+        #     batch_size=batch_size,
+        #     sampler=train_sampler,
+        #     num_workers=8,
+        #     drop_last=True)
+        # para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
+        for batch_no, batch_ in enumerate(para_train_loader): # noqa
             patches, labels, images, rois = batch
             logits = model(patches)
             train_loss = criterion(logits, labels)
