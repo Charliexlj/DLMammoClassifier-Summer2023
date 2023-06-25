@@ -30,7 +30,8 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     model = models.vgg16(weights='DEFAULT')
     num_features = model.classifier[6].in_features
-    model.classifier[6] = nn.Linear(num_features, 1)   
+    model.classifier[6] = nn.Linear(num_features, 1)
+    model.load_state_dict(state_dict)   
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
@@ -69,6 +70,34 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
             if index == 0 and batch_no % 10 == 0:
                 print("Batch:{:4d}  |  Iter:{:4d}  |  Tr_loss: {:.4f}".format( # noqa
                 batch_no, it, loss)) # noqa
+                
+            if index == 0 and batch_no == 0:
+                    
+                label_np = labels.cpu().numpy()[:4].reshape(4)
+                patch_np = patches.cpu().numpy()[:4].reshape((4, 3, 224, 224))
+                image_np = images.cpu().numpy()[:4].reshape((4, 256, 256))
+                roi_np = rois.cpu().numpy()[:4].reshape((4, 256, 256))
+                logits_np = logits.cpu().detach().numpy()[:4].reshape((4,))
+
+                fig, axs = plt.subplots(3, 4, figsize=(12, 16))
+                
+                for i in range(4):
+                    # plot image
+                    axs[0, i].imshow(image_np[i], cmap='gray')
+                    axs[0, i].set_title("Label: {:.3f}, Pred:{:.3f}".format(label_np[i], logits_np[i]))
+                    axs[0, i].axis('off')
+                    
+                    axs[1, i].imshow(roi_np[i], cmap='gray')
+                    axs[1, i].set_title(f'ROI {i+1}')
+                    axs[1, i].axis('off')
+                    
+                    axs[2, i].imshow(patch_np[i][1], cmap='gray')
+                    axs[2, i].set_title(f'Patch {i+1}')
+                    axs[2, i].axis('off')
+
+                plt.tight_layout()
+                plt.savefig(f'plot_res_{it}.png')
+                print(f'saved plot_res_{it}.png')
         if index == 0:
             print("=======================================================================") # noqa
             print("Master Process  |  Iter:{:4d}  |  Tr_loss: {:.4f}  |  Time: {}".format( # noqa
@@ -91,6 +120,8 @@ if __name__ == '__main__':
 
     gcs_path = 'gs://last_dataset/labelled-dataset/BreastMammography/Benign/'
     dataset = MMdataset.MMImageSet(gcs_path, stage='local', aug=True)
+    
+    state_dict = torch.load(f'{current_dir}/model_iter_50.pth')
 
     n_iter = 20
     if args.it:
@@ -101,7 +132,7 @@ if __name__ == '__main__':
         lr = args.lr
     
     xmp.spawn(train_resnet, args=(
-        None,     # model
+        state_dict,     # model
         dataset,        # dataset
         3e-3,             # lr
         0,       # pre_iter
