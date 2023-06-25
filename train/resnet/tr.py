@@ -61,6 +61,8 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         for batch_no, batch in enumerate(para_train_loader): # noqa
             patches, labels, images, rois = batch
             logits = model(patches)
+            if batch_no == 0 and index == 0:
+                print(logits.shape, labels.shape)
             train_loss = criterion(logits, labels)
             optimizer.zero_grad()
             train_loss.backward()
@@ -72,7 +74,6 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
                 batch_no, it, loss)) # noqa
                 
             if index == 0 and batch_no == 0:
-                    
                 label_np = labels.cpu().numpy()[:4].reshape(4)
                 patch_np = patches.cpu().numpy()[:4].reshape((4, 3, 224, 224))
                 image_np = images.cpu().numpy()[:4].reshape((4, 256, 256))
