@@ -128,7 +128,7 @@ class MMImageSet(Dataset):
         indices = list(range(len(self.filenames)))
         random.shuffle(indices)
         self.filenames = [self.filenames[i] for i in indices]
-        self.labels = [self.labels[i] for i in indices]
+        # self.labels = [self.labels[i] for i in indices]
 '''
 
 def rgb_to_grayscale(img):
