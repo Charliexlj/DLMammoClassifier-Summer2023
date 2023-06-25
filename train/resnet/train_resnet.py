@@ -56,7 +56,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
 
     device = xm.xla_device()
     
-    model = models.resnet18(weights='DEFAULT')
+    model = models.vgg19(weights='DEFAULT')
 
     # add a new final layer
     nr_filters = model.fc.in_features  # number of input features of last layer
@@ -81,10 +81,10 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
         start = time.time()
         for batch_no, batch in enumerate(para_train_loader): # noqa
             patches, labels, images, rois = batch
-            if index == 0 and batch_no == 0 and it == 1:
-                print(patches.shape, labels.shape, images.shape, rois.shape)
             # print(labels[0])
             logits = model(patches)
+            if index == 0 and batch_no == 0 and it == 1:
+                print(patches.shape, labels.shape, logits.shape, images.shape, rois.shape)
             initial_state_dict = {k: v.clone() for k, v in model.state_dict().items()}
             train_loss = criterion(logits, labels)
             optimizer.zero_grad()
