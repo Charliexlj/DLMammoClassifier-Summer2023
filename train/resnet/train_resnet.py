@@ -157,7 +157,7 @@ if __name__ == '__main__':
         lr = args.lr
 
     xmp.spawn(train_resnet, args=(
-        load_model,     # model
+        None,     # model
         dataset,        # dataset
         lr,             # lr
         0,       # pre_iter
