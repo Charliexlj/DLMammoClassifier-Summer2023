@@ -28,10 +28,17 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
 
     device = xm.xla_device()
 
-    model = models.vgg16(weights='DEFAULT')
-    num_features = model.classifier[6].in_features
-    model.classifier[6] = nn.Linear(num_features, 1)
+    # model = models.vgg16(weights='DEFAULT')
+    # num_features = model.classifier[6].in_features
+    # model.classifier[6] = nn.Linear(num_features, 1)
     # model.load_state_dict(state_dict)   
+    model = models.resnet18(pretrained=True)
+
+    for params in model.parameters():
+        params.requires_grad_ = True
+
+    nr_filters = model.fc.in_features  #number of input features of last layer
+    model.fc = nn.Linear(nr_filters, 1)
     model = model.to(device).train()
 
     optimizer = optim.Adam(model.parameters(), lr=lr)
