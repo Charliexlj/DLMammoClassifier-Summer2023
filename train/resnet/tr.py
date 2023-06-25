@@ -55,6 +55,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         drop_last=True)
     para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
     batch = next(iter(para_train_loader))
+    patches, labels, images, rois = batch
 
     for it in range(pre_iter+1, pre_iter+niters+1):
         start = time.time()
@@ -73,7 +74,6 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10,
         #     drop_last=True)
         # para_train_loader = pl.ParallelLoader(train_loader, [device]).per_device_loader(device) # noqa
         for batch_no, _ in enumerate(para_train_loader): # noqa
-            patches, labels, images, rois = batch
             logits = model(patches)
             train_loss = criterion(logits, labels)
             optimizer.zero_grad()
