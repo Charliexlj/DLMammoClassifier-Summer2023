@@ -56,15 +56,15 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
 
     device = xm.xla_device()
     
-    model = models.resnet18(pretrained=True)
+    model = models.resnet18(weights='DEFAULT')
 
     # add a new final layer
-    nr_filters = model.fc.in_features  #number of input features of last layer
+    nr_filters = model.fc.in_features  # number of input features of last layer
     model.fc = nn.Linear(nr_filters, 1)
     
     # models = torchvision.models.resnet18(pretrained=True)
     # model = MyModel(models)
-    optimizer = optim.Adam(model.parameters(), lr=lr)
+    optimizer = optim.Adam(model.parameters(), lr=3e-3)
     # if os.path.exists(load_model):
     #     checkpoint=torch.load(load_model,map_location=torch.device('cpu'))
     #     model.load_state_dict(checkpoint['model_state'],strict=False)
@@ -85,6 +85,7 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
                 print(patches.shape, labels.shape, images.shape, rois.shape)
             # print(labels[0])
             logits = model(patches)
+            initial_state_dict = {k: v.clone() for k, v in model.state_dict().items()}
             train_loss = criterion(logits, labels)
             optimizer.zero_grad()
             train_loss.backward()
@@ -93,6 +94,13 @@ def train_resnet(index, state_dict, dataset, lr=1e-3, pre_iter=0, niters=10, # n
             #         if param.requires_grad:
             #             print(name, param.grad)
             xm.optimizer_step(optimizer)
+            final_state_dict = {k: v.clone() for k, v in model.state_dict().items()}
+            if index == 0 and batch_no == 60:
+                for (initial_name, initial_weights), (final_name, final_weights) in zip(initial_state_dict.items(), final_state_dict.items()):
+                    if torch.equal(initial_weights, final_weights):
+                        print(f'{initial_name} weights have not been updated.')
+                    else:
+                        print(f'{initial_name} weights have been updated.')
             loss = train_loss.cpu()
             # if index == 0 and batch_no == 0:
                 
@@ -156,7 +164,7 @@ if __name__ == '__main__':
     xmp.spawn(train_resnet, args=(
         None,     # model
         dataset,        # dataset
-        lr,             # lr
+        3e-3,             # lr
         0,       # pre_iter
         n_iter,         # niters
         128,            # batch_size
