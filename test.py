@@ -43,7 +43,7 @@ if __name__ == '__main__':
     # print(f'Find model weights at {current_dir}/train/unet/autoencoder/model_iter_{iter}.pth, loading...') # noqa
     
     model_1 = MMmodels.UNet()
-    iter = input("Best Model iter: ")
+    iter = '60'
     current_dir = os.path.dirname(os.path.realpath(__file__))
     state_dict = torch.load(f'{current_dir}/train/unet/model_iter_{iter}.pth') # noqa
     model_1.load_state_dict(state_dict)
