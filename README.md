@@ -43,22 +43,24 @@ To develop a deep learning strategy and algorithm to detect malignant breast tum
 
 | Name | Size | Label | Localisation |
 | --- | :---: | :---: | :---: |
-| [CBIS-DDSM](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=22516629#2251662935562334b1e043a3a0512554ef512cad) | 2620 | :heavy_check_mark: | :heavy_check_mark: |
+| [CBIS-DDSM](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=22516629#2251662935562334b1e043a3a0512554ef512cad) | 10239 | :heavy_check_mark: | :heavy_check_mark: |
 | [InBreast](https://www.kaggle.com/datasets/martholi/inbreast?select=inbreast.tgz) | 410 | :heavy_check_mark: | :x: |
 | [MIAS](http://peipa.essex.ac.uk/info/mias.html) | 322 | :heavy_check_mark: | :heavy_check_mark: |
-| [Breast-Cancer-Screening-DBT](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=64685580#6468558050a1e1bdf0de46de92128576e1d3e9b1) | 5060 | :heavy_check_mark: | :heavy_check_mark: |
+| [Breast-Cancer-Screening-DBT](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=64685580#6468558050a1e1bdf0de46de92128576e1d3e9b1) | 22032 | :heavy_check_mark: | :heavy_check_mark: |
 | [BCDR](https://bcdr.eu/information/downloads) | 956 | :heavy_check_mark: | :heavy_check_mark: |
-| [CDD-CESM](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=109379611) | 326 | :heavy_check_mark: | :heavy_check_mark: |
-| [CMMD](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70230508) | 1775 | :heavy_check_mark: | :x: |
-| [Duke Breast Cancer MRI](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903) | 922 | :heavy_check_mark: | :x: |
-| [King Abdulaziz](https://www.mdpi.com/2306-5729/6/11/111#) | 1416 | :heavy_check_mark: | :heavy_check_mark: |
-| [Embed](https://pubs.rsna.org/doi/10.1148/ryai.220047) | 340000 | :heavy_check_mark: | :x: |
+| [CDD-CESM](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=109379611) | 2006 | :heavy_check_mark: | :heavy_check_mark: |
+| [CMMD](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70230508) | 5202 | :heavy_check_mark: | :x: |
+| [Duke Breast Cancer MRI](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903) | 773888 | :heavy_check_mark: | :x: |
+| [King Abdulaziz](https://www.mdpi.com/2306-5729/6/11/111#) | 2378 | :heavy_check_mark: | :heavy_check_mark: |
+| [Embed](https://pubs.rsna.org/doi/10.1148/ryai.220047) | 68000 | :heavy_check_mark: | :x: |
 | [OMI-DB](https://www.cancerresearchhorizons.com/licensing-opportunities/optimam-mammography-image-database-omi-db) | 2620 | :heavy_check_mark: | :x: |
 
 ## File Structure
 
     DLMammoClassifier-Summer2023/
     └── dataset_enhancement/                        # Code for data augmentation
+    	├── DICOMExtract.py
+     	└── ...
     └── docs/                                       # Weekly documentations
         ├── week1.md
         └── ...
