@@ -4,21 +4,21 @@ Data augmentation is crucial to ensure an adequate amount of data for model trai
 Additionally, it helps mitigate the risk of overfitting, ensuring that the model generalizes well to unseen data.
 
 ## Datasets Included
-| Name | Images | Included | Labelled |
+| Name | Images | Included | Localisation |
 | --- | :---: | :---: | :---: | 
 | [CBIS-DDSM](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=22516629#2251662935562334b1e043a3a0512554ef512cad) | 10239 | :heavy_check_mark: | :heavy_check_mark: |
 | [InBreast](https://www.kaggle.com/datasets/martholi/inbreast?select=inbreast.tgz) | 410 | :heavy_check_mark: | :x: |
 | [MIAS](http://peipa.essex.ac.uk/info/mias.html) | 322 | :heavy_check_mark: | :heavy_check_mark: |
-| [Breast-Cancer-Screening-DBT](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=64685580#6468558050a1e1bdf0de46de92128576e1d3e9b1) | 22032 | :x: | :grey_question: |
-| [BCDR](https://bcdr.eu/information/downloads) | 956 | :x: | :grey_question: |
-| [CDD-CESM](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=109379611) | 2006 | :x: |  :grey_question: |
+| [Breast-Cancer-Screening-DBT](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=64685580#6468558050a1e1bdf0de46de92128576e1d3e9b1) | 22032 | :x: | :heavy_check_mark: |
+| [BCDR](https://bcdr.eu/information/downloads) | 956 | :x: | :heavy_check_mark: |
+| [CDD-CESM](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=109379611) | 2006 | :x: |  :heavy_check_mark: |
 | [CMMD](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70230508) | 5202 | :heavy_check_mark: | :x: |
-| [Duke Breast Cancer MRI](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903) | 773888 | :x: | :grey_question: |
+| [Duke Breast Cancer MRI](https://wiki.cancerimagingarchive.net/pages/viewpage.action?pageId=70226903) | 773888 | :x: | :x: |
 | [King Abdulaziz](https://www.mdpi.com/2306-5729/6/11/111#) | 2378 | :heavy_check_mark: | :x: |
 | [Embed](https://pubs.rsna.org/doi/10.1148/ryai.220047) | 68000 | :heavy_check_mark: | :heavy_check_mark: |
-| [OMI-DB](https://www.cancerresearchhorizons.com/licensing-opportunities/optimam-mammography-image-database-omi-db) | 2620 | :x: | :grey_question: |
+| [OMI-DB](https://www.cancerresearchhorizons.com/licensing-opportunities/optimam-mammography-image-database-omi-db) | 2620 | :x: | :x: |
 
-Reasons for Exclusion of Certain Datasets as of June 6, 2023:
+Reasons for Exclusion of Certain Datasets as of July 6, 2023:
 
 1. Dataset Selection Criteria:
 In selecting the datasets to include in our study, we encountered limitations regarding the availability and suitability of certain datasets. 
@@ -56,6 +56,9 @@ By replicating this technique in our model, we aim to equip our machine learning
 3. Resizing: Due to variations in image dimensions and aspect ratios among the datasets, resizing was necessary to normalize the images for feeding into the machine learning model. 
 Initially, a size of 1024 x 1024 pixels was selected for all images. 
 However, considering the large number of parameters involved and the substantial dataset size (over 120,000 images for each labeled and unlabeled dataset after augmentation), it was determined that downsizing the images to 256 x 256 pixels would be more manageable for the model while maintaining relevant information.
+
+4. Normalization: In our case, normalization was specifically applied to the ground truth Regions of Interest (ROIs). These ROIs are represented as binary labels in the form of a 256x256 pixel image, where each pixel is assigned either a value of 0 (indicating "not an ROI") or 1 (indicating "ROI").
+The purpose of normalizing the ROIs is twofold. Firstly, it ensures that the pixel values representing the ROIs are on a consistent scale, making it easier for the model to learn and generalize from the data. By normalizing the ROIs, we avoid any potential issues where the range of pixel values in the ROIs may vary significantly across different images, which could affect the model's ability to accurately detect and classify ROIs. Secondly, normalizing the ROIs aids in stabilizing the learning process of the model. By having a consistent range for the ROI pixel values, we mitigate the risk of certain pixel value ranges dominating the learning process, ensuring that the model focuses on the relative patterns and relationships between the pixels rather than being biased towards specific ranges.
 
 These data augmentation techniques were implemented to enhance the quality and consistency of the dataset, thereby improving the performance and generalization capabilities of the machine learning model during training and evaluation.
 
