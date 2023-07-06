@@ -15,14 +15,13 @@ During the third week of the project, we made significant progress in data colle
 ### 3. TPU Platform Code Structure:
    - To leverage the power of Google Cloud's TPU platform, we need to develop a code structure that is optimized for TPU hardware. This structure should efficiently distribute computation across TPUs, take advantage of parallel processing, and maximize resource utilization.
    - TPUs use very different training libraries compare to training on CPU or CUDA devices. They are also not very well documented and very can be very differently used when training on TPU VMs in GCP or other TPUs such as Colab.
-   
+
     '''
     # We use xla library for training on TPUs
     import torch_xla.core.xla_model as xm
     import torch_xla.distributed.xla_multiprocessing as xmp
     import torch_xla.distributed.parallel_loader as pl
-    '''
-    '''
+
     def train_encoder(index, ...):
 
         # XLA dataloader
@@ -53,6 +52,21 @@ During the third week of the project, we made significant progress in data colle
 
         # Tr/Val loss and save model
         ...
+
+    if __name__ == '__main__':
+        ...
+
+        # Training with TPUs
+        xmp.spawn(train_encoder, args=(
+        state_dict,     # model
+        dataset,        # dataset
+        lr,             # lr
+        pre_iter,       # pre_iter
+        n_iter,         # niters
+        64,             # batch_size
+        current_dir,    # current_dir
+        args.test
+        ), start_method='forkserver')
     '''
 
 ### 4. Google Cloud Bucket Integration:
