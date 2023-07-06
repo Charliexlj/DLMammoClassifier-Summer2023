@@ -30,7 +30,7 @@ This repository contains the code and resources for the development of a mammogr
 ## File Structure
 
     DLMammoClassifier-Summer2023/
-    └── data/                                       # Datasets
+    └── dataset_enhancement/                        # Code for data augmentation
     └── docs/                                       # Weekly documentations
         ├── week1.md
         └── ...
@@ -99,12 +99,12 @@ This repository contains the code and resources for the development of a mammogr
 - [x] TPU Singlecore Support
 - [x] TPU Multicore Support
 - [x] Train Model using Data in GCP Cloud Storage Buckets
-- [x] Tramsfer Learning
-- [ ] Shell Scripts
-- [ ] Full Model Complete
-- [ ] Pretrain Encoder Complete
-- [ ] Pretrain Autoencoder Complete
-- [ ] Pretrain Classifier Complete
-- [ ] Finetune U-Net
-- [ ] Finetune Classifier
-- [ ] First Iteration of Complete Model
+- [x] Transfer Learning
+- [x] Shell Scripts
+- [x] Full Model Complete
+- [x] Pretrain Encoder Complete
+- [x] Pretrain Autoencoder Complete
+- [x] Pretrain Classifier Complete
+- [x] Finetune U-Net
+- [x] Finetune Classifier
+- [x] First Iteration of Complete Model
