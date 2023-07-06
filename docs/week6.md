@@ -45,7 +45,8 @@ During the fifth week of the project, we made progress in training the encoder, 
         ```
         current_dir = os.path.dirname(os.path.realpath(__file__))
         ```
-    - Current setup procedure:
+    
+   - Current setup procedure:
         1. ```git pull https://github.com/Charliexlj/DLMammoClassifier-Summer2023```
         2. ```cd DLMammoClassifier-Summer2023```
         3. ```pip install -r requirements.txt```

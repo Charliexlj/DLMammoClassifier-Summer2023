@@ -2,10 +2,10 @@
 
 During the previous weeks of the project, we made progress in training the model, monitoring loss values, and analyzing the model's learning progress. In the final week, our primary focus is on the practical application of the trained model. We have obtained the final weights of the model, and now we shift our attention to building a user interface (UI) that allows users to interact with the model effectively. The UI will include functionalities such as image upload, visual display of segmentation, patch extraction, classification, and explanations. This document provides an overview of our progress and outlines the tasks accomplished during the final week.
 
-1. Model Weight Obtained:
+### 1. Model Weight Obtained:
    - After completing the model training and fine-tuning processes, we successfully obtained the final weights of the model. These weights represent the learned parameters that capture the model's knowledge and ability to detect objects accurately.
 
-2. UI Development:
+### 2. UI Development:
    - In the final week, we begin developing a user interface (UI) to provide a user-friendly experience for interacting with the model. The UI will enable users to perform various tasks related to object detection, segmentation, patch extraction, classification, and explanations.
 
    a. Image Upload:
