@@ -5,11 +5,39 @@ Imperial College London Summer 2023 Group Consultancy Project
 
 This repository contains the code and resources for the development of a mammography classification system using deep learning techniques. The project is carried out by a group of students from Imperial College London during the Summer of 2023.
 
+## Client Requirement
+
+To develop a deeplearning strategy and algorithm to detect malignant breast tumours with high accuracy and with the minimum possible false positive rate.  The algorithm must be able to generalise to unseen data that stems from a different dataset or population than that used to train the initial models.
+
+## Design Plan, Solutions and Final Output:
+- Collect as much data as possible to get diverse and sufficient data for training a high-accuracy model that generalise well.
+    1. Standardise all the relative open dataset to get diverse and high quality data.
+        - Used in pipeline to increase the size of dataset:
+    2. Augmentations to enrich dataset:
+        - Used in pipeline since it significantly improved the generalisation of the model.
+    3. Generative Models to generate datasets:
+        - Rejected because of unable to verify the truthfulness of generated data.
+    4. Incertion of manuel tumours to normal mammography images:
+        - Rejected because of difficulty in deploy the algorithm and cannot guarantee the quality of generated dataset.
+- Develop algorithms that can learn effectively with limited data and generalise well.
+    1. Utilise self-supervise learning with unlabelled data:
+        - Used in pipeline since it significantly improce model performance.
+    2. Use two stages model:
+        - Used in pipeline since the subtasks are more specific and easy to learn.
+    3. Use of transformers architecture:
+        - Rejected because this kind of architure usually require much more data and training time, the improvement over CNN is often very small.
+    
 ## Timeline and Work Distribution
 
 - [Week 1: Team Onboarding](docs/week1.md)
 - [Week 2: Client Consultation, Project Planning and Data Collection](docs/week2.md)
 - [Week 3: Data Preprocessing, Preliminary Research and Baseline Model Implementation](docs/week3.md)
+- [Week 4: Pretraining and Two-Stage Model Implementation](docs/week4.md)
+- [Week 5: Encoder Training, Loss Testing, Hyperparameter Adjustment, and Network Development](docs/week5.md)
+- [Week 6: Autoencoder Training, Network Fine-tuning, Evaluation Code, Data Visualization, and Project Setup Procedure](docs/week6.md)
+- [Week 7: ResNet Pretraining, Fine-tuning, and Snip Dataset Generation](docs/week7.md)
+- [Week 8: Model Training and Loss Monitoring](docs/week8.md)
+- [Week 9: Model Weight Obtained and UI Development](docs/week9.md)
 
 ## Dataset
 
@@ -35,12 +63,13 @@ This repository contains the code and resources for the development of a mammogr
         ├── week1.md
         └── ...
     └── scratch/                                    # Initial trials on google colab
-    └── train/                                      # Codes to build and train the model
-        ├── Mammolibs/                                  # Custom libraries used in this project
+    └── Mammolibs/                                  # Custom libraries used in this project
         |   ├── __init__.py
         │   ├── MMmodels.py
         │   ├── MMdataset.py
         |   └── MMutils.py
+        └── setup.py
+    └── train/                                      # Codes to build and train the model
         ├── unet/                                       # U-Net for segmentation
         |   ├── encoder/
         |   |   ├── train_decoder.py
@@ -66,10 +95,9 @@ This repository contains the code and resources for the development of a mammogr
 ## User Menu
 
 > **Note:** Only support TPU training at this stage. CPU and GPU support is expected to come in soon.
-1. Git clone the repo, then `cd DLMammoClassifier-Summer2023`, all the command is relative to this path.
+1. Git clone the repo: `git clone https://github.com/Charliexlj/DLMammoClassifier-Summer2023`, then `cd DLMammoClassifier-Summer2023`, all the command is relative to this path.
 
 2. Pre-train Encoder:
-
 	- Start from scratch: `sudo PJRT_DEVICE=TPU python3 train/unet/encoder/train_encoder.py --pretrain no 2>&1 | grep -v "^tcmalloc"`
 	- Start from saved state_dict: `sudo PJRT_DEVICE=TPU python3 train/unet/encoder/train_encoder.py --pretrain 20 2>&1 | grep -v "^tcmalloc"`
     > Args\
@@ -84,8 +112,32 @@ This repository contains the code and resources for the development of a mammogr
         `--encoder(optional) if no start from scratch, load encoder state_dict`\
         `--lr(optional) learning rate`\
         `--it(optional) how many iterations you want to train further`
+3. Fine-tune UNet
+	- Start from pre-trained autoencoder: `sudo PJRT_DEVICE=TPU python3 train/unet/finetune.py --pretrain no --autoencoder 20 2>&1 | grep -v "^tcmalloc"`
+	- Start from saved state_dict: `sudo PJRT_DEVICE=TPU python3 train/unet/finetune.py --pretrain 10 2>&1 | grep -v "^tcmalloc"`
+    > Args\
+        `--pretrain: no / number of iterations of saved state_dict`\
+        `--auencoder(optional) if no start from scratch, load encoder state_dict`\
+        `--lr(optional) learning rate`\
+        `--it(optional) how many iterations you want to train further`
 
+4. Train ResNet
+	- Start directly: `sudo PJRT_DEVICE=TPU python3 train/resnet/train_resnet.py 2>&1 | grep -v "^tcmalloc"`
+    > Args\
+        `--lr(optional) learning rate`\
+        `--it(optional) how many iterations you want to train further`
 
+## Loss Curves with or without Pre-training:
+
+![Loss Curves with or without Pre-training](./res/loss.png)
+
+## Model Illustration:
+
+![Model Illustration](./res/illustration.png)
+
+## Model User Interface:
+
+![Model User Interface](./res/illustration.png)
 
 ## Progress
 
@@ -100,7 +152,7 @@ This repository contains the code and resources for the development of a mammogr
 - [x] TPU Multicore Support
 - [x] Train Model using Data in GCP Cloud Storage Buckets
 - [x] Transfer Learning
-- [x] Shell Scripts
+- [ ] Shell Scripts
 - [x] Full Model Complete
 - [x] Pretrain Encoder Complete
 - [x] Pretrain Autoencoder Complete
@@ -108,3 +160,6 @@ This repository contains the code and resources for the development of a mammogr
 - [x] Finetune U-Net
 - [x] Finetune Classifier
 - [x] First Iteration of Complete Model
+- [x] Data Visualisation
+- [x] Working Model Complete
+- [x] User Interface Design

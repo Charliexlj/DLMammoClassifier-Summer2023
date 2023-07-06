@@ -7,6 +7,7 @@ During the seventh week of the project, we made progress in building a ResNet fo
 
 ### 2. Loss Monitoring:
    - Throughout the training process, we continuously monitor the training and validation losses. The training loss indicates how well the model is fitting the training data, while the validation loss provides insights into the model's generalization performance on unseen data. By tracking the loss values, we gain valuable information about the model's progress and convergence.
+   ![Losses](../res/loss.png)
 
 ### 3. Data Visualization:
    - We employ visualization techniques to analyze the model's learning progress. This includes visualizing the training and validation losses over time, enabling us to identify trends, spot overfitting or underfitting issues, and make informed decisions for further optimization. Visualizing the loss curve helps us understand the model's performance and guide our training strategy.

@@ -47,10 +47,10 @@ During the fifth week of the project, we made progress in training the encoder, 
         ```
     
    - Current setup procedure:
-        1. ```git pull https://github.com/Charliexlj/DLMammoClassifier-Summer2023```
-        2. ```cd DLMammoClassifier-Summer2023```
-        3. ```pip install -r requirements.txt```
-        4. All set and start training: ```PJRT_DEVICE=TPU python3 train/unet/finetune.py 2>&1 | grep -v '^tcmalloc'```
+        1. `git clone https://github.com/Charliexlj/DLMammoClassifier-Summer2023`
+        2. `cd DLMammoClassifier-Summer2023`
+        3. `pip install -r requirements.txt`
+        4. All set and start training: `PJRT_DEVICE=TPU python3 train/unet/finetune.py 2>&1 | grep -v '^tcmalloc'`
 
 # Work Summary
 By fine-tuning the network, implementing evaluation code, visualizing the data, and establishing a project setup procedure, we are ensuring the progress and maintainability of our project. These efforts allow us to continuously improve the model's performance, gain deeper insights into its behavior, and enable smooth deployment on different machines or environments. In the upcoming weeks, we will focus on further optimizing the model, conducting extensive evaluations, and preparing for the final model deployment.
