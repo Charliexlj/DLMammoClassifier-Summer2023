@@ -71,14 +71,15 @@ During the third week of the project, we made significant progress in data colle
 
 ### 4. Google Cloud Bucket Integration:
    - We will establish a connection with Google Cloud Bucket to facilitate seamless data storage and retrieval. This integration will enable us to efficiently access and process our datasets, as well as store the trained models and other project artifacts.
+
     ```
-        # We built our own dataset for GCP cloud storge buckets
-        class MMImageSet(Dataset):
-            def __init__(self, gcs_path, stage='encoder', aug=True):
-                super(MMImageSet, self).__init__()
-                self.fs = gcsfs.GCSFileSystem()
-                self.stage = stage
-                self.filenames = [...]
+    # We built our own dataset for GCP cloud storge buckets
+    class MMImageSet(Dataset):
+        def __init__(self, gcs_path, stage='encoder', aug=True):
+            super(MMImageSet, self).__init__()
+            self.fs = gcsfs.GCSFileSystem()
+            self.stage = stage
+            self.filenames = [...]
     ```
 
 ## Work Summary
