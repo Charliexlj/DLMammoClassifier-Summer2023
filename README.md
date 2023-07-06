@@ -179,6 +179,7 @@ To develop a deep learning strategy and algorithm to detect malignant breast tum
 - [x] Data Visualisation
 - [x] Working Model Complete
 - [x] User Interface Design
+- [x] User Interface Back-end Server Set-up
 
 ## Ethical Implications
 
