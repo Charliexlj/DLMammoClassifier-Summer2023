@@ -16,7 +16,7 @@ During the third week of the project, we made significant progress in data colle
    - To leverage the power of Google Cloud's TPU platform, we need to develop a code structure that is optimized for TPU hardware. This structure should efficiently distribute computation across TPUs, take advantage of parallel processing, and maximize resource utilization.
    - TPUs use very different training libraries compare to training on CPU or CUDA devices. They are also not very well documented and very can be very differently used when training on TPU VMs in GCP or other TPUs such as Colab.
 
-    '''
+    ```
     # We use xla library for training on TPUs
     import torch_xla.core.xla_model as xm
     import torch_xla.distributed.xla_multiprocessing as xmp
@@ -67,11 +67,11 @@ During the third week of the project, we made significant progress in data colle
         current_dir,    # current_dir
         args.test
         ), start_method='forkserver')
-    '''
+    ```
 
 ### 4. Google Cloud Bucket Integration:
    - We will establish a connection with Google Cloud Bucket to facilitate seamless data storage and retrieval. This integration will enable us to efficiently access and process our datasets, as well as store the trained models and other project artifacts.
-    '''
+    ```
     # We built our own dataset for GCP cloud storge buckets
     class MMImageSet(Dataset):
         def __init__(self, gcs_path, stage='encoder', aug=True):
@@ -79,7 +79,7 @@ During the third week of the project, we made significant progress in data colle
             self.fs = gcsfs.GCSFileSystem()
             self.stage = stage
             self.filenames = [...]
-    '''
+    ```
 
 ## Work Summary
 By focusing on developing a workable code structure for the TPU platform and establishing a connection with Google Cloud Bucket, we aim to lay the foundation for efficient training and inference in subsequent stages of the project. This will enable us to leverage the power of distributed computing and seamlessly manage our data and models in the cloud environment.
