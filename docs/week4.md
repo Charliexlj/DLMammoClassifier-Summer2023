@@ -12,6 +12,8 @@ During the third week of the project, we made significant progress in data colle
    - We have determined that a two-stage model architecture would be suitable for our detection task. This approach involves separating the detection process into two stages: region proposal and object classification. It has shown promising results in similar tasks and can help us achieve accurate and efficient detection.
    - The model pipeline we agreed on will be using U-Net for segmentation(finding ROIs) and ResNet for local classification. Since these models were matured enough and proved their effectiveness in various tasks.
 
+![Algorithms and Training Pipeline](./res/Algorithm.png)
+
 ### 3. TPU Platform Code Structure:
    - To leverage the power of Google Cloud's TPU platform, we need to develop a code structure that is optimized for TPU hardware. This structure should efficiently distribute computation across TPUs, take advantage of parallel processing, and maximize resource utilization.
    - TPUs use very different training libraries compare to training on CPU or CUDA devices. They are also not very well documented and very can be very differently used when training on TPU VMs in GCP or other TPUs such as Colab.
