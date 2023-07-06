@@ -2,10 +2,10 @@
 
 During the fourth week of the project, we made significant progress in developing a workable code structure for the TPU platform and establishing a connection with Google Cloud Bucket. We also settled on using a pretraining technique and a two-stage model for detection. In the fifth week, our primary focus was on the training of the encoder, testing different loss functions, adjusting hyperparameters, and advancing the development of the remaining parts of the network. Additionally, we finalized our project file structure based on our growing insights and familiarity with the platform. This document provides an overview of our progress and outlines the tasks accomplished during Week 5.
 
-1. Encoder Training:
+### 1. Encoder Training:
    - We dedicated this week to training the encoder using the selected pretraining dataset. The encoder plays a crucial role in feature extraction, which forms the backbone of our detection model.
 
-2. Loss Testing:
+### 2. Loss Testing:
    - We conducted experiments with various loss functions to identify the most suitable option for our detection task.
    - We finalised on contrasive learning to do the self-supervised learning, the model will learn the robust features from different augmentated pairs and distinguish them from other pairs. It is show very effective in Goggle SimCLR and utilize unlabelled data.
    ```
@@ -34,7 +34,7 @@ During the fourth week of the project, we made significant progress in developin
     return torch.mean(neglog_num_by_den)
    ```
 
-3. Hyperparameter Adjustment:
+### 43. Hyperparameter Adjustment:
    - Throughout the week, we carefully adjusted the hyperparameters of our model to improve its performance. This involved tuning parameters such as learning rate, batch size, regularization techniques, and optimizer settings. Our goal was to find optimal hyperparameter values that lead to faster convergence and better generalization.
    ```
    def print_iteration_stats(iter, train_loss, val_loss, n_iters, time_per_n_iters):
@@ -42,15 +42,15 @@ During the fourth week of the project, we made significant progress in developin
         iter, train_loss, val_loss, n_iters, convert_seconds_to_time(time_per_n_iters)))
    ```
 
-4. Network Modularisation:
+### 4. Network Modularisation:
    - While training the encoder, we also started working on the development of the network training code structure. The aim is to make the code robust, easy to maintain and extend different functions.
    - We developed a custom library named **Mammolibs**, which include:
-    - **MMdataset**: For custom dataset and basic data standardisation.
-    - **MMmodels**: All the custom model structures and loss functions.
-    - **MMutils**: All the utility functions such as printing loss or saving models.
-    
+        - **MMdataset**: For custom dataset and basic data standardisation.
+        - **MMmodels**: All the custom model structures and loss functions.
+        - **MMutils**: All the utility functions such as printing loss or saving models.
 
-5. Finalizing Project File Structure:
+
+### 5. Finalizing Project File Structure:
    - With an increasing understanding of the entire project and growing familiarity with the platform, we finalized our project's file structure. This involved organizing the code, data, and model checkpoints into well-defined directories and modules. A clear and organized file structure allows for easier maintenance, collaboration, and scalability as the project progresses.
 
 Tasks Accomplished in Week 5:
