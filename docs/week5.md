@@ -34,7 +34,7 @@ During the fourth week of the project, we made significant progress in developin
     return torch.mean(neglog_num_by_den)
    ```
 
-### 43. Hyperparameter Adjustment:
+### 3. Hyperparameter Adjustment:
    - Throughout the week, we carefully adjusted the hyperparameters of our model to improve its performance. This involved tuning parameters such as learning rate, batch size, regularization techniques, and optimizer settings. Our goal was to find optimal hyperparameter values that lead to faster convergence and better generalization.
    ```
    def print_iteration_stats(iter, train_loss, val_loss, n_iters, time_per_n_iters):
@@ -42,37 +42,53 @@ During the fourth week of the project, we made significant progress in developin
         iter, train_loss, val_loss, n_iters, convert_seconds_to_time(time_per_n_iters)))
    ```
 
-### 4. Network Modularisation:
+### 4. Code Modularisation:
    - While training the encoder, we also started working on the development of the network training code structure. The aim is to make the code robust, easy to maintain and extend different functions.
    - We developed a custom library named **Mammolibs**, which include:
         - **MMdataset**: For custom dataset and basic data standardisation.
         - **MMmodels**: All the custom model structures and loss functions.
         - **MMutils**: All the utility functions such as printing loss or saving models.
-
+    ```
+    ..
+    └── Mammolibs/
+           ├── __init__.py
+           ├── MMmodels.py
+           ├── MMdataset.py
+           └── MMutils.py
+    ```
 
 ### 5. Finalizing Project File Structure:
    - With an increasing understanding of the entire project and growing familiarity with the platform, we finalized our project's file structure. This involved organizing the code, data, and model checkpoints into well-defined directories and modules. A clear and organized file structure allows for easier maintenance, collaboration, and scalability as the project progresses.
 
-Tasks Accomplished in Week 5:
+   DLMammoClassifier-Summer2023/
+    └── dataset_enhancement/                        # Code for data augmentation
+    └── docs/                                       # Weekly documentations
+        ├── week1.md
+        └── ...
+    └── scratch/                                    # Initial trials on google colab
+    └── train/                                      # Codes to build and train the model
+        ├── Mammolibs/                                  # Custom libraries used in this project
+        |   ├── __init__.py
+        │   ├── MMmodels.py
+        │   ├── MMdataset.py
+        |   └── MMutils.py
+        ├── unet/                                       # U-Net for segmentation
+        |   ├── encoder/
+        |   |   ├── train_decoder.py
+        |   |   ├── model_epoch_200.pth
+        |   |   └── ...
+        |   ├── autoencoder/
+        |   |   └── ...
+        |   └── finetune.py
+        ├── classifier/                                 # Resnet for local classification
+        |   ├── resnet/
+        |   |   ├── train_decoder.py
+        |   |   ├── model_epoch_200.pth
+        |   |   └── ...
+        |   └── finetune.py
+        └── train.sh                                    # Script to train all models
+    └── README.md
+    └── requirements.txt
 
-A. Encoder Training:
-   - Set up training pipeline for the encoder using the pretraining dataset.
-   - Monitored training progress, analyzed intermediate results, and ensured convergence.
-
-B. Loss Testing:
-   - Implemented different loss functions and evaluated their impact on model performance.
-   - Analyzed the trade-offs between precision and recall and selected the most appropriate loss function for our detection task.
-
-C. Hyperparameter Adjustment:
-   - Conducted systematic hyperparameter tuning experiments to optimize the model's performance.
-   - Adjusted learning rate, batch size, regularization techniques, and optimizer settings based on experimental results.
-
-D. Network Development:
-   - Implemented the region proposal network (RPN) and object classification components.
-   - Connected these components with the encoder to establish a complete two-stage detection model.
-
-E. Finalizing Project File Structure:
-   - Organized the project's code, data, and model checkpoints into a well-structured file hierarchy.
-   - Ensured clear separation of concerns, modularity, and easy navigation within the project directory.
-
-By completing the encoder training, testing various loss functions, adjusting hyperparameters, and progressing with the network development, we have made significant strides toward building an accurate and efficient detection model. Additionally, finalizing the project file structure allows for better organization and future scalability. In the upcoming weeks, we will focus on fine-tuning the model, conducting comprehensive
+## Work Summary
+By completing the encoder training, testing various loss functions, adjusting hyperparameters, and progressing with the network development, we have made significant strides toward building an accurate and efficient detection model. Additionally, finalizing the project file structure allows for better organization and future scalability. In the upcoming weeks, we will focus on further training the model.
