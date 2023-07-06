@@ -153,7 +153,7 @@ To develop a deep learning strategy and algorithm to detect malignant breast tum
 
 ## Model User Interface:
 
-![Model User Interface](./res/illustration.png)
+![Model User Interface](./res/front-end.png)
 
 ## Progress
 
