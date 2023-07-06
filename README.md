@@ -7,25 +7,25 @@ This repository contains the code and resources for the development of a mammogr
 
 ## Client Requirement
 
-To develop a deeplearning strategy and algorithm to detect malignant breast tumours with high accuracy and with the minimum possible false positive rate.  The algorithm must be able to generalise to unseen data that stems from a different dataset or population than that used to train the initial models.
+To develop a deep learning strategy and algorithm to detect malignant breast tumors with high accuracy and with the minimum possible false positive rate.  The algorithm must be able to generalise to unseen data that stems from a different dataset or population than that used to train the initial models.
 
 ## Design Plan, Solutions and Final Output:
 - Collect as much data as possible to get diverse and sufficient data for training a high-accuracy model that generalise well.
-    1. Standardise all the relative open dataset to get diverse and high quality data.
-        - Used in pipeline to increase the size of dataset:
-    2. Augmentations to enrich dataset:
-        - Used in pipeline since it significantly improved the generalisation of the model.
+    1. Standardise all the relative open datasets to get diverse and high-quality data.
+        - Used in the pipeline to increase the size of the dataset:
+    2. Augmentations to enrich the dataset:
+        - Used in the pipeline since it significantly improved the generalisation of the model.
     3. Generative Models to generate datasets:
         - Rejected because of unable to verify the truthfulness of generated data.
-    4. Incertion of manuel tumours to normal mammography images:
-        - Rejected because of difficulty in deploy the algorithm and cannot guarantee the quality of generated dataset.
+    4. Insertion of manual tumors to normal mammography images:
+        - Rejected because of difficulty in deploying the algorithm and cannot guarantee the quality of the generated dataset.
 - Develop algorithms that can learn effectively with limited data and generalise well.
     1. Utilise self-supervise learning with unlabelled data:
-        - Used in pipeline since it significantly improce model performance.
-    2. Use two stages model:
-        - Used in pipeline since the subtasks are more specific and easy to learn.
-    3. Use of transformers architecture:
-        - Rejected because this kind of architure usually require much more data and training time, the improvement over CNN is often very small.
+        - Used in the pipeline since it significantly improves model performance.
+    2. Use a two-stage model:
+        - Used in the pipeline since the subtasks are more specific and easy to learn.
+    3. Use of transformer architecture:
+        - Rejected because this kind of architecture usually requires much more data and training time, the improvement over CNN is often very small.
     
 ## Timeline and Work Distribution
 
