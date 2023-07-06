@@ -131,14 +131,14 @@ To develop a deep learning strategy and algorithm to detect malignant breast tum
 
 5. Evaluation
     - Use `sudo python3 /path/to/model/eval.py`, for example: `sudo python3 train/resnet/eval.py`
-    - Type in terminal the iteration of model you want to evaluate after printing `Model Iter:`
-    - Performance information will be printed in terminal base on a 128 test image batch.
-    - For Autoencoder, UNet and Resnet, a plot of 4 samples will be generated for inspection at /path/to/model/plot.png.
+    - Type in the terminal the iteration of the model you want to evaluate after printing `Model Iter:`
+    - Performance information will be printed in the terminal based on a batch of 128 test images.
+    - For Autoencoder, UNet, and Resnet, a plot of 4 samples will be generated for inspection at /path/to/model/plot.png.
 
 7. Weights
-    - After training at each stage, a line of `/path/to/model/model_iter_*.pth saved successfully` will be printed on terminal.
-    - Model weights can be found at this directory and export individually.
-    - When using model weights for other purposes, just initiallise the model using `model = MMmodels.[model_name]()` and load the corresponding state dict.
+    - After training at each stage, a line of `/path/to/model/model_iter_*.pth saved successfully` will be printed on the terminal.
+    - Model weights can be found in this directory and exported individually.
+    - When using model weights for other purposes, just initialise the model using `model = MMmodels.[model_name]()` and load the corresponding state dict.
     - The final weight of our model can be found in `train/unet/model_iter_80.pth` and `train/resnet/model_iter_200.pth`, the two files can be downloaded directly from GitHub.
 
 ## Loss Curves with or without Pre-training:
