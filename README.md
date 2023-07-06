@@ -97,14 +97,16 @@ To develop a deeplearning strategy and algorithm to detect malignant breast tumo
 > **Note:** Only support TPU training at this stage. CPU and GPU support is expected to come in soon.
 1. Git clone the repo: `git clone https://github.com/Charliexlj/DLMammoClassifier-Summer2023`, then `cd DLMammoClassifier-Summer2023`, all the command is relative to this path.
 
-2. Pre-train Encoder:
+2. Install all the dependencies: `pip install -r requirements`
+
+3. Pre-train Encoder:
 	- Start from scratch: `sudo PJRT_DEVICE=TPU python3 train/unet/encoder/train_encoder.py --pretrain no 2>&1 | grep -v "^tcmalloc"`
 	- Start from saved state_dict: `sudo PJRT_DEVICE=TPU python3 train/unet/encoder/train_encoder.py --pretrain 20 2>&1 | grep -v "^tcmalloc"`
     > Args\
         `--pretrain: no / number of iterations of saved state_dict`\
         `--lr(optional) learning rate`\
         `--it(optional) how many iterations you want to train further`
-3. Pre-train Autoencoder
+4. Pre-train Autoencoder
 	- Start from pre-trained decoder: `sudo PJRT_DEVICE=TPU python3 train/unet/autoencoder/train_autoencoder.py --pretrain no --encoder 20 2>&1 | grep -v "^tcmalloc"`
 	- Start from saved state_dict: `sudo PJRT_DEVICE=TPU python3 train/unet/autoencoder/train_autoencoder.py --pretrain 10 2>&1 | grep -v "^tcmalloc"`
     > Args\
@@ -112,7 +114,7 @@ To develop a deeplearning strategy and algorithm to detect malignant breast tumo
         `--encoder(optional) if no start from scratch, load encoder state_dict`\
         `--lr(optional) learning rate`\
         `--it(optional) how many iterations you want to train further`
-3. Fine-tune UNet
+5. Fine-tune UNet
 	- Start from pre-trained autoencoder: `sudo PJRT_DEVICE=TPU python3 train/unet/finetune.py --pretrain no --autoencoder 20 2>&1 | grep -v "^tcmalloc"`
 	- Start from saved state_dict: `sudo PJRT_DEVICE=TPU python3 train/unet/finetune.py --pretrain 10 2>&1 | grep -v "^tcmalloc"`
     > Args\
@@ -121,11 +123,23 @@ To develop a deeplearning strategy and algorithm to detect malignant breast tumo
         `--lr(optional) learning rate`\
         `--it(optional) how many iterations you want to train further`
 
-4. Train ResNet
+6. Train ResNet
 	- Start directly: `sudo PJRT_DEVICE=TPU python3 train/resnet/train_resnet.py 2>&1 | grep -v "^tcmalloc"`
     > Args\
         `--lr(optional) learning rate`\
         `--it(optional) how many iterations you want to train further`
+
+5. Evaluation
+    - Use `sudo python3 /path/to/model/eval.py`, for example: `sudo python3 train/resnet/eval.py`
+    - Type in terminal the iteration of model you want to evaluate after printing `Model Iter:`
+    - Performance information will be printed in terminal base on a 128 test image batch.
+    - For Autoencoder, UNet and Resnet, a plot of 4 samples will be generated for inspection at /path/to/model/plot.png.
+
+7. Weights
+    - After training at each stage, a line of `/path/to/model/model_iter_*.pth saved successfully` will be printed on terminal.
+    - Model weights can be found at this directory and export individually.
+    - When using model weights for other purposes, just initiallise the model using `model = MMmodels.[model_name]()` and load the corresponding state dict.
+    - The final weight of our model can be found in `train/unet/model_iter_80.pth` and `train/resnet/model_iter_200.pth`, the two files can be downloaded directly from GitHub.
 
 ## Loss Curves with or without Pre-training:
 
