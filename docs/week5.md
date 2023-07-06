@@ -49,12 +49,12 @@ During the fourth week of the project, we made significant progress in developin
         - **MMmodels**: All the custom model structures and loss functions.
         - **MMutils**: All the utility functions such as printing loss or saving models.
     ```
-    ..
-    └── Mammolibs/
-           ├── __init__.py
-           ├── MMmodels.py
-           ├── MMdataset.py
-           └── MMutils.py
+        ..
+        └── Mammolibs/
+            ├── __init__.py
+            ├── MMmodels.py
+            ├── MMdataset.py
+            └── MMutils.py
     ```
 
 ### 5. Finalizing Project File Structure:
