@@ -177,3 +177,7 @@ To develop a deep learning strategy and algorithm to detect malignant breast tum
 - [x] Data Visualisation
 - [x] Working Model Complete
 - [x] User Interface Design
+
+## Ethical Implications
+
+Using mammograms to train machine learning models for breast cancer detection has significant ethical implications. On the one hand, we believe that the use of machine learning can significantly improve the accuracy and efficiency of breast cancer detection and potentially save lives through early detection. However, these benefits must be balanced against privacy and consent concerns. Mammograms are sensitive personal health data. Without the clear and informed consent of patients, the use of these images for research purposes may violate their right to privacy. In addition, there is a risk of misuse or violation of data protection regulations. As we have only used data that was already in the public domain for this project, we did not directly have to address these privacy concerns. It is nonetheless important to be aware of the importance of data privacy in medical research and its growing importance across the whole machine learning domain.
