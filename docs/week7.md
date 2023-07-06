@@ -19,7 +19,7 @@ During the sixth week of the project, we made progress in fine-tuning the networ
             label = torch.tensor(1)
         return patch, label.float()
    ```
-   ![Patch Extration](./res/patch.png)
+   ![Patch Extration](../res/patch.png)
 
 ## Work Summary
 By initiating ResNet pretraining, performing further fine-tuning, and generating a snip dataset from the labelled dataset, we are taking parallel steps to improve the model's capabilities. The ResNet pretraining enhances the model's feature extraction abilities, while the fine-tuning process adapts it to our specific detection task. Additionally, the snip dataset provides additional training and testing samples, potentially improving the model's accuracy and robustness. In the upcoming weeks, we will continue optimizing the model, evaluating its performance, and preparing for the final stages of the project.

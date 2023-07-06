@@ -11,4 +11,4 @@ During the seventh week of the project, we made progress in building a ResNet fo
 ### 3. Data Visualization:
    - We employ visualization techniques to analyze the model's learning progress. This includes visualizing the training and validation losses over time, enabling us to identify trends, spot overfitting or underfitting issues, and make informed decisions for further optimization. Visualizing the loss curve helps us understand the model's performance and guide our training strategy.
 
-   ![Visualization](./res/visualisation.png)
+   ![Visualization](../res/visualisation.png)
