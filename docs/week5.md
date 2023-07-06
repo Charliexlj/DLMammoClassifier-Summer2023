@@ -48,6 +48,15 @@ During the fourth week of the project, we made significant progress in developin
         - **MMdataset**: For custom dataset and basic data standardisation.
         - **MMmodels**: All the custom model structures and loss functions.
         - **MMutils**: All the utility functions such as printing loss or saving models.
+   - We added argparse library in our code for easy usage of training script using shell command. This include transfer learning, hyper parameters adjusting and so on.
+        ```
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--pretrain', type=str, required=True)
+        parser.add_argument('--it', type=int, required=False)
+        parser.add_argument('--lr', type=float, required=False)
+        parser.add_argument('--autoencoder', type=str, required=False)
+        args = parser.parse_args()
+        ```
 
 ### 5. Finalizing Project File Structure:
    - With an increasing understanding of the entire project and growing familiarity with the platform, we finalized our project's file structure. This involved organizing the code, data, and model checkpoints into well-defined directories and modules. A clear and organized file structure allows for easier maintenance, collaboration, and scalability as the project progresses.
@@ -80,7 +89,6 @@ During the fourth week of the project, we made significant progress in developin
         |   └── finetune.py
         └── train.sh                                    # Script to train all models
     └── README.md
-    └── requirements.txt
 ```
 ## Work Summary
 By completing the encoder training, testing various loss functions, adjusting hyperparameters, and progressing with the network development, we have made significant strides toward building an accurate and efficient detection model. Additionally, finalizing the project file structure allows for better organization and future scalability. In the upcoming weeks, we will focus on further training the model.
