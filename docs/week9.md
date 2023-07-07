@@ -20,6 +20,7 @@ During the previous weeks of the project, we made progress in training the model
    d. Classification and Explanation:
       - Implement classification capabilities to predict the class labels of the extracted patches.
       - Integrate an explanation mechanism that provides insights into the model's decision-making process.
-      
-### 3. UI Back-end Development:
-      - The back-end server is written by javascript to execute the Python code for segmentation/classification with existing weight and return a segmented image, a patch of tumour region and the classification to the front-end client.
+
+### 3. UI Front-end Interface Development:
+   - The back-end server is written by javascript to execute the Python code for segmentation/classification with existing weight and return a segmented image, a patch of tumour region and the classification to the front-end client.
+
