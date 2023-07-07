@@ -91,10 +91,7 @@ To develop a deep learning strategy and algorithm to detect malignant breast tum
         ├── src/                                       # Javescript code
         |   ├── ImageUpload.js
         |   ├── ImageSegment.js
-	|   ├── Title.js
- 	|   ├── grid.js
-   	|   ├── grid.css				# Interface formating
-        |   └── index.js
+        |   └── ...
         ├── node modules/                                 # packages downloaded
         |   └── ...
         └── package.json   				# React environment
