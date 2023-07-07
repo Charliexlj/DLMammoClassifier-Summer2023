@@ -87,6 +87,23 @@ To develop a deep learning strategy and algorithm to detect malignant breast tum
         |   |   └── ...
         |   └── finetune.py
         └── train.sh                                    # Script to train all models
+     └── front_end_ui/                                      # Codes to build the UI interface
+        ├── src/                                       # Javescript code
+        |   ├── ImageUpload.js
+        |   ├── ImageSegment.js
+	|   ├── Title.js
+ 	|   ├── grid.js
+   	|   ├── grid.css				# Interface formating
+        |   └── index.js
+        ├── node modules/                                 # packages downloaded
+        |   └── ...
+        └── package.json   				# React environment
+      └── back_end_server/                                      
+        ├── server.js  
+	├── unet.pth  					# Trained weights
+        ├── node modules/                                 # packages downloaded
+        |   └── ...
+        └── demo.py   				
     └── README.md
     └── requirements.txt
 
