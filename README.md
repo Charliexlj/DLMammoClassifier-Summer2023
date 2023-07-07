@@ -97,7 +97,7 @@ To develop a deep learning strategy and algorithm to detect malignant breast tum
         └── package.json   				# React environment
       └── back_end_server/                                      
         ├── server.js  
-	├── unet.pth  					# Trained weights
+	├── unet.pth					# Trained weights
         ├── node modules/                                 # packages downloaded
         |   └── ...
         └── demo.py   				
